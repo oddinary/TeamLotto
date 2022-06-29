@@ -29,9 +29,9 @@ public class Main extends JFrame {
 	public Main() {
 		list= new ArrayList<>();
 		TitledBorder tbSelect = new TitledBorder(new LineBorder(Color.black),"번호 선택");
-		tbSelect.setTitleColor(new Color(245,136,110));
+		tbSelect.setTitleColor(new Color(245,136,109));
 		TitledBorder tbResult = new TitledBorder(new LineBorder(Color.black),"선택번호 확인");
-		tbResult.setTitleColor(new Color(245,136,110));
+		tbResult.setTitleColor(new Color(245,136,109));
 		
 		JPanel pnlMain = new JPanel();
 		JPanel pnlLeft = new JPanel();
