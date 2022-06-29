@@ -24,7 +24,7 @@ public class LottoEndPage extends JFrame {
 		pnlSouth.setLayout(new BoxLayout(pnlSouth, BoxLayout.Y_AXIS));
 		pnlSouth.setBorder(new LineBorder(Color.BLACK));
 
-		//위치잡아줌
+		//위치잡아줌여
 		pnlLotto.add(pnlNorth, "North");
 		pnlLotto.add(pnlCenter, "Center");
 		pnlLotto.add(pnlCenter2, "Center");
