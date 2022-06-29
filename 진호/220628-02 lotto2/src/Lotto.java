@@ -22,11 +22,11 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.Box;
 import java.awt.BorderLayout;
 
-public class Main extends JFrame {
+public class Lotto extends JFrame {
 	JCheckBox checkNum;
 	private List<JCheckBox> list;
 
-	public Main() {
+	public Lotto() {
 		list= new ArrayList<>();
 		TitledBorder tbSelect = new TitledBorder(new LineBorder(Color.black),"번호 선택");
 		tbSelect.setTitleColor(new Color(245,136,110));
@@ -135,6 +135,6 @@ public class Main extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		new Main().setVisible(true);
+		new Lotto().setVisible(true);
 	}
 }

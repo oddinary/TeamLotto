@@ -1,4 +1,4 @@
-public class Main {
+public class Team {
 	public static void main(String[] args) {
 		System.out.println("팀장의 권한");
 		System.out.println("앨랠레");
