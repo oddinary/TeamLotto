@@ -1,6 +1,12 @@
 public class Main {
 	public static void main(String[] args) {
+<<<<<<< HEAD
 		System.out.println("팀장의 권한");
+=======
+		System.out.println("오점뭐?");
+		System.out.println("ABCD");
+		System.out.println("앨랠레");
+>>>>>>> branch 'master' of https://github.com/oddinary/TeamLotto.git
 		// 1. 최대한 의견 반영 하겠음
 		// 2. 안되는 건 안되는 거임
 		
