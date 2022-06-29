@@ -203,9 +203,6 @@ public class Lotto extends JFrame {
 						JCheckBox chkBox = listOfChkBox.get(autoNum);
 						chkBox.setSelected(true);
 						
-						
-						
-						
 					}
 				}
 			}
