@@ -2,13 +2,18 @@ import javax.swing.JFrame;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
 public class LottoEndPage extends JFrame {
+	
 	public LottoEndPage() {
 		JPanel pnlLotto = new JPanel(new BorderLayout(0, 30));
 		JPanel pnlNorth = new JPanel(); // 회차
