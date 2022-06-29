@@ -9,6 +9,7 @@ public class Main {
 		System.out.println("앨랠레");
 		// 1. 최대한 의견 반영 하겠음
 		// 2. 안되는 건 안되는 거임
+		System.out.println("12341234");
 		
 		System.out.println("아무거나 쓰는중임ㅋ");
 		System.out.println("나도 해봄");
