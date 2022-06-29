@@ -16,12 +16,22 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormSpecs;
 import com.jgoodies.forms.layout.RowSpec;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class LottoEndPage extends JFrame {
 	public LottoEndPage() {
 		JPanel pnlLotto = new JPanel();
 		JPanel pnlTop = new JPanel(); // 당첨번호
-		JButton btnExit = new JButton("프로그램 종료");
+		JButton btnExit = new JButton("로그아웃");
+		btnExit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				new Login().setVisible(true);
+			}
+		});
 		
 		TitledBorder tbNumber = new TitledBorder(new LineBorder(Color.black), "당첨번호");
 		tbNumber.setTitleColor(new Color(245, 136, 110));
@@ -37,38 +47,6 @@ public class LottoEndPage extends JFrame {
 		pnlLotto.setLayout(sl_pnlLotto);
 
 		pnlTop.setBorder(tbNumber);
-		pnlTop.setLayout(new FormLayout(new ColumnSpec[] {
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.LABEL_COMPONENT_GAP_COLSPEC,
-				ColumnSpec.decode("60px"),
-				ColumnSpec.decode("40px"),
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,},
-			new RowSpec[] {
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.PARAGRAPH_GAP_ROWSPEC,
-				RowSpec.decode("15px"),
-				RowSpec.decode("15px"),}));
 		JLabel lblRound = new JLabel("회차"); // 회차
 		pnlTop.add(lblRound, "4, 2, fill, top");
 		JLabel lblLotto = new JLabel("당첨번호는"); // 당첨번호
@@ -96,13 +74,6 @@ public class LottoEndPage extends JFrame {
 		pnlCenter.setBorder(tbResult);
 		
 				pnlCenter.setLayout(new BoxLayout(pnlCenter, BoxLayout.Y_AXIS));
-				SpringLayout sl_pnlResultA = new SpringLayout();
-				sl_pnlResultA.putConstraint(SpringLayout.NORTH, lblResultA, 0, SpringLayout.NORTH, pnlResultA);
-				sl_pnlResultA.putConstraint(SpringLayout.WEST, lblResultA, 0, SpringLayout.WEST, pnlResultA);
-				sl_pnlResultA.putConstraint(SpringLayout.SOUTH, lblResultA, 47, SpringLayout.NORTH, pnlResultA);
-				sl_pnlResultA.putConstraint(SpringLayout.EAST, lblResultA, 364, SpringLayout.WEST, pnlResultA);
-				pnlResultA.setLayout(sl_pnlResultA);
-				pnlResultA.add(lblResultA);
 				SpringLayout sl_pnlResultB = new SpringLayout();
 				sl_pnlResultB.putConstraint(SpringLayout.NORTH, lblResultB, 0, SpringLayout.NORTH, pnlResultB);
 				sl_pnlResultB.putConstraint(SpringLayout.WEST, lblResultB, 0, SpringLayout.WEST, pnlResultB);
@@ -133,6 +104,16 @@ public class LottoEndPage extends JFrame {
 				pnlResultE.add(lblResultE);
 				
 				pnlCenter.add(pnlResultA);
+				GroupLayout gl_pnlResultA = new GroupLayout(pnlResultA);
+				gl_pnlResultA.setHorizontalGroup(
+					gl_pnlResultA.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblResultA, GroupLayout.PREFERRED_SIZE, 364, GroupLayout.PREFERRED_SIZE)
+				);
+				gl_pnlResultA.setVerticalGroup(
+					gl_pnlResultA.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblResultA, GroupLayout.PREFERRED_SIZE, 47, GroupLayout.PREFERRED_SIZE)
+				);
+				pnlResultA.setLayout(gl_pnlResultA);
 				pnlCenter.add(pnlResultB);
 				pnlCenter.add(pnlResultC);
 				pnlCenter.add(pnlResultD);
@@ -155,7 +136,11 @@ public class LottoEndPage extends JFrame {
 		JLabel lblNewLabel = new JLabel("New label");
 		pnlSouth.add(lblNewLabel, BorderLayout.WEST);
 		
-		JButton btnLogout = new JButton("로그아웃");
+		JButton btnLogout = new JButton("다시하기");
+		btnLogout.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		sl_pnlLotto.putConstraint(SpringLayout.NORTH, pnlSouth, -43, SpringLayout.NORTH, btnLogout);
 		sl_pnlLotto.putConstraint(SpringLayout.SOUTH, pnlSouth, -6, SpringLayout.NORTH, btnLogout);
 		sl_pnlLotto.putConstraint(SpringLayout.NORTH, btnExit, 0, SpringLayout.NORTH, btnLogout);
