@@ -111,7 +111,7 @@ public class Lotto extends JFrame {
 			JCheckBox checkBox = new JCheckBox(String.valueOf(i));
 
 			pnlNum.add(checkBox);
-			
+			 
 			// 체크박스 액션 리스너
 			checkBox.addActionListener(new ActionListener() {
 				@Override
