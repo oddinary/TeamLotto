@@ -105,13 +105,13 @@ public class Lotto extends JFrame {
 
 //	*************************************************************************
 //	************************ 번호 선택 (체크박스잇는 패널) ****************************
-		
-		//구현해야 할 것 : 수동 자동 반자동 선택 전에 체크 눌렀을경우 경고 메세지 뜨게
+
+		// 구현해야 할 것 : 수동 자동 반자동 선택 전에 체크 눌렀을경우 경고 메세지 뜨게
 		for (int i = 1; i <= 45; i++) {
 			JCheckBox checkBox = new JCheckBox(String.valueOf(i));
 
 			pnlNum.add(checkBox);
-			 
+
 			// 체크박스 액션 리스너
 			checkBox.addActionListener(new ActionListener() {
 				@Override
@@ -120,10 +120,11 @@ public class Lotto extends JFrame {
 					if (checkedList.size() > 6) {
 						checkBox.setSelected(false);
 						JOptionPane.showMessageDialog(null, "6개까지만 선택가능해요");
-
 					} else if (checkedList.size() == 7) {
 						checkedList.remove(6);
 					}
+					// 체크를 1 이상 누르거나 6개 다누르지 않았을 때 반자동 버튼을 사용 가능하게
+					rdbSemiAuto.setEnabled((checkedList.size() >= 1 && checkedList.size() <= 5));
 				}
 			});
 
@@ -133,19 +134,19 @@ public class Lotto extends JFrame {
 				@Override
 				public void itemStateChanged(ItemEvent e) {
 					int state = e.getStateChange();
-					int selectNum = Integer.parseInt(checkBox.getText()) - 1;
+					int selectNum = Integer.parseInt(checkBox.getText());
 					if (state == ItemEvent.SELECTED) {
 						if (checkedList.size() <= 6) {
-							checkedList.add(selectNum + 1);
+							checkedList.add(selectNum);
 							checkCount = checkedList.size();
 
-							//체크된것 배열에 들어가는지 콘솔로 확인
+							// 체크된것 배열에 들어가는지 콘솔로 확인
 							System.out.println(checkBox.getText());
 							System.out.println(checkedList);
 						}
 					} else if (state == ItemEvent.DESELECTED) {
 						for (int i = 0; i < checkedList.size(); i++) {
-							if (selectNum + 1 == checkedList.get(i)) {
+							if (selectNum == checkedList.get(i)) {
 								checkedList.remove(i);
 								checkCount = checkedList.size();
 							}
@@ -154,10 +155,11 @@ public class Lotto extends JFrame {
 					Collections.sort(checkedList);
 				}
 			});
-			
+
 			listOfChkBox.add(checkBox);
 			ChBoxAll.add(listOfChkBox);
 			checkBox.setEnabled(false);
+//			System.out.println(listOfChkBox);
 		}
 
 		// 번호선택 패널에 추가
@@ -173,22 +175,8 @@ public class Lotto extends JFrame {
 //		JCheckBox checkBox = new JCheckBox();
 		// 선택번호 체크박스 반복문으로 45개 생성.
 
-		// 라디오 버튼 액션 리스너 (자동)
-		rdbAuto.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (rdbAuto.equals(e.getSource())) {
-					rdbSemiAuto.setEnabled(false); // 반자동 버튼 off
-
-					for (int j = 6; j < 6; j++) {
-						int lottoNum = (int) (Math.random() * 45);
-						JCheckBox chkBox = listOfChkBox.get(lottoNum);
-						chkBox.setSelected(true);
-					}
-				}
-			}
-		});
-
+		
+		// 수동 자동 
 		// 라디오 버튼 액션 리스너 (수동)
 		rdbManual.addActionListener(new ActionListener() {
 			@Override
@@ -196,11 +184,44 @@ public class Lotto extends JFrame {
 				if (rdbManual.equals(e.getSource())) {
 					for (JCheckBox checkBox : listOfChkBox) {
 						checkBox.setEnabled(true);
-
+					}
+				} else if (!rdbManual.equals(e.getSource())) {
+					rdbSemiAuto.setEnabled(true);
+				}
+			}
+		});
+		
+		// 한번 누르고 또 누를때 작동 안하게
+		// 라디오 버튼 액션 리스너 (자동)
+		rdbAuto.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (rdbAuto.equals(e.getSource())) {
+					rdbSemiAuto.setEnabled(false); // 반자동 버튼 off
+					for (int i = 0; i < 6 ; i++) {
+						int autoNum = (int) (Math.random() * 45);
+						JCheckBox chkBox = listOfChkBox.get(autoNum);
+						chkBox.setSelected(true);
+						
+						
+						
+						
 					}
 				}
 			}
 		});
+		
+		// 라디오 버튼 액션 리스너 (자동)
+		rdbSemiAuto.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (rdbSemiAuto.equals(e.getSource())) {
+					
+					
+				}
+			}
+		});
+
 
 		// 번호 선택패널 => 초기화, 확인 버튼을 가진 pnlButton 삽입
 		pnlLeft.add(pnlButton);
@@ -275,10 +296,10 @@ public class Lotto extends JFrame {
 		pack();
 		setResizable(false);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-
 	}
 
 	public static void main(String[] args) {
 		new Lotto().setVisible(true);
+		
 	}
 }
