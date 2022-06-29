@@ -105,12 +105,13 @@ public class Lotto extends JFrame {
 
 //	*************************************************************************
 //	************************ 번호 선택 (체크박스잇는 패널) ****************************
-
+		
+		//구현해야 할 것 : 수동 자동 반자동 선택 전에 체크 눌렀을경우 경고 메세지 뜨게
 		for (int i = 1; i <= 45; i++) {
 			JCheckBox checkBox = new JCheckBox(String.valueOf(i));
 
 			pnlNum.add(checkBox);
-
+			
 			// 체크박스 액션 리스너
 			checkBox.addActionListener(new ActionListener() {
 				@Override
