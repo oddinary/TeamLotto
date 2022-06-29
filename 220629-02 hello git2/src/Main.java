@@ -5,5 +5,6 @@ public class Main {
 		// 2. 안되는 건 안되는 거임
 		
 		System.out.println("아무거나 쓰는중임ㅋ");
+		System.out.println("나도 해봄");
 	}
 }
