@@ -1,5 +1,4 @@
 
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -26,16 +25,22 @@ import javax.swing.JPasswordField;
 import javax.swing.JRootPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import java.awt.Dimension;
+import javax.swing.SpringLayout;
 
 public class Login extends JFrame {
 	URL url = Login.class.getClassLoader().getResource("images/lottoImage.png");
 	ImageIcon i = new ImageIcon(url);
 	Image im = i.getImage();
-	
+
 	SignUp signUp = new SignUp(Login.this);
+<<<<<<< HEAD
 	
+=======
+
+>>>>>>> branch 'master' of https://github.com/oddinary/TeamLotto.git
 	private Map<String, User> userInfo = signUp.getMap();
-	
+
 	public SignUp getSignUp() {
 		return signUp;
 	}
@@ -49,53 +54,96 @@ public class Login extends JFrame {
 		userInfo.put("admin", new User());
 		userInfo.get("admin").setName("관리자");
 		userInfo.get("admin").setPw("qwqw1234");
-		// JFrame 설정(이미지크기)
 		setTitle("로그인 화면");
-		// 전체 패널
-
-		MyPanel pnl = new MyPanel();
-		add(pnl);
-
-		// 이미지 라벨
-//		JLabel bgLbl = new JLabel(image);
-//		pnl.setBounds(0, 0, 602, 421);
-
-		// 로그인 패널
-		JPanel allPnl = new JPanel();
-		BoxLayout box1 = new BoxLayout(allPnl, BoxLayout.Y_AXIS);
-		allPnl.setLayout(box1);
-//		allPnl.setPreferredSize();
+		
 
 		// 윗줄
 		JPanel menuPnl = new JPanel();
 
-		// id,pw
-		JPanel pnl2 = new JPanel();
-		BoxLayout box2 = new BoxLayout(pnl2, BoxLayout.Y_AXIS);
-		pnl2.setLayout(box2);
+		// 어느 포커스든 엔터누르면 로그인되게 하는 것! (JRootPane)
+		JRootPane rootPane = this.getRootPane();
+		SpringLayout sl_menuPnl = new SpringLayout();
+		menuPnl.setLayout(sl_menuPnl);
+
+		JPanel panel_2 = new JPanel();
+		sl_menuPnl.putConstraint(SpringLayout.NORTH, panel_2, 126, SpringLayout.NORTH, menuPnl);
+		sl_menuPnl.putConstraint(SpringLayout.WEST, panel_2, 152, SpringLayout.WEST, menuPnl);
+		menuPnl.add(panel_2);
+		panel_2.setLayout(new BoxLayout(panel_2, BoxLayout.Y_AXIS));
+
+		JPanel panel = new JPanel();
+		panel_2.add(panel);
+
+		JPanel panel_1 = new JPanel();
+		panel.add(panel_1);
+		panel_1.setLayout(new BoxLayout(panel_1, BoxLayout.Y_AXIS));
 
 		JPanel idPnl = new JPanel();
+		panel_1.add(idPnl);
 		JLabel lbl1 = new JLabel("아이디    ");
 		JTextField tf = new JTextField(10);
 
+		idPnl.add(lbl1);
+		idPnl.add(tf);
+
 		JPanel pwPnl = new JPanel();
+		panel_1.add(pwPnl);
 		JLabel lbl2 = new JLabel("비밀번호");
 		JPasswordField pf = new JPasswordField(10);
+<<<<<<< HEAD
+=======
+
+		pwPnl.add(lbl2);
+		pwPnl.add(pf);
+>>>>>>> branch 'master' of https://github.com/oddinary/TeamLotto.git
 
 		JButton loginBtn = new JButton("로그인");
+<<<<<<< HEAD
 		
 		// 어느 포커스든 엔터누르면 로그인되게 하는 것! (JRootPane)
 		JRootPane  rootPane  =  this.getRootPane();
         rootPane.setDefaultButton(loginBtn);  
+=======
+		loginBtn.setPreferredSize(new Dimension(75, 50));
+		panel.add(loginBtn);
+		rootPane.setDefaultButton(loginBtn);
+
+		JPanel pnl3 = new JPanel();
+		panel_2.add(pnl3);
+		JButton signUpBtn = new JButton("회원가입");
+		JButton findBtn = new JButton("ID/PW 찾기");
+
+		signUpBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				signUp.setVisible(true);
+			}
+		});
+
+		findBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				FindIdPw dialog = new FindIdPw(Login.this, userInfo);
+				String a = dialog.showDialog();
+				System.out.println(a);
+			}
+		});
+
+		pnl3.add(signUpBtn);
+		pnl3.add(findBtn);
+>>>>>>> branch 'master' of https://github.com/oddinary/TeamLotto.git
 
 		loginBtn.addActionListener(new ActionListener() {
-			
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String id = tf.getText();
 				String pw = String.valueOf(pf.getPassword());
+<<<<<<< HEAD
 				
+=======
+
+>>>>>>> branch 'master' of https://github.com/oddinary/TeamLotto.git
 				if (!userInfo.containsKey(id)) {
 					JOptionPane.showMessageDialog(Login.this, "등록되지 않은 아이디입니다.");
 					tf.setText("");
@@ -113,7 +161,10 @@ public class Login extends JFrame {
 				}
 			}
 		});
+
+		getContentPane().add(menuPnl);
 		
+<<<<<<< HEAD
 		idPnl.add(lbl1);
 		idPnl.add(tf);
 
@@ -154,6 +205,14 @@ public class Login extends JFrame {
 
 		pnl.add(allPnl);
 
+=======
+		JLabel lblImgLabel = new JLabel("");
+		sl_menuPnl.putConstraint(SpringLayout.NORTH, lblImgLabel, -382, SpringLayout.SOUTH, menuPnl);
+		sl_menuPnl.putConstraint(SpringLayout.SOUTH, lblImgLabel, 39, SpringLayout.SOUTH, menuPnl);
+		lblImgLabel.setIcon(i);
+		sl_menuPnl.putConstraint(SpringLayout.WEST, lblImgLabel, 0, SpringLayout.WEST, menuPnl);
+		menuPnl.add(lblImgLabel);
+>>>>>>> branch 'master' of https://github.com/oddinary/TeamLotto.git
 //		pnl.add(bgLbl);
 
 		setSize(602, 421);
