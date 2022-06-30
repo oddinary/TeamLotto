@@ -34,11 +34,7 @@ public class Login extends JFrame {
 	Image im = i.getImage();
 
 	SignUp signUp = new SignUp(Login.this);
-<<<<<<< HEAD
-	
-=======
 
->>>>>>> branch 'master' of https://github.com/oddinary/TeamLotto.git
 	private Map<String, User> userInfo = signUp.getMap();
 
 	public SignUp getSignUp() {
@@ -90,20 +86,11 @@ public class Login extends JFrame {
 		panel_1.add(pwPnl);
 		JLabel lbl2 = new JLabel("비밀번호");
 		JPasswordField pf = new JPasswordField(10);
-<<<<<<< HEAD
-=======
 
 		pwPnl.add(lbl2);
 		pwPnl.add(pf);
->>>>>>> branch 'master' of https://github.com/oddinary/TeamLotto.git
 
 		JButton loginBtn = new JButton("로그인");
-<<<<<<< HEAD
-		
-		// 어느 포커스든 엔터누르면 로그인되게 하는 것! (JRootPane)
-		JRootPane  rootPane  =  this.getRootPane();
-        rootPane.setDefaultButton(loginBtn);  
-=======
 		loginBtn.setPreferredSize(new Dimension(75, 50));
 		panel.add(loginBtn);
 		rootPane.setDefaultButton(loginBtn);
@@ -131,7 +118,6 @@ public class Login extends JFrame {
 
 		pnl3.add(signUpBtn);
 		pnl3.add(findBtn);
->>>>>>> branch 'master' of https://github.com/oddinary/TeamLotto.git
 
 		loginBtn.addActionListener(new ActionListener() {
 
@@ -139,11 +125,7 @@ public class Login extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				String id = tf.getText();
 				String pw = String.valueOf(pf.getPassword());
-<<<<<<< HEAD
-				
-=======
 
->>>>>>> branch 'master' of https://github.com/oddinary/TeamLotto.git
 				if (!userInfo.containsKey(id)) {
 					JOptionPane.showMessageDialog(Login.this, "등록되지 않은 아이디입니다.");
 					tf.setText("");
@@ -164,55 +146,12 @@ public class Login extends JFrame {
 
 		getContentPane().add(menuPnl);
 		
-<<<<<<< HEAD
-		idPnl.add(lbl1);
-		idPnl.add(tf);
-
-		pwPnl.add(lbl2);
-		pwPnl.add(pf);
-
-		pnl2.add(idPnl);
-		pnl2.add(pwPnl);
-
-		menuPnl.add(pnl2);
-		menuPnl.add(loginBtn);
-
-		JPanel pnl3 = new JPanel();
-		JButton signUpBtn = new JButton("회원가입");
-		JButton findBtn = new JButton("ID/PW 찾기");
-		
-		signUpBtn.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				signUp.setVisible(true);
-			}
-		});
-		
-		findBtn.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				FindIdPw dialog = new FindIdPw(Login.this, userInfo);
-				String a = dialog.showDialog();
-				System.out.println(a);
-			}
-		});
-		
-		pnl3.add(signUpBtn);
-		pnl3.add(findBtn);
-
-		allPnl.add(menuPnl);
-		allPnl.add(pnl3);
-
-		pnl.add(allPnl);
-
-=======
 		JLabel lblImgLabel = new JLabel("");
 		sl_menuPnl.putConstraint(SpringLayout.NORTH, lblImgLabel, -382, SpringLayout.SOUTH, menuPnl);
 		sl_menuPnl.putConstraint(SpringLayout.SOUTH, lblImgLabel, 39, SpringLayout.SOUTH, menuPnl);
 		lblImgLabel.setIcon(i);
 		sl_menuPnl.putConstraint(SpringLayout.WEST, lblImgLabel, 0, SpringLayout.WEST, menuPnl);
 		menuPnl.add(lblImgLabel);
->>>>>>> branch 'master' of https://github.com/oddinary/TeamLotto.git
 //		pnl.add(bgLbl);
 
 		setSize(602, 421);
