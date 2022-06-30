@@ -3,18 +3,22 @@ package lotto;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JRootPane;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 
 public class SignUp extends JDialog {
 	private Map<String, User> map = new HashMap<String, User>();
@@ -36,7 +40,7 @@ public class SignUp extends JDialog {
 		menu.setLayout(box);
 
 		JPanel idPnl = new JPanel();
-		JLabel idLbl = new JLabel("ID 입력");
+		JLabel idLbl = new JLabel("ID 입력 (4 ~ 8자)");
 		JTextField tf = new JTextField(15);
 
 		idPnl.add(idLbl);
@@ -45,12 +49,12 @@ public class SignUp extends JDialog {
 		JPanel namePnl = new JPanel();
 		JLabel nameLbl = new JLabel("이름 입력");
 		JTextField tf2 = new JTextField(15);
-		
+
 		namePnl.add(nameLbl);
 		namePnl.add(tf2);
-		
+
 		JPanel pwPnl = new JPanel();
-		JLabel pwLbl = new JLabel("PW 입력");
+		JLabel pwLbl = new JLabel("PW 입력 (4 ~ 8자)");
 		JPasswordField pf = new JPasswordField(15);
 
 		pwPnl.add(pwLbl);
@@ -67,8 +71,8 @@ public class SignUp extends JDialog {
 		JButton cancelBtn = new JButton("취소");
 		JButton signUpBtn = new JButton("가입");
 
-		btnPnl.add(cancelBtn);
 		btnPnl.add(signUpBtn);
+		btnPnl.add(cancelBtn);
 
 		menu.add(idPnl);
 		menu.add(namePnl);
@@ -76,14 +80,20 @@ public class SignUp extends JDialog {
 		menu.add(pwCheckPnl);
 		menu.add(btnPnl);
 
-		cancelBtn.addActionListener(new ActionListener() {
+		ActionListener escListener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 			}
-		});
+		};
 
-		signUpBtn.addActionListener(new ActionListener() {
+		cancelBtn.addActionListener(escListener);
+
+		// esc키 누르면 가입버튼 (단 다른 버튼이 escListener를 사용하면 곤란쓰)
+		this.getRootPane().registerKeyboardAction(escListener, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
+				JComponent.WHEN_IN_FOCUSED_WINDOW);
+
+		ActionListener enterListener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String id = tf.getText();
@@ -91,12 +101,19 @@ public class SignUp extends JDialog {
 				String checkPw = String.valueOf(checkPf.getPassword());
 				if (id.length() < 4 || id.length() > 8) {
 					JOptionPane.showMessageDialog(SignUp.this, "ID는 4 ~ 8자로 입력해주세요.");
+					tf.setText("");
 				} else {
 					if (pw.length() < 4 || pw.length() > 8) {
 						JOptionPane.showMessageDialog(SignUp.this, "PW는 4 ~ 8자로 입력해주세요.");
+						pf.setText("");
+						checkPf.setText("");
 					} else {
 						if (map.containsKey(id)) {
 							JOptionPane.showMessageDialog(SignUp.this, "이미 등록된 아이디입니다.");
+							tf.setText("");
+							tf2.setText("");
+							pf.setText("");
+							checkPf.setText("");
 						} else {
 							if (pw.equals(checkPw)) {
 								User user = new User();
@@ -111,12 +128,20 @@ public class SignUp extends JDialog {
 								dispose();
 							} else {
 								JOptionPane.showMessageDialog(SignUp.this, "비밀번호가 일치하지않습니다.");
+								pf.setText("");
+								checkPf.setText("");
 							}
 						}
 					}
 				}
 			}
-		});
+		};
+		
+		signUpBtn.addActionListener(enterListener);
+		
+		// enter키 누르면 가입버튼
+		this.getRootPane().registerKeyboardAction(enterListener, KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0),
+				JComponent.WHEN_IN_FOCUSED_WINDOW);
 
 		pnl.add(menu);
 

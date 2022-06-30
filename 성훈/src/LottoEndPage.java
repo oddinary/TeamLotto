@@ -28,7 +28,7 @@ public class LottoEndPage extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 				
-				new Login().setVisible(true);
+//				new Login().setVisible(true);
 			}
 		});
 		

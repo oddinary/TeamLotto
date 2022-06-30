@@ -2,24 +2,39 @@ package lotto;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.CardLayout;
+import java.awt.Toolkit;
 import java.util.Map;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRootPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 
 public class FindId extends JPanel {
 
 	JTextField nameTf;
+	private JButton findBtn;
 
-	public FindId(Map<String, User> userInfo, JPanel center, CardLayout layout) {
+	public JButton getFindBtn() {
+		return findBtn;
+	}
+
+
+	public FindId(Map<String, User> userInfo, JPanel center, CardLayout layout, JPanel parentsPnl) {
 		JPanel pnl = new JPanel();
 		BoxLayout box = new BoxLayout(pnl, BoxLayout.Y_AXIS);
 		pnl.setLayout(box);
@@ -29,13 +44,14 @@ public class FindId extends JPanel {
 
 		JPanel btnPnl = new JPanel();
 		JButton cancelBtn = new JButton("취소");
-		JButton findBtn = new JButton("ID 찾기");
-
+		findBtn = new JButton("ID 찾기");
+		
 		cancelBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				layout.show(center, "A");
 				nameTf.setText("");
+				parentsPnl.requestFocus();
 			}
 		});
 
@@ -60,9 +76,25 @@ public class FindId extends JPanel {
 				}
 			}
 		});
-
-		btnPnl.add(cancelBtn);
+		
+		
+		nameTf.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				int code = e.getKeyCode();
+				if (code == KeyEvent.VK_ENTER) {
+					Toolkit.getDefaultToolkit().beep(); 
+					findBtn.doClick();
+				} else if (code == KeyEvent.VK_ESCAPE) {
+					Toolkit.getDefaultToolkit().beep(); 
+					cancelBtn.doClick();
+				}
+			}
+		});
+		
+		
 		btnPnl.add(findBtn);
+		btnPnl.add(cancelBtn);
 
 		pnl.add(inputName);
 		pnl.add(nameTf);
