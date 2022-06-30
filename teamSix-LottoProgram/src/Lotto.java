@@ -53,6 +53,7 @@ public class Lotto extends JFrame {
 	int gameCount = 0;
 
 	public Lotto() {
+		
 		gameCount++;
 		List<String> lottoOne = new ArrayList<>(Arrays.asList("1021회차 : 12, 15, 17, 24, 29, 45, + 16"));
 		List<String> lottoTwo = new ArrayList<>(Arrays.asList("1020회차 : 12, 27, 29, 38, 41, 45, + 6"));

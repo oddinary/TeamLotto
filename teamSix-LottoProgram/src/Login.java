@@ -52,7 +52,6 @@ public class Login extends JFrame {
 		userInfo.get("admin").setPw("qwqw1234");
 		setTitle("로그인 화면");
 		
-
 		// 윗줄
 		JPanel menuPnl = new JPanel();
 
