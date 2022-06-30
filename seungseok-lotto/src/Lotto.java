@@ -291,45 +291,51 @@ public class Lotto extends JFrame {
 // *************************************************************************
 // **************************** 추가 기능 **************************************
 		// 추가 기능 패널 - pnlLeft의 왼쪽에 추가기능 버튼 패널 추가함
-		JPanel pnlRecommend = new JPanel();
-		pnlLeftBtn.add(pnlRecommend);
-		// 추가 기능 버튼 ( 나의 정보 )
-		JButton btnMyInfo = new JButton("나의 정보");
-		// 추가 기능 버튼 ( 번호 추천 )
-		JButton btnRecommend = new JButton("번호 추천");
-		// 버튼 크기설정
-		btnRecommend.setPreferredSize(new Dimension(100, 100));
-		// 추천번호 액션 리스너
-		btnRecommend.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		// 추가 기능 버튼 ( 직전 5주 )
-		JButton btnRecent = new JButton("직전 5주");
-		// 버튼 크기설정
-		btnRecent.setPreferredSize(new Dimension(100, 100));
-		// 직전 5주 액션 리스너
-		btnRecent.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		
-		// 보유금액 확인 구간
-		JPanel pnlHasMoney = new JPanel();
-		JLabel lblHasMoney = new JLabel("보유금액");
-		JLabel lblWon2 = new JLabel("원");
-		
-		// 버튼 정렬할 레이아웃.
-		pnlRecommend.setLayout(new GridLayout(4, 0, 0, 15));
-		// 컴포넌트 추가
-		pnlRecommend.add(btnMyInfo);
-		pnlRecommend.add(btnRecommend);
-		pnlRecommend.add(btnRecent);
-		pnlRecommend.add(pnlHasMoney);
-		pnlHasMoney.setLayout(new BorderLayout(0, 0));
-		pnlHasMoney.add(lblHasMoney, BorderLayout.WEST);
-		pnlHasMoney.add(lblWon2, BorderLayout.EAST);
+				JPanel pnlRecommend = new JPanel();
+				pnlLeftBtn.add(pnlRecommend);
 
+				// 추가 기능 버튼 ( 나의 정보 )
+				JButton btnMyInfo = new JButton("나의 정보");
+				// 버튼 크기설정
+				btnMyInfo.setPreferredSize(new Dimension(160,60));
+				// 추천번호 액션 리스너
+				btnMyInfo.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+					}
+				});
+				// 추가 기능 버튼 ( 번호 추천 )
+				JButton btnRecommend = new JButton("번호 추천");
+				// 버튼 크기설정
+				btnRecommend.setPreferredSize(new Dimension(160,60));
+				// 추천번호 액션 리스너
+				btnRecommend.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+					}
+				});
+				// 추가 기능 버튼 ( 직전 5주 )
+				JButton btnRecent = new JButton("직전 5주");
+				// 버튼 크기설정
+				btnRecent.setPreferredSize(new Dimension(160,60));
+				// 직전 5주 액션 리스너
+				btnRecent.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+					}
+				});
+				// 보유금액 확인 구간
+				JPanel pnlHasMoney = new JPanel();
+				JLabel lblHasMoney = new JLabel("보유금액");
+				JLabel lblWon2 = new JLabel("원");
+				
+				// 버튼 정렬할 레이아웃.
+				pnlRecommend.setLayout(new GridLayout(4, 0, 0, 15));
+				// 컴포넌트 추가
+				pnlRecommend.add(btnMyInfo);
+				pnlRecommend.add(btnRecommend);
+				pnlRecommend.add(btnRecent);
+				pnlRecommend.add(pnlHasMoney);
+				pnlHasMoney.setLayout(new BorderLayout(0, 0));
+				pnlHasMoney.add(lblHasMoney, BorderLayout.WEST);
+				pnlHasMoney.add(lblWon2, BorderLayout.EAST);
 // *********************************************************************
 // ************************* 메인패널 추가 **********************************
 		// 메인 패널에 주요 패널 3가지 집어넣기 / 3분할 되어있음
