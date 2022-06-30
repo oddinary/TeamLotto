@@ -35,8 +35,11 @@ public class Lotto extends JFrame {
 
 	// 체크박스 체크 개수 카운트.
 	int checkCount = 0;
+	// 회차 카운트
+	int gameCount = 0;
 
 	public Lotto() {
+		gameCount++;
 		TitledBorder tbBtn = new TitledBorder(new LineBorder(Color.black), "추가 기능");
 		tbBtn.setTitleColor(new Color(245, 136, 110));
 		TitledBorder tbSelect = new TitledBorder(new LineBorder(Color.black), "번호 선택");
@@ -206,9 +209,12 @@ public class Lotto extends JFrame {
 		pnlRight.add(pnlLast);
 		// 결과버튼 액션리스너
 		btnResult.addActionListener(new ActionListener() {
+			private LottoEndPage dialog;
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new LottoEndPage().setVisible(true);
+				dialog = new LottoEndPage(Lotto.this, gameCount);
+				dialog.setVisible(true);
 			}
 		});
 
@@ -234,7 +240,7 @@ public class Lotto extends JFrame {
 		// 추가 기능 패널 - pnlLeft의 왼쪽에 추가기능 버튼 패널 추가함
 		JPanel pnlRecommend = new JPanel();
 		pnlLeftBtn.add(pnlRecommend);
-
+		JLabel lblRound = new JLabel(gameCount + " 회차");
 		// 추가 기능 버튼 ( 나의 정보 )
 		JButton btnMyInfo = new JButton("나의 정보");
 		// 버튼 크기설정
@@ -268,8 +274,9 @@ public class Lotto extends JFrame {
 		JLabel lblWon2 = new JLabel("원");
 		
 		// 버튼 정렬할 레이아웃.
-		pnlRecommend.setLayout(new GridLayout(4, 0, 0, 15));
+		pnlRecommend.setLayout(new GridLayout(5, 0, 0, 10));
 		// 컴포넌트 추가
+		pnlRecommend.add(lblRound);
 		pnlRecommend.add(btnMyInfo);
 		pnlRecommend.add(btnRecommend);
 		pnlRecommend.add(btnRecent);

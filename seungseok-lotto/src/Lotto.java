@@ -267,7 +267,7 @@ public class Lotto extends JFrame {
 		btnResult.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-//				new Result().setVisible(true);
+				
 			}
 		});
 		// 선택번호 확인패널의 선택결과 확인 레이블.
@@ -366,7 +366,12 @@ public class Lotto extends JFrame {
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		setLocationRelativeTo(null);
 	}
+	
+	public String showDialog() {
+		setVisible(true);
 
+		return tf.getText();
+	}
 	public static void main(String[] args) {
 		new Lotto().setVisible(true);
 
