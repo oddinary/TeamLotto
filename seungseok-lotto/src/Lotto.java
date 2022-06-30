@@ -388,11 +388,11 @@ public class Lotto extends JFrame {
 		setLocationRelativeTo(null);
 	}
 	
-	public String showDialog() {
-		setVisible(true);
-
-		return tf.getText();
-	}
+//	public String showDialog() {
+//		setVisible(true);
+//
+//		return tf.getText();
+//	}
 	public static void main(String[] args) {
 		new Lotto().setVisible(true);
 
