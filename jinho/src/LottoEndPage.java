@@ -8,6 +8,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
@@ -16,23 +17,18 @@ import java.awt.FlowLayout;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.event.ActionEvent;
 
 public class LottoEndPage extends JDialog {
-	
-	public LottoEndPage(JFrame owner,int gameCount) {
+
+	public LottoEndPage(JFrame owner, int gameCount) {
 		super(owner, true);
-		
+
 		JPanel pnlLotto = new JPanel();
 		JPanel pnlTop = new JPanel(); // 당첨번호
-		JButton btnExit = new JButton("종료");
-		btnExit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				dispose();
-
-//				new Login().setVisible(true);
-			}
-		});
+		
 
 		TitledBorder tbNumber = new TitledBorder(new LineBorder(Color.black), "당첨번호");
 		tbNumber.setTitleColor(new Color(245, 136, 110));
@@ -83,6 +79,8 @@ public class LottoEndPage extends JDialog {
 		pnlLotto.add(pnlCenter);
 
 		JPanel pnlSouth = new JPanel();
+		sl_pnlLotto.putConstraint(SpringLayout.NORTH, pnlSouth, 395, SpringLayout.NORTH, pnlLotto);
+		sl_pnlLotto.putConstraint(SpringLayout.SOUTH, pnlSouth, -39, SpringLayout.SOUTH, pnlLotto);
 		sl_pnlLotto.putConstraint(SpringLayout.SOUTH, pnlCenter, -6, SpringLayout.NORTH, pnlSouth);
 		sl_pnlLotto.putConstraint(SpringLayout.EAST, pnlSouth, 0, SpringLayout.EAST, pnlTop);
 		sl_pnlLotto.putConstraint(SpringLayout.WEST, pnlSouth, 10, SpringLayout.WEST, pnlLotto);
@@ -97,35 +95,47 @@ public class LottoEndPage extends JDialog {
 		pnlSouth.add(lblNewLabel, BorderLayout.WEST);
 
 		JButton btnReplay = new JButton("다시하기");
+		sl_pnlLotto.putConstraint(SpringLayout.NORTH, btnReplay, 6, SpringLayout.SOUTH, pnlSouth);
+		sl_pnlLotto.putConstraint(SpringLayout.WEST, btnReplay, 148, SpringLayout.WEST, pnlLotto);
 		btnReplay.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 			}
 		});
-		sl_pnlLotto.putConstraint(SpringLayout.NORTH, pnlSouth, -43, SpringLayout.NORTH, btnReplay);
-		sl_pnlLotto.putConstraint(SpringLayout.SOUTH, pnlSouth, -6, SpringLayout.NORTH, btnReplay);
-		sl_pnlLotto.putConstraint(SpringLayout.NORTH, btnExit, 0, SpringLayout.NORTH, btnReplay);
-		sl_pnlLotto.putConstraint(SpringLayout.WEST, btnExit, 6, SpringLayout.EAST, btnReplay);
-		sl_pnlLotto.putConstraint(SpringLayout.WEST, btnReplay, 97, SpringLayout.WEST, pnlLotto);
-		sl_pnlLotto.putConstraint(SpringLayout.SOUTH, btnReplay, -10, SpringLayout.SOUTH, pnlLotto);
 
 		pnlLotto.add(btnReplay);
-		pnlLotto.add(btnExit);
 
-//		pnlLotto.setBackground(Color.white);
+		// x버튼 누를때, 로그아웃, 종료, 취소 물어보기.
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				String[] yesNo = { "로그아웃", "종료", "취소" };
+				int result = JOptionPane.showOptionDialog(LottoEndPage.this, "종료하시겠습니까?", "종료 및 로그아웃",
+						JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, yesNo, yesNo[0]);
+				if (result == JOptionPane.YES_OPTION) {
+					System.out.println("로그인 화면으로 돌아감");
+					dispose();
+					owner.dispose();
+					LottoEndPage.this.dispose();
+					new Login().setVisible(true);
+					LottoEndPage.this.dispose();
+				} else if (result == JOptionPane.NO_OPTION) {
+					System.exit(0);
+				}
+			}
 
-//		.setOpaque(true); //Opaque값을 true로 미리 설정해 주어야 배경색이 적용된다.
-//		.setBackgroud(Color.pink);
+		});
+
+		setLocationRelativeTo(null);
 		// 위쪽 센터 배경색 끄기
 		setContentPane(pnlLotto);
 
 //		pack();
 		setSize(400, 500);
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 //		addListeners();
 
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		// 창의 크기를 조절할수 없게끔
 		setResizable(false);
 	}
 }
-
