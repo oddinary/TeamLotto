@@ -34,7 +34,6 @@ public class Login extends JFrame {
 	
 	SignUp signUp = new SignUp(Login.this);
 	
-	
 	private Map<String, User> userInfo = signUp.getMap();
 	
 	public SignUp getSignUp() {
@@ -82,11 +81,8 @@ public class Login extends JFrame {
 		JPanel pwPnl = new JPanel();
 		JLabel lbl2 = new JLabel("비밀번호");
 		JPasswordField pf = new JPasswordField(10);
-		
-		
 
 		JButton loginBtn = new JButton("로그인");
-		
 		
 		// 어느 포커스든 엔터누르면 로그인되게 하는 것! (JRootPane)
 		JRootPane  rootPane  =  this.getRootPane();
@@ -99,7 +95,6 @@ public class Login extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				String id = tf.getText();
 				String pw = String.valueOf(pf.getPassword());
-				
 				
 				if (!userInfo.containsKey(id)) {
 					JOptionPane.showMessageDialog(Login.this, "등록되지 않은 아이디입니다.");
@@ -153,15 +148,11 @@ public class Login extends JFrame {
 		
 		pnl3.add(signUpBtn);
 		pnl3.add(findBtn);
-		
-
 
 		allPnl.add(menuPnl);
 		allPnl.add(pnl3);
 
 		pnl.add(allPnl);
-		
-		
 
 //		pnl.add(bgLbl);
 
