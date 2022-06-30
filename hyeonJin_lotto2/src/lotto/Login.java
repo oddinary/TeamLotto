@@ -8,6 +8,9 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.net.URL;
 import java.util.Map;
 
@@ -20,6 +23,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JRootPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
@@ -78,8 +82,15 @@ public class Login extends JFrame {
 		JPanel pwPnl = new JPanel();
 		JLabel lbl2 = new JLabel("비밀번호");
 		JPasswordField pf = new JPasswordField(10);
+		
+		
 
 		JButton loginBtn = new JButton("로그인");
+		
+		
+		// 어느 포커스든 엔터누르면 로그인되게 하는 것! (JRootPane)
+		JRootPane  rootPane  =  this.getRootPane();
+        rootPane.setDefaultButton(loginBtn);  
 
 		loginBtn.addActionListener(new ActionListener() {
 			
@@ -92,11 +103,17 @@ public class Login extends JFrame {
 				
 				if (!userInfo.containsKey(id)) {
 					JOptionPane.showMessageDialog(Login.this, "등록되지 않은 아이디입니다.");
+					tf.setText("");
+					pf.setText("");
 				} else {
 					if (!userInfo.get(id).getPw().equals(pw)) {
 						JOptionPane.showMessageDialog(Login.this, "비밀번호가 틀렸습니다.");
+						tf.setText("");
+						pf.setText("");
 					} else {
 						JOptionPane.showMessageDialog(Login.this, "로그인 되었습니다.");
+						dispose();
+						new Lotto().setVisible(true);
 					}
 				}
 			}
@@ -143,6 +160,8 @@ public class Login extends JFrame {
 		allPnl.add(pnl3);
 
 		pnl.add(allPnl);
+		
+		
 
 //		pnl.add(bgLbl);
 
