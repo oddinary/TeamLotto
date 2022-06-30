@@ -251,10 +251,18 @@ public class Lotto extends JFrame {
 
 // ***********************************************************************
 // ************************** 선택번호 확인 ***********************************
+		// 구매금액.
+		JPanel pnlLast = new JPanel();
+		pnlLast.setLayout(new BorderLayout(0, 0));
+		JLabel lblPayMoney = new JLabel("구매금액");
+		pnlLast.add(lblPayMoney, BorderLayout.WEST);
+		JLabel lblWon = new JLabel("원");
+		
 		// 선택번호 확인패널; 결과 패널, 결과버튼 ( 버튼 기능 필요 )
+		pnlLast.add(lblWon, BorderLayout.EAST);
+		pnlLast.add(btnResult, BorderLayout.SOUTH);
 		pnlRight.add(pnlResult);
-		pnlRight.add(btnResult);
-
+		pnlRight.add(pnlLast);
 		// 결과버튼 액션리스너
 		btnResult.addActionListener(new ActionListener() {
 			@Override
@@ -285,7 +293,8 @@ public class Lotto extends JFrame {
 		// 추가 기능 패널 - pnlLeft의 왼쪽에 추가기능 버튼 패널 추가함
 		JPanel pnlRecommend = new JPanel();
 		pnlLeftBtn.add(pnlRecommend);
-
+		// 추가 기능 버튼 ( 나의 정보 )
+		JButton btnMyInfo = new JButton("나의 정보");
 		// 추가 기능 버튼 ( 번호 추천 )
 		JButton btnRecommend = new JButton("번호 추천");
 		// 버튼 크기설정
@@ -304,10 +313,22 @@ public class Lotto extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
+		
+		// 보유금액 확인 구간
+		JPanel pnlHasMoney = new JPanel();
+		JLabel lblHasMoney = new JLabel("보유금액");
+		JLabel lblWon2 = new JLabel("원");
+		
 		// 버튼 정렬할 레이아웃.
-		pnlRecommend.setLayout(new GridLayout(2, 0, 0, 55));
+		pnlRecommend.setLayout(new GridLayout(4, 0, 0, 15));
+		// 컴포넌트 추가
+		pnlRecommend.add(btnMyInfo);
 		pnlRecommend.add(btnRecommend);
 		pnlRecommend.add(btnRecent);
+		pnlRecommend.add(pnlHasMoney);
+		pnlHasMoney.setLayout(new BorderLayout(0, 0));
+		pnlHasMoney.add(lblHasMoney, BorderLayout.WEST);
+		pnlHasMoney.add(lblWon2, BorderLayout.EAST);
 
 // *********************************************************************
 // ************************* 메인패널 추가 **********************************
