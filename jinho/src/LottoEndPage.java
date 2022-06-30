@@ -25,10 +25,11 @@ public class LottoEndPage extends JFrame {
 	public LottoEndPage() {
 		JPanel pnlLotto = new JPanel();
 		JPanel pnlTop = new JPanel(); // 당첨번호
-		JButton btnExit = new JButton("로그아웃");
+		JButton btnExit = new JButton("종료");
 		btnExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
+				
 				new Login().setVisible(true);
 			}
 		});
@@ -136,19 +137,20 @@ public class LottoEndPage extends JFrame {
 		JLabel lblNewLabel = new JLabel("New label");
 		pnlSouth.add(lblNewLabel, BorderLayout.WEST);
 		
-		JButton btnLogout = new JButton("다시하기");
-		btnLogout.addActionListener(new ActionListener() {
+		JButton btnReplay = new JButton("다시하기");
+		btnReplay.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				dispose();
 			}
 		});
-		sl_pnlLotto.putConstraint(SpringLayout.NORTH, pnlSouth, -43, SpringLayout.NORTH, btnLogout);
-		sl_pnlLotto.putConstraint(SpringLayout.SOUTH, pnlSouth, -6, SpringLayout.NORTH, btnLogout);
-		sl_pnlLotto.putConstraint(SpringLayout.NORTH, btnExit, 0, SpringLayout.NORTH, btnLogout);
-		sl_pnlLotto.putConstraint(SpringLayout.WEST, btnExit, 6, SpringLayout.EAST, btnLogout);
-		sl_pnlLotto.putConstraint(SpringLayout.WEST, btnLogout, 97, SpringLayout.WEST, pnlLotto);
-		sl_pnlLotto.putConstraint(SpringLayout.SOUTH, btnLogout, -10, SpringLayout.SOUTH, pnlLotto);
+		sl_pnlLotto.putConstraint(SpringLayout.NORTH, pnlSouth, -43, SpringLayout.NORTH, btnReplay);
+		sl_pnlLotto.putConstraint(SpringLayout.SOUTH, pnlSouth, -6, SpringLayout.NORTH, btnReplay);
+		sl_pnlLotto.putConstraint(SpringLayout.NORTH, btnExit, 0, SpringLayout.NORTH, btnReplay);
+		sl_pnlLotto.putConstraint(SpringLayout.WEST, btnExit, 6, SpringLayout.EAST, btnReplay);
+		sl_pnlLotto.putConstraint(SpringLayout.WEST, btnReplay, 97, SpringLayout.WEST, pnlLotto);
+		sl_pnlLotto.putConstraint(SpringLayout.SOUTH, btnReplay, -10, SpringLayout.SOUTH, pnlLotto);
 		
-		pnlLotto.add(btnLogout);
+		pnlLotto.add(btnReplay);
 		pnlLotto.add(btnExit);
 		
 		
