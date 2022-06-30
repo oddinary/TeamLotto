@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<classpath>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="src" path="성훈/src"/>
-	<classpathentry kind="src" path="hyeonJin_lotto2/src"/>
-	<classpathentry kind="src" path="jinho/src"/>
-	<classpathentry kind="src" path="seungseok-lotto/src"/>
-	<classpathentry kind="output" path="hyeonJin_lotto2/bin"/>
-</classpath>
