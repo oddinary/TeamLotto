@@ -41,7 +41,7 @@ public class Lotto extends JFrame {
 //	JCheckBox checkBox = new JCheckBox();
 
 	// 체크박스 체크 개수 카운트.
-	int checkCount = 0;
+//	int checkCount = 0;
 
 	public Lotto() {
 		TitledBorder tbBtn = new TitledBorder(new LineBorder(Color.black), "추가 기능");
@@ -61,13 +61,20 @@ public class Lotto extends JFrame {
 		JPanel pnlNum = new JPanel(new GridLayout(0, 5));
 		JPanel pnlAuto = new JPanel();
 		JPanel pnlButton = new JPanel();
-		// 선택번호 확인 패널
 		JPanel pnlResult = new JPanel();
-		JPanel pnlResultA = new JPanel();
-		JPanel pnlResultB = new JPanel();
-		JPanel pnlResultC = new JPanel();
-		JPanel pnlResultD = new JPanel();
-		JPanel pnlResultE = new JPanel();
+
+		JPanel[] pnlResultBox = new JPanel[5];
+		for (int i = 0; i < pnlResultBox.length; i++) {
+			pnlResultBox[i] = new JPanel();
+		}
+
+		// 선택번호 확인 패널
+//		JPanel pnlResultA = new JPanel();
+//		JPanel pnlResultB = new JPanel();
+//		JPanel pnlResultC = new JPanel();
+//		JPanel pnlResultD = new JPanel();
+//		JPanel pnlResultE = new JPanel();
+
 		// 뤠디오 버튼 .. 수동, 자동, 반자동 기능 구현필요
 		JRadioButton rdbManual = new JRadioButton("수동");
 		JRadioButton rdbAuto = new JRadioButton("자동");
@@ -88,12 +95,18 @@ public class Lotto extends JFrame {
 		JButton btnConfirm = new JButton("확인 ");
 		JButton btnResult = new JButton("결과");
 
+		JLabel[] lblResult = new JLabel[5];
+		for (int i = 0; i < lblResult.length; i++) {
+			lblResult[i] = new JLabel("sdk" + "미지정");
+		}
+
+		// 반복문으로 수정
 		// 선택 번호 확인 패널 레이블
-		JLabel lblResultA = new JLabel("A 미지정");
-		JLabel lblResultB = new JLabel("B 미지정");
-		JLabel lblResultC = new JLabel("C 미지정");
-		JLabel lblResultD = new JLabel("D 미지정");
-		JLabel lblResultE = new JLabel("E 미지정");
+//		JLabel lblResultA = new JLabel("A 미지정");
+//		JLabel lblResultB = new JLabel("B 미지정");
+//		JLabel lblResultC = new JLabel("C 미지정");
+//		JLabel lblResultD = new JLabel("D 미지정");
+//		JLabel lblResultE = new JLabel("E 미지정");
 
 		// 레이아웃; 박스레이아웃 ( 체크선택(왼쪽패널 안에 들어감)패널, 결과(오른쪽패널 안에 들어감)패널 )
 		BoxLayout boxLeft = new BoxLayout(pnlLeft, BoxLayout.Y_AXIS);
@@ -127,8 +140,10 @@ public class Lotto extends JFrame {
 					rdbSemiAuto.setEnabled((checkedList.size() >= 1 && checkedList.size() <= 5));
 				}
 			});
-
+			
+			// 해야할것.
 			// 체크박스 아이템 리스너; 선택된 것에 따라 checkedList에 배열로 집어넣기. 오름차순 정렬완료
+
 			// 정렬된 것들은 ChBoxAll 필드에 저장됨.
 			checkBox.addItemListener(new ItemListener() {
 				@Override
@@ -138,55 +153,63 @@ public class Lotto extends JFrame {
 					if (state == ItemEvent.SELECTED) {
 						if (checkedList.size() <= 6) {
 							checkedList.add(selectNum);
-							checkCount = checkedList.size();
+//							checkCount = checkedList.size();
 
 							// 체크된것 배열에 들어가는지 콘솔로 확인
 							System.out.println(checkBox.getText());
 							System.out.println(checkedList);
 						}
-					} else if (state == ItemEvent.DESELECTED) {
+//					} else if (state == ItemEvent.DESELECTED) { 필요없을듯?
+					} else {
 						for (int i = 0; i < checkedList.size(); i++) {
 							if (selectNum == checkedList.get(i)) {
 								checkedList.remove(i);
-								checkCount = checkedList.size();
+//								checkCount = checkedList.size();
 							}
 						}
 					}
 					Collections.sort(checkedList);
 				}
 			});
-
+			
 			listOfChkBox.add(checkBox);
 			ChBoxAll.add(listOfChkBox);
 			checkBox.setEnabled(false);
-//			System.out.println(listOfChkBox);
 		}
 
 		// 번호선택 패널에 추가
 		pnlLeft.add(pnlNum);
 		pnlLeft.add(pnlAuto);
+		
 		// 라디오 버튼 => 번호선택패널 => 라디오버튼 전용패널(pnlAuto).
 		pnlAuto.add(rdbManual);
 		pnlAuto.add(rdbAuto);
 		pnlAuto.add(rdbSemiAuto);
+		
+		// 반자동 버튼 시작시 비활성화
+		rdbSemiAuto.setEnabled(false);
+		
 //		// 로또 번호 (6개 번호) 담을 리스트 작성
 //		List<Integer> checkedList = new ArrayList<>();
 //		List<JCheckBox> listOfChkBox = new ArrayList<>();
 //		JCheckBox checkBox = new JCheckBox();
 		// 선택번호 체크박스 반복문으로 45개 생성.
 
-		
-		// 수동 자동 
 		// 라디오 버튼 액션 리스너 (수동)
-		rdbManual.addActionListener(new ActionListener() {
+		rdbManual.addItemListener(new ItemListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (rdbManual.equals(e.getSource())) {
+			public void itemStateChanged(ItemEvent e) {
+				
+				if (e.getStateChange() == ItemEvent.SELECTED) {
 					for (JCheckBox checkBox : listOfChkBox) {
 						checkBox.setEnabled(true);
 					}
-				} else if (!rdbManual.equals(e.getSource())) {
 					rdbSemiAuto.setEnabled(true);
+				} else {
+					for (JCheckBox checkBox : listOfChkBox) {
+						checkBox.setEnabled(false);
+					}
+					rdbSemiAuto.setEnabled(false);
 				}
 			}
 		});
@@ -198,28 +221,25 @@ public class Lotto extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (rdbAuto.equals(e.getSource())) {
 					rdbSemiAuto.setEnabled(false); // 반자동 버튼 off
-					for (int i = 0; i < 6 ; i++) {
+					
+					for (int i = 0; i < 6; i++) {
 						int autoNum = (int) (Math.random() * 45);
 						JCheckBox chkBox = listOfChkBox.get(autoNum);
 						chkBox.setSelected(true);
-						
-						
 					}
 				}
 			}
 		});
-		
-		// 라디오 버튼 액션 리스너 (자동)
+
+		// 라디오 버튼 액션 리스너 (반자동)
 		rdbSemiAuto.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (rdbSemiAuto.equals(e.getSource())) {
-					
-					
+
 				}
 			}
 		});
-
 
 		// 번호 선택패널 => 초기화, 확인 버튼을 가진 pnlButton 삽입
 		pnlLeft.add(pnlButton);
@@ -240,18 +260,23 @@ public class Lotto extends JFrame {
 //				new Result().setVisible(true);
 			}
 		});
+		// 선택번호 확인패널의 선택결과 확인 레이블.
+		for (int i = 0; i < pnlResultBox.length; i++) {
+			pnlResult.add(pnlResultBox[i]);
+			pnlResultBox[i].add(lblResult[i]);
+		}
 
 		// 선택번호 확인패널의 선택결과 확인 레이블.
-		pnlResult.add(pnlResultA);
-		pnlResult.add(pnlResultB);
-		pnlResult.add(pnlResultC);
-		pnlResult.add(pnlResultD);
-		pnlResult.add(pnlResultE);
-		pnlResultA.add(lblResultA);
-		pnlResultB.add(lblResultB);
-		pnlResultC.add(lblResultC);
-		pnlResultD.add(lblResultD);
-		pnlResultE.add(lblResultE);
+//		pnlResult.add(pnlResultA);
+//		pnlResult.add(pnlResultB);
+//		pnlResult.add(pnlResultC);
+//		pnlResult.add(pnlResultD);
+//		pnlResult.add(pnlResultE);
+//		pnlResultA.add(lblResultA);
+//		pnlResultB.add(lblResultB);
+//		pnlResultC.add(lblResultC);
+//		pnlResultD.add(lblResultD);
+//		pnlResultE.add(lblResultE);
 
 // *************************************************************************
 // **************************** 추가 기능 **************************************
@@ -298,6 +323,6 @@ public class Lotto extends JFrame {
 
 	public static void main(String[] args) {
 		new Lotto().setVisible(true);
-		
+
 	}
 }
