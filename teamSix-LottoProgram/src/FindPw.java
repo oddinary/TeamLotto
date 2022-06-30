@@ -1,5 +1,4 @@
 
-
 import java.awt.CardLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -15,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SpringLayout;
 
 public class FindPw extends JPanel {
 	JTextField idTf;
@@ -26,18 +26,42 @@ public class FindPw extends JPanel {
 	}
 
 	public FindPw(Map<String, User> userInfo, JPanel center, CardLayout layout, JPanel parentsPnl) {
-		JPanel pnl = new JPanel();
-		BoxLayout box = new BoxLayout(pnl, BoxLayout.Y_AXIS);
-		pnl.setLayout(box);
-
 		JLabel inputId = new JLabel("ID를 입력하세요.");
 		idTf = new JTextField(10);
 		JLabel inputName = new JLabel("이름을 입력하세요.");
 		nameTf = new JTextField(10);
-
+		
 		JPanel btnPnl = new JPanel();
 		JButton cancelBtn = new JButton("취소");
 		findBtn = new JButton("PW 찾기");
+
+		KeyListener keyListener = new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				int code = e.getKeyCode();
+				if (code == KeyEvent.VK_ENTER) {
+					Toolkit.getDefaultToolkit().beep();
+					findBtn.doClick();
+				} else if (code == KeyEvent.VK_ESCAPE) {
+					Toolkit.getDefaultToolkit().beep();
+					cancelBtn.doClick();
+				}
+			}
+		};
+		SpringLayout springLayout = new SpringLayout();
+		setLayout(springLayout);
+
+		setSize(300, 300);
+
+		JPanel panel = new JPanel();
+		springLayout.putConstraint(SpringLayout.NORTH, panel, 79, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, panel, 47, SpringLayout.WEST, this);
+		add(panel);
+		JPanel pnl = new JPanel();
+		panel.add(pnl);
+		BoxLayout box = new BoxLayout(pnl, BoxLayout.Y_AXIS);
+		pnl.setLayout(box);
+
 
 		cancelBtn.addActionListener(new ActionListener() {
 			@Override
@@ -72,22 +96,9 @@ public class FindPw extends JPanel {
 			}
 		});
 
-		KeyListener keyListener = new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				int code = e.getKeyCode();
-				if (code == KeyEvent.VK_ENTER) {
-					Toolkit.getDefaultToolkit().beep();
-					findBtn.doClick();
-				} else if (code == KeyEvent.VK_ESCAPE) {
-					Toolkit.getDefaultToolkit().beep();
-					cancelBtn.doClick();
-				}
-			}
-		};
-		
 		idTf.addKeyListener(keyListener);
 		nameTf.addKeyListener(keyListener);
+		springLayout.putConstraint(SpringLayout.NORTH, pnl, 0, SpringLayout.NORTH, this);
 
 		btnPnl.add(findBtn);
 		btnPnl.add(cancelBtn);
@@ -97,9 +108,6 @@ public class FindPw extends JPanel {
 		pnl.add(inputName);
 		pnl.add(nameTf);
 		pnl.add(btnPnl);
-
-		add(pnl);
-
-		setSize(300, 300);
+		springLayout.putConstraint(SpringLayout.WEST, pnl, 20, SpringLayout.EAST, panel);
 	}
 }

@@ -1,7 +1,6 @@
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
-import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -23,8 +22,6 @@ import javax.swing.border.TitledBorder;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.ActionEvent;
@@ -37,18 +34,21 @@ import java.awt.BorderLayout;
 
 public class Lotto extends JFrame {
 	// 체크리스트를 모두 담는 리스트.(체크박스에서 6개 체크된 리스트가 여기에 담김)
-//	private List<List<JCheckBox>> ChBoxAll = new ArrayList<>();
+	private List<List<JCheckBox>> ChBoxAll = new ArrayList<>();
 
 	// 로또 번호 (6개 번호) 담을 리스트 작성
 	List<Integer> checkedList = new ArrayList<>();
 
 	List<JCheckBox> listOfChkBox = new ArrayList<>();
-
+	
 	// 직전 5주 번호 담는 리스트 // 06/30
 	List<List> savedLottoNum = new ArrayList<>();
+	
+	// 체크박스 45개
+//	JCheckBox checkBox = new JCheckBox();
 
 	// 체크박스 체크 개수 카운트.
-	// int checkCount = 0;
+//	int checkCount = 0;
 	// 회차 카운트//////
 	int gameCount = 0;
 
@@ -65,9 +65,8 @@ public class Lotto extends JFrame {
 		savedLottoNum.add(lottoThree);
 		savedLottoNum.add(lottoFour);
 		savedLottoNum.add(lottoFive);
-
-		String lottoNumber = "직전 5회차 번호 + 보너스 번호\n" + lottoOne.toString() + "\n" + lottoTwo.toString() + "\n"
-				+ lottoThree.toString() + "\n" + lottoFour.toString() + "\n" + lottoFive.toString();
+		
+		String lottoNumber = "직전 5회차 번호 + 보너스 번호\n" + lottoOne.toString() + "\n" + lottoTwo.toString() + "\n" + lottoThree.toString() + "\n" + lottoFour.toString() + "\n" + lottoFive.toString();
 		TitledBorder tbBtn = new TitledBorder(new LineBorder(Color.black), "추가 기능");
 		tbBtn.setTitleColor(new Color(245, 136, 110));
 		TitledBorder tbSelect = new TitledBorder(new LineBorder(Color.black), "번호 선택");
@@ -165,6 +164,9 @@ public class Lotto extends JFrame {
 				}
 			});
 
+			// 해야할것.
+			// 체크박스 아이템 리스너; 선택된 것에 따라 checkedList에 배열로 집어넣기. 오름차순 정렬완료
+
 			// 정렬된 것들은 ChBoxAll 필드에 저장됨.
 			checkBox.addItemListener(new ItemListener() {
 				@Override
@@ -180,7 +182,7 @@ public class Lotto extends JFrame {
 							System.out.println(checkBox.getText());
 							System.out.println(checkedList);
 						}
-					} else if (state == ItemEvent.DESELECTED) {
+					} else if (state == ItemEvent.DESELECTED) { 
 						for (int i = 0; i < checkedList.size(); i++) {
 							if (selectNum == checkedList.get(i)) {
 								checkedList.remove(i);
@@ -192,7 +194,7 @@ public class Lotto extends JFrame {
 				}
 			});
 
-			// 초기화 버튼 액션 리스너
+		// 초기화 버튼 액션 리스너
 //		btnReset.addActionListener(new ActionListener() {
 //			int selectNum = Integer.parseInt(checkBox.getText());
 //
@@ -210,30 +212,29 @@ public class Lotto extends JFrame {
 //				System.out.println(checkedList);
 //			}
 //		});
-			// 리셋 액션 리스너
-			ActionListener reset = new ActionListener() {
-				int selectNum = Integer.parseInt(checkBox.getText());
-
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					for (int i = 0; i < checkedList.size(); i++) {
-						if (selectNum == checkedList.get(i)) {
-							checkedList.remove(i);
-						}
-					}
-					for (JCheckBox checkBox : listOfChkBox) {
-						checkBox.setSelected(false);
+		
+		ActionListener reset = new ActionListener() {
+			int selectNum = Integer.parseInt(checkBox.getText());
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				for (int i = 0; i < checkedList.size(); i++) {
+					if (selectNum == checkedList.get(i)) {
+						checkedList.remove(i);
 					}
 				}
-			};
+				for (JCheckBox checkBox : listOfChkBox) {
+					checkBox.setSelected(false);
+				}
+			}
+		};
+		
+		// 초기화 버튼 액션리스너 작동
+		btnReset.addActionListener(reset);
 
-			// 초기화 버튼 작동
-			btnReset.addActionListener(reset);
-
-			listOfChkBox.add(checkBox);
-//			ChBoxAll.add(listOfChkBox);
-			checkBox.setEnabled(false);
-		}
+		listOfChkBox.add(checkBox);
+		ChBoxAll.add(listOfChkBox);
+		checkBox.setEnabled(false);
+	}
 		// 번호선택 패널에 추가
 		pnlLeft.add(pnlNum);
 		pnlLeft.add(pnlAuto);
@@ -263,36 +264,40 @@ public class Lotto extends JFrame {
 					rdbSemiAuto.setEnabled(true);
 				} else {
 					for (JCheckBox checkBox : listOfChkBox) {
-						// 체크박스들 끄게 함
+						//체크박스들 끄게 함
 						checkBox.setEnabled(false);
 					}
 					rdbSemiAuto.setEnabled(false);
-				}
+				} 
 				Collections.sort(checkedList);
 			}
 		});
+//		rdbAuto.addActionListener(reset);
 
+		// 한번 누르고 또 누를때 작동 안하게
 		// 라디오 버튼 액션 리스너 (자동)
-		ActionListener auto = new ActionListener() {
+		rdbAuto.addItemListener(new ItemListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
-//				if (e.getStateChange() == ItemEvent.SELECTED) {
-				rdbSemiAuto.setEnabled(false); // 반자동 버튼 off
-				while (true) {
-					if (checkedList.size() < 6) {
-						int autoNum = (int) (Math.random() * 45);
-						JCheckBox chkBox = listOfChkBox.get(autoNum);
-						chkBox.setSelected(true);
-						// 체크리스트 확인용
-						System.out.println(checkedList);
-					} else {
-						break;
+			public void itemStateChanged(ItemEvent e) {
+				// 리스트 리셋 됐는지 확인
+				System.out.println(checkedList);
+				if (e.getStateChange() == ItemEvent.SELECTED) {
+
+					rdbSemiAuto.setEnabled(false); // 반자동 버튼 off
+					while (e.getStateChange() == ItemEvent.SELECTED) {
+						if (checkedList.size() < 6) {
+							int autoNum = (int) (Math.random() * 45);
+							JCheckBox chkBox = listOfChkBox.get(autoNum);
+							chkBox.setSelected(true);
+							//체크리스트 확인용
+							System.out.println(checkedList);
+						} else {
+							break;
+						}
 					}
 				}
 			}
-		};
-		rdbAuto.addActionListener(auto);
-
+		});
 		// 라디오 버튼 액션 리스너 (반자동)
 		rdbSemiAuto.addItemListener(new ItemListener() {
 			@Override
@@ -302,7 +307,7 @@ public class Lotto extends JFrame {
 						int autoNum = (int) (Math.random() * 45);
 						JCheckBox chkBox = listOfChkBox.get(autoNum);
 						chkBox.setSelected(true);
-						// 체크리스트 확인용
+						//체크리스트 확인용
 						System.out.println(checkedList);
 					} else {
 						break;
@@ -310,23 +315,9 @@ public class Lotto extends JFrame {
 				}
 			}
 		});
-		
-		// '자동'라디오 버튼을 마우스로 클릭하면
-		// '초기화'버튼과 다시 '자동'버튼 기능을 하게 해줌
-		rdbAuto.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent e) {
-				Toolkit.getDefaultToolkit().beep();
-				btnReset.doClick();
-				rdbAuto.addActionListener(auto);
-			}
-		});
-
-//		ActionListener (l);
 
 		// 번호 선택패널 => 초기화, 확인 버튼을 가진 pnlButton 삽입
 		pnlLeft.add(pnlButton);
-
 		// 초기화, 확인 기능필요한 버튼 두개
 		pnlButton.add(btnReset);
 		pnlButton.add(btnConfirm);
@@ -346,21 +337,21 @@ public class Lotto extends JFrame {
 		pnlRight.add(pnlResult);
 		pnlRight.add(pnlLast);
 		// 결과버튼 액션리스너
-		btnResult.addActionListener(new ActionListener() {
-			private LottoEndPage dialog;
+				btnResult.addActionListener(new ActionListener() {
+					private LottoEndPage dialog;
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				dialog = new LottoEndPage(Lotto.this, gameCount);
-				dialog.setVisible(true);
-			}
-		});
-
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						dialog = new LottoEndPage(Lotto.this, gameCount);
+						dialog.setVisible(true);
+					}
+				});
+				
 		// 선택번호 확인패널의 선택결과 확인 레이블.
 		for (int i = 0; i < pnlResultBox.length; i++) {
 			pnlResult.add(pnlResultBox[i]);
 			pnlResultBox[i].setLayout(new BorderLayout(0, 0));
-			pnlResultBox[i].add(lblResult[i], BorderLayout.WEST);
+			pnlResultBox[i].add(lblResult[i],BorderLayout.WEST);
 		}
 
 		// 선택번호 확인패널의 선택결과 확인 레이블.
@@ -434,29 +425,30 @@ public class Lotto extends JFrame {
 		getContentPane().add(pnlMain);
 
 		// x버튼 누를때, 로그아웃, 종료, 취소 물어보기.
-		addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				String[] yesNo = { "로그아웃", "종료", "취소" };
-				int result = JOptionPane.showOptionDialog(Lotto.this, "종료하시겠습니까?", "종료 및 로그아웃",
-						JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, yesNo, yesNo[0]);
-				if (result == JOptionPane.YES_OPTION) {
-					dispose();
-					Lotto.this.dispose();
-					new Login().setVisible(true);
-					Lotto.this.dispose();
-				} else if (result == JOptionPane.NO_OPTION) {
-					System.exit(0);
-				}
-			}
-		});
+				addWindowListener(new WindowAdapter() {
+					@Override
+					public void windowClosing(WindowEvent e) {
+						String[] yesNo = { "로그아웃", "종료", "취소" };
+						int result = JOptionPane.showOptionDialog(Lotto.this, "종료하시겠습니까?", "종료 및 로그아웃",
+								JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, yesNo, yesNo[0]);
+						if (result == JOptionPane.YES_OPTION) {
+							dispose();
+							Lotto.this.dispose();
+							new Login().setVisible(true);
+							Lotto.this.dispose();
+						} else if (result == JOptionPane.NO_OPTION) {
+							System.exit(0);
+						}
+					}
+
+				});
 
 		pack();
 		setResizable(false);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		setLocationRelativeTo(null);
 	}
-
+	
 //	public String showDialog() {
 //		setVisible(true);
 //
