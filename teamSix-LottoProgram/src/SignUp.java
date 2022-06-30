@@ -1,5 +1,4 @@
 
-
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,6 +20,8 @@ import javax.swing.JPasswordField;
 import javax.swing.JRootPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
+import java.awt.GridLayout;
+import javax.swing.SpringLayout;
 
 public class SignUp extends JDialog {
 	private Map<String, User> map = new HashMap<String, User>();
@@ -41,51 +42,77 @@ public class SignUp extends JDialog {
 		JPanel menu = new JPanel();
 		BoxLayout box = new BoxLayout(menu, BoxLayout.Y_AXIS);
 		menu.setLayout(box);
-
-		JPanel idPnl = new JPanel();
-		JLabel idLbl = new JLabel("ID 입력 (4 ~ 8자)");
-		JTextField tf = new JTextField(15);
-		JButton idCheckBtn = new JButton("ID 체크!");
 		idCheck = false;
 
-		idPnl.add(idLbl);
-		idPnl.add(tf);
-		idPnl.add(idCheckBtn);
+		// enter키 누르면 가입버튼
+				
+				SpringLayout sl_pnl = new SpringLayout();
+				sl_pnl.putConstraint(SpringLayout.NORTH, menu, 103, SpringLayout.NORTH, pnl);
+				sl_pnl.putConstraint(SpringLayout.WEST, menu, 388, SpringLayout.WEST, pnl);
+				pnl.setLayout(sl_pnl);
 
-		JPanel namePnl = new JPanel();
-		JLabel nameLbl = new JLabel("이름 입력");
-		JTextField tf2 = new JTextField(15);
+				JPanel panel_2 = new JPanel();
+				sl_pnl.putConstraint(SpringLayout.NORTH, panel_2, 22, SpringLayout.SOUTH, menu);
+				sl_pnl.putConstraint(SpringLayout.EAST, panel_2, -54, SpringLayout.EAST, pnl);
+				pnl.add(panel_2);
+				panel_2.setLayout(new BoxLayout(panel_2, BoxLayout.Y_AXIS));
 
-		namePnl.add(nameLbl);
-		namePnl.add(tf2);
+				JPanel panel_3 = new JPanel();
+				panel_2.add(panel_3);
 
-		JPanel pwPnl = new JPanel();
-		JLabel pwLbl = new JLabel("PW 입력 (4 ~ 8자)");
-		JPasswordField pf = new JPasswordField(15);
+				JPanel panel = new JPanel();
+				panel_3.add(panel);
+				panel.setLayout(new GridLayout(4, 0, 0, 20));
+				JLabel idLbl = new JLabel("ID 입력 (4 ~ 8자)");
+				panel.add(idLbl);
+				JLabel nameLbl = new JLabel("이름 입력");
+				panel.add(nameLbl);
+				JLabel pwLbl = new JLabel("PW 입력 (4 ~ 8자)");
+				panel.add(pwLbl);
+				JLabel pwCheckLbl = new JLabel("PW 확인");
+				panel.add(pwCheckLbl);
 
-		pwPnl.add(pwLbl);
-		pwPnl.add(pf);
-
-		JPanel pwCheckPnl = new JPanel();
-		JLabel pwCheckLbl = new JLabel("PW 확인");
-		JPasswordField checkPf = new JPasswordField(15);
-
-		pwCheckPnl.add(pwCheckLbl);
-		pwCheckPnl.add(checkPf);
-
-		JPanel btnPnl = new JPanel();
-		JButton cancelBtn = new JButton("취소");
-		JButton signUpBtn = new JButton("가입");
-
-		btnPnl.add(signUpBtn);
-		btnPnl.add(cancelBtn);
-
-		menu.add(idPnl);
-		menu.add(namePnl);
-		menu.add(pwPnl);
-		menu.add(pwCheckPnl);
-		menu.add(btnPnl);
-
+				JPanel panel_1 = new JPanel();
+				panel_3.add(panel_1);
+				panel_1.setLayout(new GridLayout(4, 0, 0, 12));
+				JTextField tf = new JTextField(15);
+				panel_1.add(tf);
+				JTextField tf2 = new JTextField(15);
+				panel_1.add(tf2);
+				JPasswordField pf = new JPasswordField(15);
+				panel_1.add(pf);
+				JPasswordField checkPf = new JPasswordField(15);
+				panel_1.add(checkPf);
+				
+				JPanel panel_4 = new JPanel();
+				panel_3.add(panel_4);
+				panel_4.setLayout(new GridLayout(4, 0, 0, 10));
+				JButton idCheckBtn = new JButton("ID 체크!");
+				panel_4.add(idCheckBtn);
+				
+				JLabel lblNewLabel = new JLabel("");
+				panel_4.add(lblNewLabel);
+				
+						idCheckBtn.addActionListener(new ActionListener() {
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								String id = tf.getText();
+				
+								if (id.length() < 4 || id.length() > 8) {
+									JOptionPane.showMessageDialog(SignUp.this, "ID는 4 ~ 8자로 입력해주세요.");
+									tf.setText("");
+								} else {
+									if (map.containsKey(id)) {
+										JOptionPane.showMessageDialog(SignUp.this, "이미 등록된 아이디입니다.");
+										tf.setText("");
+									} else {
+										JOptionPane.showMessageDialog(SignUp.this, "사용가능한 아이디입니다.");
+										idCheck = true;
+									}
+								}
+							}
+						});
+		
 		ActionListener escListener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -97,8 +124,6 @@ public class SignUp extends JDialog {
 			}
 		};
 
-		cancelBtn.addActionListener(escListener);
-
 		// esc키 누르면 가입버튼 (단 다른 버튼이 escListener를 사용하면 곤란쓰)
 		this.getRootPane().registerKeyboardAction(escListener, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
 				JComponent.WHEN_IN_FOCUSED_WINDOW);
@@ -109,7 +134,7 @@ public class SignUp extends JDialog {
 				String id = tf.getText();
 				String pw = String.valueOf(pf.getPassword());
 				String checkPw = String.valueOf(checkPf.getPassword());
-				
+
 				if (pw.length() < 4 || pw.length() > 8) {
 					JOptionPane.showMessageDialog(SignUp.this, "PW는 4 ~ 8자로 입력해주세요.");
 					pf.setText("");
@@ -139,7 +164,8 @@ public class SignUp extends JDialog {
 			}
 		};
 
-		signUpBtn.addActionListener(enterListener);
+		this.getRootPane().registerKeyboardAction(enterListener, KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0),
+				JComponent.WHEN_IN_FOCUSED_WINDOW);
 
 		tf.addFocusListener(new FocusListener() {
 
@@ -153,33 +179,21 @@ public class SignUp extends JDialog {
 			}
 		});
 
-		idCheckBtn.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String id = tf.getText();
+		JPanel btnPnl = new JPanel();
+		panel_2.add(btnPnl);
+		JButton cancelBtn = new JButton("취소");
+		JButton signUpBtn = new JButton("가입");
 
-				if (id.length() < 4 || id.length() > 8) {
-					JOptionPane.showMessageDialog(SignUp.this, "ID는 4 ~ 8자로 입력해주세요.");
-					tf.setText("");
-				} else {
-					if (map.containsKey(id)) {
-						JOptionPane.showMessageDialog(SignUp.this, "이미 등록된 아이디입니다.");
-						tf.setText("");
-					} else {
-						JOptionPane.showMessageDialog(SignUp.this, "사용가능한 아이디입니다.");
-						idCheck = true;
-					}
-				}
-			}
-		});
+		btnPnl.add(signUpBtn);
+		btnPnl.add(cancelBtn);
 
-		// enter키 누르면 가입버튼
-		this.getRootPane().registerKeyboardAction(enterListener, KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0),
-				JComponent.WHEN_IN_FOCUSED_WINDOW);
+		cancelBtn.addActionListener(escListener);
+
+		signUpBtn.addActionListener(enterListener);
 
 		pnl.add(menu);
 
-		add(pnl);
+		getContentPane().add(pnl);
 
 		setSize(500, 500);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);

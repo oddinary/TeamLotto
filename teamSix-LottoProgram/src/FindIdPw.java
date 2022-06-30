@@ -15,6 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
+import javax.swing.SpringLayout;
 
 public class FindIdPw extends JDialog {
 	private FindId idWindow;
@@ -28,27 +29,9 @@ public class FindIdPw extends JDialog {
 		center = new JPanel(layout);
 		
 		JPanel pnl = new JPanel();
-		JButton findIdBtn = new JButton("ID 찾기");
-		JButton findPwBtn = new JButton("PW 찾기");
 
 		idWindow = new FindId(userInfo, center, layout, pnl);
 		pwWindow = new FindPw(userInfo, center, layout, pnl);
-		
-		findIdBtn.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				layout.show(center, "B");
-				idWindow.requestFocus();
-			}
-		});
-		
-		findPwBtn.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				layout.show(center, "C");
-				pwWindow.requestFocus();
-			}
-		});
 		
 		pnl.setFocusable(true);
 		pnl.addKeyListener(new KeyAdapter() {
@@ -73,15 +56,39 @@ public class FindIdPw extends JDialog {
 		
 		idWindow.addKeyListener(escListener);
 		pwWindow.addKeyListener(escListener);
+		SpringLayout sl_pnl = new SpringLayout();
+		pnl.setLayout(sl_pnl);
 		
-		pnl.add(findIdBtn);
-		pnl.add(findPwBtn);
+		JPanel panel = new JPanel();
+		sl_pnl.putConstraint(SpringLayout.NORTH, panel, 100, SpringLayout.NORTH, pnl);
+		sl_pnl.putConstraint(SpringLayout.WEST, panel, 59, SpringLayout.WEST, pnl);
+		pnl.add(panel);
+		JButton findIdBtn = new JButton("ID 찾기");
+		panel.add(findIdBtn);
+		JButton findPwBtn = new JButton("PW 찾기");
+		panel.add(findPwBtn);
+		
+		findPwBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				layout.show(center, "C");
+				pwWindow.requestFocus();
+			}
+		});
+		
+		findIdBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				layout.show(center, "B");
+				idWindow.requestFocus();
+			}
+		});
 		
 		center.add(pnl, "A");
 		center.add(idWindow, "B");
 		center.add(pwWindow, "C");
 		
-		add(center);
+		getContentPane().add(center);
 		
 		setSize(300, 300);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
