@@ -142,7 +142,7 @@ public class Lotto extends JFrame {
 					rdbSemiAuto.setEnabled((checkedList.size() >= 1 && checkedList.size() <= 5));
 				}
 			});
-			
+
 			// 해야할것.
 			// 체크박스 아이템 리스너; 선택된 것에 따라 checkedList에 배열로 집어넣기. 오름차순 정렬완료
 
@@ -173,7 +173,7 @@ public class Lotto extends JFrame {
 					Collections.sort(checkedList);
 				}
 			});
-			
+
 			listOfChkBox.add(checkBox);
 			ChBoxAll.add(listOfChkBox);
 			checkBox.setEnabled(false);
@@ -182,15 +182,15 @@ public class Lotto extends JFrame {
 		// 번호선택 패널에 추가
 		pnlLeft.add(pnlNum);
 		pnlLeft.add(pnlAuto);
-		
+
 		// 라디오 버튼 => 번호선택패널 => 라디오버튼 전용패널(pnlAuto).
 		pnlAuto.add(rdbManual);
 		pnlAuto.add(rdbAuto);
 		pnlAuto.add(rdbSemiAuto);
-		
+
 		// 반자동 버튼 시작시 비활성화
 		rdbSemiAuto.setEnabled(false);
-		
+
 //		// 로또 번호 (6개 번호) 담을 리스트 작성
 //		List<Integer> checkedList = new ArrayList<>();
 //		List<JCheckBox> listOfChkBox = new ArrayList<>();
@@ -201,7 +201,7 @@ public class Lotto extends JFrame {
 		rdbManual.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				
+
 				if (e.getStateChange() == ItemEvent.SELECTED) {
 					for (JCheckBox checkBox : listOfChkBox) {
 						checkBox.setEnabled(true);
@@ -215,7 +215,7 @@ public class Lotto extends JFrame {
 				}
 			}
 		});
-		
+
 		// 한번 누르고 또 누를때 작동 안하게
 		// 라디오 버튼 액션 리스너 (자동)
 		rdbAuto.addActionListener(new ActionListener() {
@@ -223,7 +223,7 @@ public class Lotto extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (rdbAuto.equals(e.getSource())) {
 					rdbSemiAuto.setEnabled(false); // 반자동 버튼 off
-					
+
 					for (int i = 0; i < 6; i++) {
 						int autoNum = (int) (Math.random() * 45);
 						JCheckBox chkBox = listOfChkBox.get(autoNum);
@@ -257,7 +257,7 @@ public class Lotto extends JFrame {
 		JLabel lblPayMoney = new JLabel("구매금액");
 		pnlLast.add(lblPayMoney, BorderLayout.WEST);
 		JLabel lblWon = new JLabel("원");
-		
+
 		// 선택번호 확인패널; 결과 패널, 결과버튼 ( 버튼 기능 필요 )
 		pnlLast.add(lblWon, BorderLayout.EAST);
 		pnlLast.add(btnResult, BorderLayout.SOUTH);
@@ -291,51 +291,51 @@ public class Lotto extends JFrame {
 // *************************************************************************
 // **************************** 추가 기능 **************************************
 		// 추가 기능 패널 - pnlLeft의 왼쪽에 추가기능 버튼 패널 추가함
-				JPanel pnlRecommend = new JPanel();
-				pnlLeftBtn.add(pnlRecommend);
+		JPanel pnlRecommend = new JPanel();
+		pnlLeftBtn.add(pnlRecommend);
 
-				// 추가 기능 버튼 ( 나의 정보 )
-				JButton btnMyInfo = new JButton("나의 정보");
-				// 버튼 크기설정
-				btnMyInfo.setPreferredSize(new Dimension(160,60));
-				// 추천번호 액션 리스너
-				btnMyInfo.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-					}
-				});
-				// 추가 기능 버튼 ( 번호 추천 )
-				JButton btnRecommend = new JButton("번호 추천");
-				// 버튼 크기설정
-				btnRecommend.setPreferredSize(new Dimension(160,60));
-				// 추천번호 액션 리스너
-				btnRecommend.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-					}
-				});
-				// 추가 기능 버튼 ( 직전 5주 )
-				JButton btnRecent = new JButton("직전 5주");
-				// 버튼 크기설정
-				btnRecent.setPreferredSize(new Dimension(160,60));
-				// 직전 5주 액션 리스너
-				btnRecent.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-					}
-				});
-				// 보유금액 확인 구간
-				JPanel pnlHasMoney = new JPanel();
-				JLabel lblHasMoney = new JLabel("보유금액");
-				JLabel lblWon2 = new JLabel("원");
-				
-				// 버튼 정렬할 레이아웃.
-				pnlRecommend.setLayout(new GridLayout(4, 0, 0, 15));
-				// 컴포넌트 추가
-				pnlRecommend.add(btnMyInfo);
-				pnlRecommend.add(btnRecommend);
-				pnlRecommend.add(btnRecent);
-				pnlRecommend.add(pnlHasMoney);
-				pnlHasMoney.setLayout(new BorderLayout(0, 0));
-				pnlHasMoney.add(lblHasMoney, BorderLayout.WEST);
-				pnlHasMoney.add(lblWon2, BorderLayout.EAST);
+		// 추가 기능 버튼 ( 나의 정보 )
+		JButton btnMyInfo = new JButton("나의 정보");
+		// 버튼 크기설정
+		btnMyInfo.setPreferredSize(new Dimension(160, 60));
+		// 추천번호 액션 리스너
+		btnMyInfo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		// 추가 기능 버튼 ( 번호 추천 )
+		JButton btnRecommend = new JButton("번호 추천");
+		// 버튼 크기설정
+		btnRecommend.setPreferredSize(new Dimension(160, 60));
+		// 추천번호 액션 리스너
+		btnRecommend.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		// 추가 기능 버튼 ( 직전 5주 )
+		JButton btnRecent = new JButton("직전 5주");
+		// 버튼 크기설정
+		btnRecent.setPreferredSize(new Dimension(160, 60));
+		// 직전 5주 액션 리스너
+		btnRecent.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		// 보유금액 확인 구간
+		JPanel pnlHasMoney = new JPanel();
+		JLabel lblHasMoney = new JLabel("보유금액");
+		JLabel lblWon2 = new JLabel("원");
+
+		// 버튼 정렬할 레이아웃.
+		pnlRecommend.setLayout(new GridLayout(4, 0, 0, 15));
+		// 컴포넌트 추가
+		pnlRecommend.add(btnMyInfo);
+		pnlRecommend.add(btnRecommend);
+		pnlRecommend.add(btnRecent);
+		pnlRecommend.add(pnlHasMoney);
+		pnlHasMoney.setLayout(new BorderLayout(0, 0));
+		pnlHasMoney.add(lblHasMoney, BorderLayout.WEST);
+		pnlHasMoney.add(lblWon2, BorderLayout.EAST);
 // *********************************************************************
 // ************************* 메인패널 추가 **********************************
 		// 메인 패널에 주요 패널 3가지 집어넣기 / 3분할 되어있음
@@ -349,17 +349,18 @@ public class Lotto extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				String[] yesNo = { "로그아웃", "종료", "취소" }; 
-				int result = JOptionPane.showOptionDialog(Lotto.this, "종료하시겠습니까?", "종료 및 로그아웃", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, yesNo, yesNo[0]);
+				String[] yesNo = { "로그아웃", "종료", "취소" };
+				int result = JOptionPane.showOptionDialog(Lotto.this, "종료하시겠습니까?", "종료 및 로그아웃",
+						JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, yesNo, yesNo[0]);
 				if (result == JOptionPane.YES_OPTION) {
 					System.out.println("로그인 화면으로 돌아감");
 				} else if (result == JOptionPane.NO_OPTION) {
 					setDefaultCloseOperation(EXIT_ON_CLOSE);
 				}
 			}
-			
+
 		});
-		
+
 		pack();
 		setResizable(false);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
