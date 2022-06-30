@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
+import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -22,6 +23,8 @@ import javax.swing.border.TitledBorder;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.ActionEvent;
@@ -53,7 +56,6 @@ public class Lotto extends JFrame {
 	int gameCount = 0;
 
 	public Lotto() {
-		
 		gameCount++;
 		List<String> lottoOne = new ArrayList<>(Arrays.asList("1021회차 : 12, 15, 17, 24, 29, 45, + 16"));
 		List<String> lottoTwo = new ArrayList<>(Arrays.asList("1020회차 : 12, 27, 29, 38, 41, 45, + 6"));
@@ -147,7 +149,7 @@ public class Lotto extends JFrame {
 			JCheckBox checkBox = new JCheckBox(String.valueOf(i));
 
 			pnlNum.add(checkBox);
-
+					
 			// 체크박스 액션 리스너
 			checkBox.addActionListener(new ActionListener() {
 				@Override
@@ -272,32 +274,29 @@ public class Lotto extends JFrame {
 				Collections.sort(checkedList);
 			}
 		});
-//		rdbAuto.addActionListener(reset);
 
-		// 한번 누르고 또 누를때 작동 안하게
 		// 라디오 버튼 액션 리스너 (자동)
-		rdbAuto.addItemListener(new ItemListener() {
+		ActionListener auto = new ActionListener() {
 			@Override
-			public void itemStateChanged(ItemEvent e) {
-				// 리스트 리셋 됐는지 확인
-				System.out.println(checkedList);
-				if (e.getStateChange() == ItemEvent.SELECTED) {
-
-					rdbSemiAuto.setEnabled(false); // 반자동 버튼 off
-					while (e.getStateChange() == ItemEvent.SELECTED) {
-						if (checkedList.size() < 6) {
-							int autoNum = (int) (Math.random() * 45);
-							JCheckBox chkBox = listOfChkBox.get(autoNum);
-							chkBox.setSelected(true);
-							//체크리스트 확인용
-							System.out.println(checkedList);
-						} else {
-							break;
-						}
+			public void actionPerformed(ActionEvent e) {
+//				if (e.getStateChange() == ItemEvent.SELECTED) {
+				rdbSemiAuto.setEnabled(false); // 반자동 버튼 off
+				while (true) {
+					if (checkedList.size() < 6) {
+						int autoNum = (int) (Math.random() * 45);
+						JCheckBox chkBox = listOfChkBox.get(autoNum);
+						chkBox.setSelected(true);
+						// 체크리스트 확인용
+						System.out.println(checkedList);
+					} else {
+						break;
 					}
 				}
+//				}
 			}
-		});
+		};
+		rdbAuto.addActionListener(auto);
+		
 		// 라디오 버튼 액션 리스너 (반자동)
 		rdbSemiAuto.addItemListener(new ItemListener() {
 			@Override
@@ -315,9 +314,22 @@ public class Lotto extends JFrame {
 				}
 			}
 		});
+		// '자동'라디오 버튼을 마우스로 클릭하면
+		// '초기화'버튼을 기능 하게 해줌
+		rdbAuto.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				Toolkit.getDefaultToolkit().beep();
+				btnReset.doClick();
+				rdbAuto.addActionListener(auto);
+			}
+		});
+		
+//		btnConfirm.addActionListener(l);
 
 		// 번호 선택패널 => 초기화, 확인 버튼을 가진 pnlButton 삽입
 		pnlLeft.add(pnlButton);
+		
 		// 초기화, 확인 기능필요한 버튼 두개
 		pnlButton.add(btnReset);
 		pnlButton.add(btnConfirm);
