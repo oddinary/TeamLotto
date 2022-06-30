@@ -99,7 +99,7 @@ public class Lotto extends JFrame {
 
 		JLabel[] lblResult = new JLabel[5];
 		for (int i = 0; i < lblResult.length; i++) {
-			lblResult[i] = new JLabel("sdk" + "미지정");
+			lblResult[i] = new JLabel((i + 1) + " 미지정");
 		}
 
 		// 반복문으로 수정
@@ -273,7 +273,8 @@ public class Lotto extends JFrame {
 		// 선택번호 확인패널의 선택결과 확인 레이블.
 		for (int i = 0; i < pnlResultBox.length; i++) {
 			pnlResult.add(pnlResultBox[i]);
-			pnlResultBox[i].add(lblResult[i]);
+			pnlResultBox[i].setLayout(new BorderLayout(0, 0));
+			pnlResultBox[i].add(lblResult[i],BorderLayout.WEST);
 		}
 
 		// 선택번호 확인패널의 선택결과 확인 레이블.
