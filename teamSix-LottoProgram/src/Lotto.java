@@ -49,7 +49,7 @@ public class Lotto extends JFrame {
 
 	// 체크박스 체크 개수 카운트.
 //	int checkCount = 0;
-	// 회차 카운트
+	// 회차 카운트//////
 	int gameCount = 0;
 
 	public Lotto() {
