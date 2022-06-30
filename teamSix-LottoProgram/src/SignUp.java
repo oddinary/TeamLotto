@@ -3,6 +3,8 @@
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,6 +24,7 @@ import javax.swing.KeyStroke;
 
 public class SignUp extends JDialog {
 	private Map<String, User> map = new HashMap<String, User>();
+	private boolean idCheck;
 
 	public Map<String, User> getMap() {
 		return map;
@@ -42,9 +45,12 @@ public class SignUp extends JDialog {
 		JPanel idPnl = new JPanel();
 		JLabel idLbl = new JLabel("ID 입력 (4 ~ 8자)");
 		JTextField tf = new JTextField(15);
+		JButton idCheckBtn = new JButton("ID 체크!");
+		idCheck = false;
 
 		idPnl.add(idLbl);
 		idPnl.add(tf);
+		idPnl.add(idCheckBtn);
 
 		JPanel namePnl = new JPanel();
 		JLabel nameLbl = new JLabel("이름 입력");
@@ -83,6 +89,10 @@ public class SignUp extends JDialog {
 		ActionListener escListener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				tf.setText("");
+				tf2.setText("");
+				pf.setText("");
+				checkPf.setText("");
 				dispose();
 			}
 		};
@@ -99,46 +109,70 @@ public class SignUp extends JDialog {
 				String id = tf.getText();
 				String pw = String.valueOf(pf.getPassword());
 				String checkPw = String.valueOf(checkPf.getPassword());
-				if (id.length() < 4 || id.length() > 8) {
-					JOptionPane.showMessageDialog(SignUp.this, "ID는 4 ~ 8자로 입력해주세요.");
-					tf.setText("");
+				
+				if (pw.length() < 4 || pw.length() > 8) {
+					JOptionPane.showMessageDialog(SignUp.this, "PW는 4 ~ 8자로 입력해주세요.");
+					pf.setText("");
+					checkPf.setText("");
 				} else {
-					if (pw.length() < 4 || pw.length() > 8) {
-						JOptionPane.showMessageDialog(SignUp.this, "PW는 4 ~ 8자로 입력해주세요.");
-						pf.setText("");
-						checkPf.setText("");
+					if (idCheck == false) {
+						JOptionPane.showMessageDialog(SignUp.this, "ID체크가 필요합니다.");
 					} else {
-						if (map.containsKey(id)) {
-							JOptionPane.showMessageDialog(SignUp.this, "이미 등록된 아이디입니다.");
+						if (pw.equals(checkPw)) {
+							User user = new User();
+							map.put(id, user);
+							user.setName(tf2.getText());
+							user.setPw(String.valueOf(pf.getPassword()));
+							JOptionPane.showMessageDialog(SignUp.this, "가입 축하드립니다.");
 							tf.setText("");
 							tf2.setText("");
 							pf.setText("");
 							checkPf.setText("");
+							dispose();
 						} else {
-							if (pw.equals(checkPw)) {
-								User user = new User();
-								map.put(id, user);
-								user.setName(tf2.getText());
-								user.setPw(String.valueOf(pf.getPassword()));
-								JOptionPane.showMessageDialog(SignUp.this, "가입 축하드립니다.");
-								tf.setText("");
-								tf2.setText("");
-								pf.setText("");
-								checkPf.setText("");
-								dispose();
-							} else {
-								JOptionPane.showMessageDialog(SignUp.this, "비밀번호가 일치하지않습니다.");
-								pf.setText("");
-								checkPf.setText("");
-							}
+							JOptionPane.showMessageDialog(SignUp.this, "비밀번호가 일치하지않습니다.");
+							pf.setText("");
+							checkPf.setText("");
 						}
 					}
 				}
 			}
 		};
-		
+
 		signUpBtn.addActionListener(enterListener);
-		
+
+		tf.addFocusListener(new FocusListener() {
+
+			@Override
+			public void focusLost(FocusEvent e) {
+			}
+
+			@Override
+			public void focusGained(FocusEvent e) {
+				idCheck = false;
+			}
+		});
+
+		idCheckBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String id = tf.getText();
+
+				if (id.length() < 4 || id.length() > 8) {
+					JOptionPane.showMessageDialog(SignUp.this, "ID는 4 ~ 8자로 입력해주세요.");
+					tf.setText("");
+				} else {
+					if (map.containsKey(id)) {
+						JOptionPane.showMessageDialog(SignUp.this, "이미 등록된 아이디입니다.");
+						tf.setText("");
+					} else {
+						JOptionPane.showMessageDialog(SignUp.this, "사용가능한 아이디입니다.");
+						idCheck = true;
+					}
+				}
+			}
+		});
+
 		// enter키 누르면 가입버튼
 		this.getRootPane().registerKeyboardAction(enterListener, KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0),
 				JComponent.WHEN_IN_FOCUSED_WINDOW);
