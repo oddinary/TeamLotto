@@ -1,5 +1,4 @@
 
-
 import java.util.List;
 
 public class User {
@@ -11,7 +10,16 @@ public class User {
 	List<List<Integer>> lottoNumber;
 
 	public String getPhoneNum() {
-		return phoneNum;
+		String str = "";
+		for (int i = 0; i < phoneNum.length(); i++) {
+			str += phoneNum.charAt(i);
+			if (i == 2) {
+				str += "-";
+			} else if (i == 6) {
+				str += "-";
+			} 
+		}
+		return str;
 	}
 
 	public void setPhoneNum(String phoneNum) {

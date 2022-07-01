@@ -24,14 +24,13 @@ import java.awt.event.ActionEvent;
 
 public class LottoEndPage extends JDialog {
 
-	public LottoEndPage(JFrame owner,User user,List<Integer> winNumber, int bonusNumber,int gameCount) {
+	public LottoEndPage(JFrame owner, User user, List<Integer> winNumber, int bonusNumber, int gameCount) {
 		super(owner, true);
-		
+
 		gameCount++;
 
 		JPanel pnlLotto = new JPanel();
 		JPanel pnlTop = new JPanel(); // 당첨번호
-		
 
 		TitledBorder tbNumber = new TitledBorder(new LineBorder(Color.black), "당첨번호");
 		tbNumber.setTitleColor(new Color(245, 136, 110));
@@ -48,7 +47,7 @@ public class LottoEndPage extends JDialog {
 
 		pnlTop.setBorder(tbNumber);
 		pnlTop.setLayout(new BorderLayout(0, 0));
-		JLabel lblRound = new JLabel(gameCount + "회차"); // 회차
+		JLabel lblRound = new JLabel(user.getName() + " 님의"); // 회차
 		pnlTop.add(lblRound, BorderLayout.NORTH);
 		JLabel lblLotto = new JLabel("당첨번호는");
 		pnlTop.add(lblLotto, BorderLayout.WEST);
@@ -73,6 +72,7 @@ public class LottoEndPage extends JDialog {
 		for (int i = 0; i < lblResult.length; i++) {
 			lblResult[i] = new JLabel((i + 1) + " 미지정");
 		}
+		
 		// 번호를 넣을 라벨을 만들기
 		JLabel[] lblInputNum = new JLabel[5];
 		for (int i = 0; i < user.getLottoNumber().size(); i++) {
@@ -80,12 +80,19 @@ public class LottoEndPage extends JDialog {
 			lblInputNum[i].setText(user.getLottoNumber().get(i).toString());
 		}
 		System.out.println(user.getLottoNumber());
+		
 		for (int i = 0; i < user.getLottoNumber().size(); i++) {
 			pnlCenter.add(pnlResultBox[i]);
 			pnlResultBox[i].setLayout(new BorderLayout(0, 0));
 			pnlResultBox[i].add(lblResult[i], BorderLayout.WEST);
 			pnlResultBox[i].add(lblInputNum[i],BorderLayout.CENTER);
 		}
+		
+//		for (int i = 0; i < pnlResultBox.length; i++) {
+//			pnlCenter.add(pnlResultBox[i]);
+//			pnlResultBox[i].setLayout(new BorderLayout(0, 0));
+//			pnlResultBox[i].add(lblResult[i], BorderLayout.WEST);
+//		}
 
 		pnlCenter.setBorder(tbResult);
 		pnlCenter.setLayout(new BoxLayout(pnlCenter, BoxLayout.Y_AXIS));
@@ -135,6 +142,7 @@ public class LottoEndPage extends JDialog {
 					System.exit(0);
 				}
 			}
+
 		});
 
 		setLocationRelativeTo(null);

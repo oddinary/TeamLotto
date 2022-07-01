@@ -62,14 +62,15 @@ public class Lotto extends JFrame {
 
 	public Lotto(Map<String, User> userInfo, String id) {
 		gameCount++;
-
+		
 		User user = userInfo.get(id);
-
+		
 		for (int i = 0; i < 5; i++) {
 			chBoxAll.add(new ArrayList<Integer>());
 		}
 
 		user.setLottoNumber(chBoxAll);
+		
 		// 직전 번호 뽑는 구간.
 		List<String> lottoOne = new ArrayList<>(Arrays.asList("1021회차 : 12, 15, 17, 24, 29, 45, + 16"));
 		List<String> lottoTwo = new ArrayList<>(Arrays.asList("1020회차 : 12, 27, 29, 38, 41, 45, + 6"));
@@ -354,7 +355,7 @@ public class Lotto extends JFrame {
 				rdbAuto.addActionListener(auto);
 			}
 		});
-
+		
 		// 선택번호 확인 버튼.....
 		btnConfirm.addActionListener(new ActionListener() {
 			@Override
@@ -380,14 +381,13 @@ public class Lotto extends JFrame {
 					} else {
 						JOptionPane.showMessageDialog(Lotto.this, "한번에 5개까지만 구매가능합니다.");
 					}
-					checkedList = new ArrayList<Integer>();
 
-					for (JCheckBox checkBox : listOfChkBox) {
-						checkBox.setSelected(false);
-					}
+					checkedList = new ArrayList<Integer>();
 				} else {
-					rdbManual.setSelected(true);
 					JOptionPane.showMessageDialog(Lotto.this, "6개 다 체크해주세요.");
+				}
+				for (JCheckBox checkBox : listOfChkBox) {
+					checkBox.setSelected(false);
 				}
 
 				// 라디오 버튼이 그룹화되어서 사용 불가.
@@ -428,9 +428,6 @@ public class Lotto extends JFrame {
 			btnResultInst[index].addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					for (JCheckBox checkBox : listOfChkBox) {
-						checkBox.setSelected(false);
-					}
 					for (int j = 0; j < user.getLottoNumber().get(index).size(); j++) {
 						List<Integer> list = user.getLottoNumber().get(index);
 						JCheckBox chkBox = listOfChkBox.get(list.get(j) - 1);
@@ -464,9 +461,6 @@ public class Lotto extends JFrame {
 			btnResultCopy[index].addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					for (JCheckBox checkBox : listOfChkBox) {
-						checkBox.setSelected(false);
-					}
 					for (int j = 0; j < user.getLottoNumber().get(index).size(); j++) {
 						List<Integer> list = user.getLottoNumber().get(index);
 						JCheckBox chkBox = listOfChkBox.get(list.get(j) - 1);
@@ -480,17 +474,16 @@ public class Lotto extends JFrame {
 		// 구매금액.
 		JPanel pnlLast = new JPanel();
 		pnlLast.setLayout(new BorderLayout(0, 0));
-		JLabel lblPayMoney = new JLabel("구매금액 : ");
+		JLabel lblPayMoney = new JLabel("구매금액");
 		pnlLast.add(lblPayMoney, BorderLayout.WEST);
+		JLabel lblWon = new JLabel("원");
+	
 		int price = 0;
-
 //		for (int i = 0; i < user.getLottoNumber().size(); i++) {
-//			if (!user.getLottoNumber().get(i).toString().equals("[]")) {
-//				price += 1000;
-//			}
+//		if (!user.getLottoNumber().get(i).toString().equals("[]")) {
+//			price += 1000;
 //		}
-
-		JLabel lblWon = new JLabel(price + "원");
+//	}
 
 		// 선택번호 확인패널; 결과 패널, 결과버튼 ( 버튼 기능 필요 )
 		pnlLast.add(lblWon, BorderLayout.EAST);
@@ -554,22 +547,12 @@ public class Lotto extends JFrame {
 		// 추가 기능 패널 - pnlLeft의 왼쪽에 추가기능 버튼 패널 추가함
 		JPanel pnlRecommend = new JPanel();
 		pnlLeftBtn.add(pnlRecommend);
-		JLabel lblRound = new JLabel(gameCount + " 회차");
+		JLabel lblMyName = new JLabel(user.getName() + " 님의 로또 게임");
 		// 추가 기능 버튼 ( 나의 정보 )
 		JButton btnMyInfo = new JButton("나의 정보");
 		// 버튼 크기설정
 		btnMyInfo.setPreferredSize(new Dimension(160, 60));
-		// 추천번호 액션 리스너
-		btnMyInfo.addActionListener(new ActionListener() {
-			private MyInfo dialog;
 
-			public void actionPerformed(ActionEvent e) {
-
-				dialog = new MyInfo(Lotto.this, user);
-				dialog.setVisible(true);
-
-			}
-		});
 		// 추가 기능 버튼 ( 번호 추천 )
 		JButton btnRecommend = new JButton("번호 추천");
 		// 버튼 크기설정
@@ -577,6 +560,19 @@ public class Lotto extends JFrame {
 		// 추천번호 액션 리스너
 		btnRecommend.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				List<Integer> todayNumber = new LinkedList<>();
+				Random random = new Random();
+				while (todayNumber.size() < 6) {
+					int r = (random.nextInt(45)) + 1;
+					if (!todayNumber.contains(r)) {
+						todayNumber.add(r);
+					}
+				}
+				Collections.sort(todayNumber);
+				System.out.println(todayNumber);
+				JOptionPane.showMessageDialog(Lotto.this, String.valueOf(todayNumber), "오늘의 추천번호",
+						JOptionPane.QUESTION_MESSAGE);
+
 			}
 		});
 		// 추가 기능 버튼 ( 직전 5주 )
@@ -592,18 +588,37 @@ public class Lotto extends JFrame {
 		// 보유금액 확인 구간
 		JPanel pnlHasMoney = new JPanel();
 		JLabel lblHasMoney = new JLabel("보유금액");
+		JLabel lblMoney = new JLabel(String.valueOf(user.getHaveMoney()));
 		JLabel lblWon2 = new JLabel("원");
 
 		// 버튼 정렬할 레이아웃.
 		pnlRecommend.setLayout(new GridLayout(5, 0, 0, 10));
+
 		// 컴포넌트 추가
+		pnlRecommend.add(lblMyName);
 		pnlRecommend.add(btnMyInfo);
 		pnlRecommend.add(btnRecommend);
 		pnlRecommend.add(btnRecent);
 		pnlRecommend.add(pnlHasMoney);
 		pnlHasMoney.setLayout(new BorderLayout(0, 0));
 		pnlHasMoney.add(lblHasMoney, BorderLayout.WEST);
+		pnlHasMoney.add(lblMoney, BorderLayout.CENTER);
 		pnlHasMoney.add(lblWon2, BorderLayout.EAST);
+
+		// 나의정보 액션 리스너
+		btnMyInfo.addActionListener(new ActionListener() {
+			private MyInfo dialog;
+
+			public void actionPerformed(ActionEvent e) {
+
+				dialog = new MyInfo(Lotto.this, user);
+				dialog.setVisible(true);
+				
+				int money = user.getHaveMoney();
+				lblMoney.setText(String.valueOf(money));
+
+			}
+		});
 // *********************************************************************
 // ************************* 메인패널 추가 **********************************
 		// 메인 패널에 주요 패널 3가지 집어넣기 / 3분할 되어있음
