@@ -138,7 +138,7 @@ public class Login extends JFrame {
 					} else {
 						JOptionPane.showMessageDialog(Login.this, "로그인 되었습니다.");
 						dispose();
-						new Lotto().setVisible(true);
+						new Lotto(userInfo.get(id)).setVisible(true);
 					}
 				}
 			}
