@@ -86,7 +86,9 @@ public class Login extends JFrame {
 		panel_1.add(pwPnl);
 		JLabel lbl2 = new JLabel("비밀번호");
 		JPasswordField pf = new JPasswordField(10);
-
+		
+		tf.setText("admin");
+		pf.setText("qwqw1234");
 		pwPnl.add(lbl2);
 		pwPnl.add(pf);
 

@@ -337,33 +337,45 @@ public class Lotto extends JFrame {
 				rdbAuto.addActionListener(auto);
 			}
 		});
-
+		for (int i = 0; i < 5; i++) {
+			chBoxAll.add(new ArrayList<Integer>());
+		}
 		// 선택번호 확인 버튼.....
 		btnConfirm.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
 				if (checkedList.size() == 6) {
-					chBoxAll.add(checkedList);
+					int count = 0;
+					if (count < 5) {
+						for (int i = 0; i < chBoxAll.size(); i++) {
+							if (chBoxAll.get(i).toString().equals("[]")) {
+								chBoxAll.set(i, checkedList);
+								break;
+							} else {
+								count++;
+							}
+						}
+					}
+
 					user.setLottoNumber(chBoxAll);
-//					user.setLottoNumber(ChBoxAll);
-//					Toolkit.getDefaultToolkit().beep();
-//					btnReset.doClick();
-					if (user.getLottoNumber().size() <= 5) {
+
+					
+					if (count < 5) {
 						for (int i = 0; i < user.getLottoNumber().size(); i++) {
 							lblResultNum[i].setText(user.getLottoNumber().get(i).toString());
 						}
 					} else {
 						JOptionPane.showMessageDialog(Lotto.this, "한번에 5개까지만 구매가능합니다.");
 					}
+
 					checkedList = new ArrayList<Integer>();
 				} else {
 					JOptionPane.showMessageDialog(Lotto.this, "6개 다 체크해주세요.");
-				} for (JCheckBox checkBox : listOfChkBox) {
+				}
+				for (JCheckBox checkBox : listOfChkBox) {
 					checkBox.setSelected(false);
 				}
 				// 로또넘버 리스트 확인용
-				System.out.println(user.getLottoNumber());
 			}
 		});
 
@@ -376,6 +388,68 @@ public class Lotto extends JFrame {
 
 // ***********************************************************************
 // ************************** 선택번호 확인 ***********************************
+		// 수정 , 삭제 , 복사 버튼 구현.
+		
+//		JButton[] btnResultInst = new JButton[5];
+//		for (int i = 0; i < lblResult.length; i++) {
+//			btnResultInst[i] = new JButton("수정");
+//		}
+//		JButton[] btnResultDel = new JButton[5];
+//		for (int i = 0; i < lblResult.length; i++) {
+//			btnResultDel[i] = new JButton("삭제");
+//		}
+//		JButton[] btnResultCopy = new JButton[5];
+//		for (int i = 0; i < lblResult.length; i++) {
+//			btnResultCopy[i] = new JButton("번호 복사");
+//		}
+		
+		for (int i = 0; i < btnResultInst.length; i++) {
+			// i가 안먹혀서 새로만듬;;
+			int index = i;
+			
+			btnResultInst[index].addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					for (int j = 0; j < user.getLottoNumber().get(index).size(); j++) {
+						List<Integer> list = user.getLottoNumber().get(index);
+						JCheckBox chkBox = listOfChkBox.get(list.get(j) - 1);
+						chkBox.setSelected(true);
+					}
+					user.getLottoNumber().set(index, new ArrayList<Integer>());
+					lblResultNum[index].setText(user.getLottoNumber().get(index).toString());
+				}
+			});
+		}
+		
+		for (int i = 0; i < btnResultDel.length; i++) {
+			// i가 안먹혀서 새로만듬;;
+			int index = i;
+			
+			btnResultDel[index].addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					user.getLottoNumber().set(index, new ArrayList<Integer>());
+					lblResultNum[index].setText(user.getLottoNumber().get(index).toString());
+				}
+			});
+		}
+		
+		for (int i = 0; i < btnResultCopy.length; i++) {
+			// i가 안먹혀서 새로만듬;;
+			int index = i;
+			
+			btnResultCopy[index].addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					for (int j = 0; j < user.getLottoNumber().get(index).size(); j++) {
+						List<Integer> list = user.getLottoNumber().get(index);
+						JCheckBox chkBox = listOfChkBox.get(list.get(j) - 1);
+						chkBox.setSelected(true);
+					}
+				}
+			});
+		}
+		
 		// 구매금액.
 		JPanel pnlLast = new JPanel();
 		pnlLast.setLayout(new BorderLayout(0, 0));
@@ -505,6 +579,14 @@ public class Lotto extends JFrame {
 		setLocationRelativeTo(null);
 	}
 
+	public void blankPlus() {
+		for (int i = 0; i < chBoxAll.size(); i++) {
+			if (chBoxAll.get(i).toString().equals("[]")) {
+				chBoxAll.set(i, checkedList);
+				break;
+			}
+		}
+	}
 //	public String showDialog() {
 //		setVisible(true);
 //

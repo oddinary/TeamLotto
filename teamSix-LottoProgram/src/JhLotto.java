@@ -422,8 +422,6 @@ public class JhLotto extends JFrame {
 		});
 		
 		
-		
-		
 		// 선택번호 확인패널의 선택결과 확인 레이블.
 		for (int i = 0; i < pnlResultBox.length; i++) {
 			pnlResult.add(pnlResultBox[i]);
