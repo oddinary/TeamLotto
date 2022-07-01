@@ -75,7 +75,19 @@ public class SignUp extends JDialog {
 				String checkPw = String.valueOf(checkPf.getPassword());
 				boolean nameBlank = false;
 				boolean phoneBlank = false;
+				int count = 0;
 
+				for (String key : map.keySet()) {
+					String value = map.get(key).getName();
+					String value2 = map.get(key).getPhoneNum();
+
+					if (value.equals(name)) {
+						if (value2.equals(phoneNum)) {
+							count++;
+						}
+					}
+				}
+				
 				for (int i = 0; i < name.length(); i++) {
 					if (name.charAt(i) == ' ') {
 						nameBlank = true;
@@ -92,35 +104,39 @@ public class SignUp extends JDialog {
 					JOptionPane.showMessageDialog(SignUp.this, "이름은 2글자이상, 공백불가입니다.");
 					tf2.setText("");
 				} else {
-					if (tf3.getText().length() != 11 || phoneBlank) {
-						JOptionPane.showMessageDialog(SignUp.this, "xxx-xxxx-xxxx (-빼고 입력해주세요, 공백불가)");
+					if (phoneNum.length() != 11 || phoneBlank) {
+						JOptionPane.showMessageDialog(SignUp.this, "xxx-xxxx-xxxx (- 제외 입력, 공백불가)");
 						tf3.setText("");
 					} else {
-						if (pw.length() < 4 || pw.length() > 8) {
-							JOptionPane.showMessageDialog(SignUp.this, "PW는 4 ~ 8자로 입력해주세요.");
-							pf.setText("");
-							checkPf.setText("");
+						if (count > 0) {
+							JOptionPane.showMessageDialog(SignUp.this, name + "님은 이미 ID가 있으십니다.");
 						} else {
-							if (idCheck == false) {
-								JOptionPane.showMessageDialog(SignUp.this, "ID체크가 필요합니다.");
+							if (pw.length() < 4 || pw.length() > 8) {
+								JOptionPane.showMessageDialog(SignUp.this, "PW는 4 ~ 8자로 입력해주세요.");
+								pf.setText("");
+								checkPf.setText("");
 							} else {
-								if (pw.equals(checkPw)) {
-									User user = new User();
-									map.put(id, user);
-									user.setName(tf2.getText());
-									user.setPhoneNum(tf3.getText());
-									user.setPw(String.valueOf(pf.getPassword()));
-									JOptionPane.showMessageDialog(SignUp.this, "가입 축하드립니다.");
-									tf.setText("");
-									tf2.setText("");
-									tf3.setText("");
-									pf.setText("");
-									checkPf.setText("");
-									dispose();
+								if (idCheck == false) {
+									JOptionPane.showMessageDialog(SignUp.this, "ID체크가 필요합니다.");
 								} else {
-									JOptionPane.showMessageDialog(SignUp.this, "비밀번호가 일치하지않습니다.");
-									pf.setText("");
-									checkPf.setText("");
+									if (pw.equals(checkPw)) {
+										User user = new User();
+										map.put(id, user);
+										user.setName(tf2.getText());
+										user.setPhoneNum(tf3.getText());
+										user.setPw(String.valueOf(pf.getPassword()));
+										JOptionPane.showMessageDialog(SignUp.this, "가입 축하드립니다.");
+										tf.setText("");
+										tf2.setText("");
+										tf3.setText("");
+										pf.setText("");
+										checkPf.setText("");
+										dispose();
+									} else {
+										JOptionPane.showMessageDialog(SignUp.this, "비밀번호가 일치하지않습니다.");
+										pf.setText("");
+										checkPf.setText("");
+									}
 								}
 							}
 						}
@@ -153,7 +169,7 @@ public class SignUp extends JDialog {
 		panel.add(idLbl);
 		JLabel nameLbl = new JLabel("이름 입력 (2자 이상)");
 		panel.add(nameLbl);
-		JLabel phoneLbl = new JLabel("전화번호 (-없이 11자)");
+		JLabel phoneLbl = new JLabel("핸드폰번호 (- 제외 입력)");
 		panel.add(phoneLbl);
 		JLabel pwLbl = new JLabel("PW 입력 (4 ~ 8자)");
 		panel.add(pwLbl);
