@@ -6,11 +6,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.ButtonModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
@@ -48,6 +51,7 @@ public class SsLotto extends JFrame {
 	// 직전 5주 번호 담는 리스트 // 06/30
 	List<List> savedLottoNum = new ArrayList<>();
 
+	int bonusNumber;
 	// 체크박스 45개
 //	JCheckBox checkBox = new JCheckBox();
 
@@ -56,8 +60,10 @@ public class SsLotto extends JFrame {
 	// 회차 카운트//////
 	int gameCount = 0;
 
-	public SsLotto(User user) {
+	public SsLotto(Map<String, User> userInfo, String id) {
 		gameCount++;
+		User user = userInfo.get(id);
+		// 직전 번호 뽑는 구간.
 		List<String> lottoOne = new ArrayList<>(Arrays.asList("1021회차 : 12, 15, 17, 24, 29, 45, + 16"));
 		List<String> lottoTwo = new ArrayList<>(Arrays.asList("1020회차 : 12, 27, 29, 38, 41, 45, + 6"));
 		List<String> lottoThree = new ArrayList<>(Arrays.asList("1019회차 : 1, 4, 13, 17, 34, 39, + 6"));
@@ -89,11 +95,15 @@ public class SsLotto extends JFrame {
 		JPanel pnlAuto = new JPanel();
 		JPanel pnlButton = new JPanel();
 		JPanel pnlResult = new JPanel();
-		
+
 		// 선택번호 확인 패널
 		JPanel[] pnlResultBox = new JPanel[5];
 		for (int i = 0; i < pnlResultBox.length; i++) {
 			pnlResultBox[i] = new JPanel();
+		}
+		JPanel[] pnlResultbtn = new JPanel[5];
+		for (int i = 0; i < pnlResultBox.length; i++) {
+			pnlResultbtn[i] = new JPanel();
 		}
 
 		// 선택번호 확인 패널 ; 위의 반복문으로 해결
@@ -107,11 +117,13 @@ public class SsLotto extends JFrame {
 		JRadioButton rdbManual = new JRadioButton("수동");
 		JRadioButton rdbAuto = new JRadioButton("자동");
 		JRadioButton rdbSemiAuto = new JRadioButton("반자동");
+		JRadioButton rdbdummy = new JRadioButton();
 		// 라디오 버튼 그룹
 		ButtonGroup group = new ButtonGroup();
 		group.add(rdbAuto);
 		group.add(rdbManual);
 		group.add(rdbSemiAuto);
+		group.add(rdbdummy);
 
 		// 유형별 경계선 만들기; 추가기능, 번호선택, 선택번호확인 3가지
 		pnlLeftBtn.setBorder(tbBtn);
@@ -127,9 +139,28 @@ public class SsLotto extends JFrame {
 		for (int i = 0; i < lblResult.length; i++) {
 			lblResult[i] = new JLabel((i + 1) + " 미지정");
 		}
+		// 입력한 로또가 오른쪽에 뜨기 위한 라벨
 		JLabel[] lblResultNum = new JLabel[5];
-		for (int i = 0; i < lblResultNum.length; i++) {
-			lblResultNum[i] = new JLabel("");
+		for (int i = 0; i < lblResult.length; i++) {
+			lblResultNum[i] = new JLabel();
+		}
+		// 입력한 로또 각각에 수정, 삭제 , 번호 추가 버튼을 만들기 위한 패널
+		JPanel[] pnlResultBtn = new JPanel[5];
+		for (int i = 0; i < lblResult.length; i++) {
+			pnlResultBtn[i] = new JPanel();
+		}
+		// 입력한 로또 각각에 수정, 삭제 , 번호 추가 버튼
+		JButton[] btnResultInst = new JButton[5];
+		for (int i = 0; i < lblResult.length; i++) {
+			btnResultInst[i] = new JButton("수정");
+		}
+		JButton[] btnResultDel = new JButton[5];
+		for (int i = 0; i < lblResult.length; i++) {
+			btnResultDel[i] = new JButton("삭제");
+		}
+		JButton[] btnResultCopy = new JButton[5];
+		for (int i = 0; i < lblResult.length; i++) {
+			btnResultCopy[i] = new JButton("번호 복사");
 		}
 
 		// 반복문으로 수정
@@ -200,7 +231,7 @@ public class SsLotto extends JFrame {
 					Collections.sort(checkedList);
 				}
 			});
-			
+
 			// 초기화 버튼 액션 리스너
 			ActionListener reset = new ActionListener() {
 				int selectNum = Integer.parseInt(checkBox.getText());
@@ -236,17 +267,17 @@ public class SsLotto extends JFrame {
 
 		// 반자동 버튼 시작시 비활성화
 		rdbSemiAuto.setEnabled(false);
-		
+
 		// 이름 참고
 //		// 로또 번호 (6개 번호) 담을 리스트 작성 
 //		List<Integer> checkedList = new ArrayList<>();
 //		List<JCheckBox> listOfChkBox = new ArrayList<>();
 //		JCheckBox checkBox = new JCheckBox();
-		
 
 		// 라디오 버튼 액션 리스너 (수동)
 		rdbManual.addItemListener(new ItemListener() {
-			@Override
+
+	@Override
 			public void itemStateChanged(ItemEvent e) {
 				if (e.getStateChange() == ItemEvent.SELECTED) {
 					for (JCheckBox checkBox : listOfChkBox) {
@@ -315,29 +346,49 @@ public class SsLotto extends JFrame {
 				rdbAuto.addActionListener(auto);
 			}
 		});
-		
+		for (int i = 0; i < 5; i++) {
+			chBoxAll.add(new ArrayList<Integer>());
+		}
 		// 선택번호 확인 버튼.....
 		btnConfirm.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
+					rdbdummy.setSelected(true);
 				if (checkedList.size() == 6) {
-					chBoxAll.add(checkedList);
+					int count = 0;
+					if (count < 5) {
+						for (int i = 0; i < chBoxAll.size(); i++) {
+							if (chBoxAll.get(i).toString().equals("[]")) {
+								chBoxAll.set(i, checkedList);
+								break;
+							} else {
+								count++;
+							}
+						}
+					}
+
 					user.setLottoNumber(chBoxAll);
-//					user.setLottoNumber(ChBoxAll);
-//					Toolkit.getDefaultToolkit().beep();
-//					btnReset.doClick();
-					if (user.getLottoNumber().size() <= 5) {
+					
+					if (count < 5) {
 						for (int i = 0; i < user.getLottoNumber().size(); i++) {
 							lblResultNum[i].setText(user.getLottoNumber().get(i).toString());
 						}
 					} else {
 						JOptionPane.showMessageDialog(SsLotto.this, "한번에 5개까지만 구매가능합니다.");
 					}
+
 					checkedList = new ArrayList<Integer>();
 				} else {
 					JOptionPane.showMessageDialog(SsLotto.this, "6개 다 체크해주세요.");
 				}
+				for (JCheckBox checkBox : listOfChkBox) {
+					checkBox.setSelected(false);
+				}
+				
+				// 라디오 버튼이 그룹화되어서 사용 불가.
+//				rdbAuto.set
+//				rdbManual.setSelected(false);
+//				rdbSemiAuto.setSelected(false);
 			}
 		});
 
@@ -350,6 +401,71 @@ public class SsLotto extends JFrame {
 
 // ***********************************************************************
 // ************************** 선택번호 확인 ***********************************
+		// 수정 , 삭제 , 복사 버튼 구현.
+		
+//		JButton[] btnResultInst = new JButton[5];
+//		for (int i = 0; i < lblResult.length; i++) {
+//			btnResultInst[i] = new JButton("수정");
+//		}
+//		JButton[] btnResultDel = new JButton[5];
+//		for (int i = 0; i < lblResult.length; i++) {
+//			btnResultDel[i] = new JButton("삭제");
+//		}
+//		JButton[] btnResultCopy = new JButton[5];
+//		for (int i = 0; i < lblResult.length; i++) {
+//			btnResultCopy[i] = new JButton("번호 복사");
+//		}
+		
+		for (int i = 0; i < btnResultInst.length; i++) {
+			// i가 안먹혀서 새로만듬;;
+			int index = i;
+			
+			btnResultInst[index].addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					for (int j = 0; j < user.getLottoNumber().get(index).size(); j++) {
+						List<Integer> list = user.getLottoNumber().get(index);
+						JCheckBox chkBox = listOfChkBox.get(list.get(j) - 1);
+						chkBox.setSelected(true);
+					}
+					user.getLottoNumber().set(index, new ArrayList<Integer>());
+					lblResultNum[index].setText(user.getLottoNumber().get(index).toString());
+					// 라디오 버튼 전체 해제(더미버튼작동)
+					rdbManual.setSelected(true);
+				}
+			});
+		}
+		
+		for (int i = 0; i < btnResultDel.length; i++) {
+			// i가 안먹혀서 새로만듬;;
+			int index = i;
+			
+			btnResultDel[index].addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					user.getLottoNumber().set(index, new ArrayList<Integer>());
+					lblResultNum[index].setText(user.getLottoNumber().get(index).toString());
+				}
+			});
+		}
+		
+		for (int i = 0; i < btnResultCopy.length; i++) {
+			// i가 안먹혀서 새로만듬;;
+			int index = i;
+			
+			btnResultCopy[index].addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					for (int j = 0; j < user.getLottoNumber().get(index).size(); j++) {
+						List<Integer> list = user.getLottoNumber().get(index);
+						JCheckBox chkBox = listOfChkBox.get(list.get(j) - 1);
+						chkBox.setSelected(true);
+					}
+					rdbManual.setSelected(true);
+				}
+			});
+		}
+		
 		// 구매금액.
 		JPanel pnlLast = new JPanel();
 		pnlLast.setLayout(new BorderLayout(0, 0));
@@ -368,10 +484,27 @@ public class SsLotto extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-//				dialog = new LottoEndPage(SsLotto.this, gameCount);
-				dialog.setVisible(true);
+				   // 당첨번호 뽑는 구간.
+	            List<Integer> winNumber = new LinkedList<>();
+	            Random random = new Random();
+	            while (winNumber.size() < 6) {
+	               int r = (random.nextInt(45)) + 1;
+	               if (!winNumber.contains(r)) {
+	                  winNumber.add(r);
+	               }
+	            }
+	            Collections.sort(winNumber);
+	            // 보너스 번호 뽑는 구간.
+	            int a = (random.nextInt(45)) + 1;
+	            if (!winNumber.contains(a)) {
+	               bonusNumber = a;
+	            }
+
+	            dialog = new LottoEndPage(SsLotto.this, user, winNumber, bonusNumber, gameCount);
+	            dialog.setVisible(true);
 			}
 		});
+
 
 		// 선택번호 확인패널의 선택결과 확인 레이블.
 		for (int i = 0; i < pnlResultBox.length; i++) {
@@ -379,6 +512,10 @@ public class SsLotto extends JFrame {
 			pnlResultBox[i].setLayout(new BorderLayout(0, 0));
 			pnlResultBox[i].add(lblResult[i], BorderLayout.WEST);
 			pnlResultBox[i].add(lblResultNum[i], BorderLayout.CENTER);
+			pnlResultBtn[i].add(btnResultInst[i]);
+			pnlResultBtn[i].add(btnResultDel[i]);
+			pnlResultBtn[i].add(btnResultCopy[i]);
+			pnlResultBox[i].add(pnlResultBtn[i], BorderLayout.SOUTH);
 		}
 
 		// 선택번호 확인패널의 선택결과 확인 레이블. ; 위의 반복문으로 생성함
@@ -398,23 +535,31 @@ public class SsLotto extends JFrame {
 		// 추가 기능 패널 - pnlLeft의 왼쪽에 추가기능 버튼 패널 추가함
 		JPanel pnlRecommend = new JPanel();
 		pnlLeftBtn.add(pnlRecommend);
-		JLabel lblRound = new JLabel(gameCount + " 회차");
+		JLabel lblMyName = new JLabel(user.getName() + " 님의 로또 게임");
 		// 추가 기능 버튼 ( 나의 정보 )
 		JButton btnMyInfo = new JButton("나의 정보");
 		// 버튼 크기설정
 		btnMyInfo.setPreferredSize(new Dimension(160, 60));
-		// 추천번호 액션 리스너
-		btnMyInfo.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+
 		// 추가 기능 버튼 ( 번호 추천 )
 		JButton btnRecommend = new JButton("번호 추천");
 		// 버튼 크기설정
 		btnRecommend.setPreferredSize(new Dimension(160, 60));
 		// 추천번호 액션 리스너
 		btnRecommend.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
+			     List<Integer> todayNumber = new LinkedList<>();
+		            Random random = new Random();
+		            while (todayNumber.size() < 6) {
+		               int r = (random.nextInt(45)) + 1;
+		               if (!todayNumber.contains(r)) {
+		                  todayNumber.add(r);
+		               }
+		            }
+		            Collections.sort(todayNumber);
+		            System.out.println(todayNumber);
+					JOptionPane.showMessageDialog(SsLotto.this, String.valueOf(todayNumber), "오늘의 추천번호", JOptionPane.QUESTION_MESSAGE);
 			}
 		});
 		// 추가 기능 버튼 ( 직전 5주 )
@@ -430,18 +575,34 @@ public class SsLotto extends JFrame {
 		// 보유금액 확인 구간
 		JPanel pnlHasMoney = new JPanel();
 		JLabel lblHasMoney = new JLabel("보유금액");
+		JLabel lblMoney = new JLabel(String.valueOf(user.getHaveMoney()));
 		JLabel lblWon2 = new JLabel("원");
 
 		// 버튼 정렬할 레이아웃.
 		pnlRecommend.setLayout(new GridLayout(5, 0, 0, 10));
+		
 		// 컴포넌트 추가
+		pnlRecommend.add(lblMyName);
 		pnlRecommend.add(btnMyInfo);
 		pnlRecommend.add(btnRecommend);
 		pnlRecommend.add(btnRecent);
 		pnlRecommend.add(pnlHasMoney);
 		pnlHasMoney.setLayout(new BorderLayout(0, 0));
 		pnlHasMoney.add(lblHasMoney, BorderLayout.WEST);
+		pnlHasMoney.add(lblMoney, BorderLayout.CENTER);
 		pnlHasMoney.add(lblWon2, BorderLayout.EAST);
+		// 나의정보 액션 리스너
+		btnMyInfo.addActionListener(new ActionListener() {
+			private MyInfo dialog;
+			public void actionPerformed(ActionEvent e) {
+
+				dialog = new MyInfo(SsLotto.this, user);
+				dialog.setVisible(true);
+				
+				int money = user.getHaveMoney();
+				lblMoney.setText(String.valueOf(money));
+			}
+		});
 // *********************************************************************
 // ************************* 메인패널 추가 **********************************
 		// 메인 패널에 주요 패널 3가지 집어넣기 / 3분할 되어있음
@@ -475,6 +636,14 @@ public class SsLotto extends JFrame {
 		setLocationRelativeTo(null);
 	}
 
+	public void blankPlus() {
+		for (int i = 0; i < chBoxAll.size(); i++) {
+			if (chBoxAll.get(i).toString().equals("[]")) {
+				chBoxAll.set(i, checkedList);
+				break;
+			}
+		}
+	}
 //	public String showDialog() {
 //		setVisible(true);
 //

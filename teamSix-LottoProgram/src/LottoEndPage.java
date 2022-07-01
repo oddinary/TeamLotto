@@ -74,7 +74,7 @@ public class LottoEndPage extends JDialog {
 		}
 		
 		// 번호를 넣을 라벨을 만들기
-		JLabel[] lblInputNum = new JLabel[5];
+		JLabel[] lblInputNum = new JLabel[user.getLottoNumber().size()];
 		for (int i = 0; i < user.getLottoNumber().size(); i++) {
 			lblInputNum[i] = new JLabel();
 			lblInputNum[i].setText(user.getLottoNumber().get(i).toString());

@@ -512,7 +512,6 @@ public class Lotto extends JFrame {
 
 				dialog = new LottoEndPage(Lotto.this, user, winNumber, bonusNumber, gameCount);
 				dialog.setVisible(true);
-				gameCount++;
 			}
 		});
 
