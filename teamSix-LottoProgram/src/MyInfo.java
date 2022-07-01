@@ -30,7 +30,7 @@ public class MyInfo extends JDialog {
 		pnl.add(panel);
 		panel.setLayout(new GridLayout(5, 0, 0, 10));
 		panel.add(lblName);
-		// JLabel lblPhone = new JLabel("전화번호 : " user.getPhoneNum);
+		JLabel lblPhone = new JLabel("전화번호 : " + user.getPhoneNum());
 		JLabel lblPrime = new JLabel("일반회원입니다.");
 		if (user.isPremier() == true) {
 			lblPrime.setText("프리미엄회원입니다.");
@@ -50,6 +50,7 @@ public class MyInfo extends JDialog {
 		});
 		pnlbtn.add(btnPrime);
 		pnlbtn.add(btnExit);
+		panel.add(lblPhone);
 		panel.add(lblPrime);
 		JLabel lblMoney = new JLabel("보유금" + user.getHaveMoney());
 		panel.add(lblMoney);
