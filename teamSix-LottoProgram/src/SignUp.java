@@ -108,7 +108,7 @@ public class SignUp extends JDialog {
 									User user = new User();
 									map.put(id, user);
 									user.setName(tf2.getText());
-									user.setPhoneNum(Integer.valueOf(tf3.getText()));
+									user.setPhoneNum(tf3.getText());
 									user.setPw(String.valueOf(pf.getPassword()));
 									JOptionPane.showMessageDialog(SignUp.this, "가입 축하드립니다.");
 									tf.setText("");
