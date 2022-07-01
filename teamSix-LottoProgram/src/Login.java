@@ -50,6 +50,7 @@ public class Login extends JFrame {
 		userInfo.put("admin", new User());
 		userInfo.get("admin").setName("관리자");
 		userInfo.get("admin").setPw("qwqw1234");
+		userInfo.get("admin").setPhoneNum("11111111111");
 		setTitle("로그인 화면");
 		
 
@@ -86,7 +87,9 @@ public class Login extends JFrame {
 		panel_1.add(pwPnl);
 		JLabel lbl2 = new JLabel("비밀번호");
 		JPasswordField pf = new JPasswordField(10);
-
+		
+		tf.setText("admin");
+		pf.setText("qwqw1234");
 		pwPnl.add(lbl2);
 		pwPnl.add(pf);
 
@@ -111,8 +114,7 @@ public class Login extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				FindIdPw dialog = new FindIdPw(Login.this, userInfo);
-				String a = dialog.showDialog();
-				System.out.println(a);
+				dialog.setVisible(true);
 			}
 		});
 
