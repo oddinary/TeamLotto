@@ -337,7 +337,11 @@ public class Lotto extends JFrame {
 					checkedList = new ArrayList<Integer>();
 				} else {
 					JOptionPane.showMessageDialog(Lotto.this, "6개 다 체크해주세요.");
+				} for (JCheckBox checkBox : listOfChkBox) {
+					checkBox.setSelected(false);
 				}
+				// 로또넘버 리스트 확인용
+				System.out.println(user.getLottoNumber());
 			}
 		});
 
