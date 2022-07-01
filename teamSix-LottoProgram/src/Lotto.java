@@ -111,12 +111,15 @@ public class Lotto extends JFrame {
 		JRadioButton rdbManual = new JRadioButton("수동");
 		JRadioButton rdbAuto = new JRadioButton("자동");
 		JRadioButton rdbSemiAuto = new JRadioButton("반자동");
+		JRadioButton rdbdummy = new JRadioButton();
+
 		// 라디오 버튼 그룹
 		ButtonGroup group = new ButtonGroup();
 		group.add(rdbAuto);
 		group.add(rdbManual);
 		group.add(rdbSemiAuto);
-
+		group.add(rdbdummy);
+		
 		// 유형별 경계선 만들기; 추가기능, 번호선택, 선택번호확인 3가지
 		pnlLeftBtn.setBorder(tbBtn);
 		pnlLeft.setBorder(tbSelect);
@@ -344,6 +347,7 @@ public class Lotto extends JFrame {
 		btnConfirm.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				rdbdummy.setSelected(true);
 				if (checkedList.size() == 6) {
 					int count = 0;
 					if (count < 5) {
@@ -417,6 +421,8 @@ public class Lotto extends JFrame {
 					}
 					user.getLottoNumber().set(index, new ArrayList<Integer>());
 					lblResultNum[index].setText(user.getLottoNumber().get(index).toString());
+					// 라디오 버튼 전체 해제(더미버튼작동)
+					rdbManual.setSelected(true);
 				}
 			});
 		}
@@ -446,6 +452,8 @@ public class Lotto extends JFrame {
 						JCheckBox chkBox = listOfChkBox.get(list.get(j) - 1);
 						chkBox.setSelected(true);
 					}
+					rdbManual.setSelected(true);
+
 				}
 			});
 		}
