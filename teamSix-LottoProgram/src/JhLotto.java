@@ -61,7 +61,7 @@ public class JhLotto extends JFrame {
 	int gameCount = 0;
 
 	public JhLotto(Map<String, User> userInfo, String id) {
-		
+
 		User user = userInfo.get(id);
 		// 직전 번호 뽑는 구간.
 		List<String> lottoOne = new ArrayList<>(Arrays.asList("1021회차 : 12, 15, 17, 24, 29, 45, + 16"));
@@ -481,7 +481,7 @@ public class JhLotto extends JFrame {
 		// 버튼 크기설정
 		btnMyInfo.setPreferredSize(new Dimension(160, 60));
 		// 추천번호 액션 리스너
-		
+
 		// 추가 기능 버튼 ( 번호 추천 )
 		JButton btnRecommend = new JButton("번호 추천");
 		// 버튼 크기설정
@@ -527,7 +527,7 @@ public class JhLotto extends JFrame {
 
 				dialog = new MyInfo(JhLotto.this, user);
 				dialog.setVisible(true);
-				
+
 				int money = user.getHaveMoney();
 				lblMoney.setText(String.valueOf(money));
 			}
