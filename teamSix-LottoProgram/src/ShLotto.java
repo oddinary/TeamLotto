@@ -479,7 +479,7 @@ public class ShLotto extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				dialog = new LottoEndPage(ShLotto.this, gameCount);
+//				dialog = new LottoEndPage(ShLotto.this, gameCount);
 				dialog.setVisible(true);
 			}
 		});

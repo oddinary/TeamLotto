@@ -393,7 +393,7 @@ public class HjLotto extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				dialog = new LottoEndPage(HjLotto.this, gameCount);
+//				dialog = new LottoEndPage(HjLotto.this, gameCount);
 				dialog.setVisible(true);
 			}
 		});

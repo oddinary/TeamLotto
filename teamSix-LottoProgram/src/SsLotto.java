@@ -368,7 +368,7 @@ public class SsLotto extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				dialog = new LottoEndPage(SsLotto.this, gameCount);
+//				dialog = new LottoEndPage(SsLotto.this, gameCount);
 				dialog.setVisible(true);
 			}
 		});
