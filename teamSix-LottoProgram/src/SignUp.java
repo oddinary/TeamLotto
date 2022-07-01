@@ -55,6 +55,7 @@ public class SignUp extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				tf.setText("");
 				tf2.setText("");
+				tf3.setText("");
 				pf.setText("");
 				checkPf.setText("");
 				dispose();
