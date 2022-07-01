@@ -37,7 +37,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.Box;
 import java.awt.BorderLayout;
 
-public class Lotto extends JFrame {
+public class ShLotto extends JFrame {
 	// 체크리스트를 모두 담는 리스트.(체크박스에서 6개 체크된 리스트가 여기에 담김)
 	private List<List<Integer>> chBoxAll = new ArrayList<List<Integer>>();
 	// 로또 번호 (6개 번호) 담을 리스트 작성
@@ -56,7 +56,7 @@ public class Lotto extends JFrame {
 	// 회차 카운트//////
 	int gameCount = 0;
 
-	public Lotto(User user) {
+	public ShLotto(User user) {
 		gameCount++;
 		List<String> lottoOne = new ArrayList<>(Arrays.asList("1021회차 : 12, 15, 17, 24, 29, 45, + 16"));
 		List<String> lottoTwo = new ArrayList<>(Arrays.asList("1020회차 : 12, 27, 29, 38, 41, 45, + 6"));
@@ -112,14 +112,14 @@ public class Lotto extends JFrame {
 		JRadioButton rdbAuto = new JRadioButton("자동");
 		JRadioButton rdbSemiAuto = new JRadioButton("반자동");
 		JRadioButton rdbdummy = new JRadioButton();
-
+		
 		// 라디오 버튼 그룹
 		ButtonGroup group = new ButtonGroup();
 		group.add(rdbAuto);
 		group.add(rdbManual);
 		group.add(rdbSemiAuto);
 		group.add(rdbdummy);
-		
+
 		// 유형별 경계선 만들기; 추가기능, 번호선택, 선택번호확인 3가지
 		pnlLeftBtn.setBorder(tbBtn);
 		pnlLeft.setBorder(tbSelect);
@@ -213,7 +213,6 @@ public class Lotto extends JFrame {
 							// 체크된것 배열에 들어가는지 콘솔로 확인
 //							System.out.println(checkBox.getText());
 //							System.out.println(checkedList);
-
 						}
 					} else if (state == ItemEvent.DESELECTED) {
 						for (int i = 0; i < checkedList.size(); i++) {
@@ -343,6 +342,7 @@ public class Lotto extends JFrame {
 		for (int i = 0; i < 5; i++) {
 			chBoxAll.add(new ArrayList<Integer>());
 		}
+		
 		// 선택번호 확인 버튼.....
 		btnConfirm.addActionListener(new ActionListener() {
 			@Override
@@ -360,25 +360,23 @@ public class Lotto extends JFrame {
 							}
 						}
 					}
-
 					user.setLottoNumber(chBoxAll);
-
 					
 					if (count < 5) {
 						for (int i = 0; i < user.getLottoNumber().size(); i++) {
 							lblResultNum[i].setText(user.getLottoNumber().get(i).toString());
 						}
 					} else {
-						JOptionPane.showMessageDialog(Lotto.this, "한번에 5개까지만 구매가능합니다.");
+						JOptionPane.showMessageDialog(ShLotto.this, "한번에 5개까지만 구매가능합니다.");
 					}
 
 					checkedList = new ArrayList<Integer>();
 				} else {
-					JOptionPane.showMessageDialog(Lotto.this, "6개 다 체크해주세요.");
+					JOptionPane.showMessageDialog(ShLotto.this, "6개 다 체크해주세요.");
 				}
 				for (JCheckBox checkBox : listOfChkBox) {
 					checkBox.setSelected(false);
-				}
+				} 
 				// 로또넘버 리스트 확인용
 			}
 		});
@@ -407,11 +405,18 @@ public class Lotto extends JFrame {
 //			btnResultCopy[i] = new JButton("번호 복사");
 //		}
 		
+		ActionListener radioButtonReset = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				rdbdummy.setSelected(true);
+			}
+		};
+		
 		for (int i = 0; i < btnResultInst.length; i++) {
 			// i가 안먹혀서 새로만듬;;
 			int index = i;
-			
 			btnResultInst[index].addActionListener(new ActionListener() {
+				
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					for (int j = 0; j < user.getLottoNumber().get(index).size(); j++) {
@@ -443,7 +448,6 @@ public class Lotto extends JFrame {
 		for (int i = 0; i < btnResultCopy.length; i++) {
 			// i가 안먹혀서 새로만듬;;
 			int index = i;
-			
 			btnResultCopy[index].addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -453,7 +457,6 @@ public class Lotto extends JFrame {
 						chkBox.setSelected(true);
 					}
 					rdbManual.setSelected(true);
-
 				}
 			});
 		}
@@ -476,7 +479,7 @@ public class Lotto extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				dialog = new LottoEndPage(Lotto.this, gameCount);
+				dialog = new LottoEndPage(ShLotto.this, gameCount);
 				dialog.setVisible(true);
 			}
 		});
@@ -536,7 +539,7 @@ public class Lotto extends JFrame {
 		// 직전 5주 액션 리스너
 		btnRecent.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(Lotto.this, lottoNumber, "직전 5주차 당첨번호", JOptionPane.PLAIN_MESSAGE);
+				JOptionPane.showMessageDialog(ShLotto.this, lottoNumber, "직전 5주차 당첨번호", JOptionPane.PLAIN_MESSAGE);
 			}
 		});
 		// 보유금액 확인 구간
@@ -568,13 +571,13 @@ public class Lotto extends JFrame {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				String[] yesNo = { "로그아웃", "종료", "취소" };
-				int result = JOptionPane.showOptionDialog(Lotto.this, "종료하시겠습니까?", "종료 및 로그아웃",
+				int result = JOptionPane.showOptionDialog(ShLotto.this, "종료하시겠습니까?", "종료 및 로그아웃",
 						JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, yesNo, yesNo[0]);
 				if (result == JOptionPane.YES_OPTION) {
 					dispose();
-					Lotto.this.dispose();
+					ShLotto.this.dispose();
 					new Login().setVisible(true);
-					Lotto.this.dispose();
+					ShLotto.this.dispose();
 				} else if (result == JOptionPane.NO_OPTION) {
 					System.exit(0);
 				}
