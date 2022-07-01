@@ -6,11 +6,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.ButtonModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
@@ -48,6 +51,7 @@ public class Lotto extends JFrame {
 	// 직전 5주 번호 담는 리스트 // 06/30
 	List<List> savedLottoNum = new ArrayList<>();
 
+	int bonusNumber;
 	// 체크박스 45개
 //	JCheckBox checkBox = new JCheckBox();
 
@@ -56,8 +60,10 @@ public class Lotto extends JFrame {
 	// 회차 카운트//////
 	int gameCount = 0;
 
-	public Lotto(User user) {
+	public Lotto(Map<String, User> userInfo, String id) {
 		gameCount++;
+		User user = userInfo.get(id);
+		// 직전 번호 뽑는 구간.
 		List<String> lottoOne = new ArrayList<>(Arrays.asList("1021회차 : 12, 15, 17, 24, 29, 45, + 16"));
 		List<String> lottoTwo = new ArrayList<>(Arrays.asList("1020회차 : 12, 27, 29, 38, 41, 45, + 6"));
 		List<String> lottoThree = new ArrayList<>(Arrays.asList("1019회차 : 1, 4, 13, 17, 34, 39, + 6"));
@@ -112,14 +118,13 @@ public class Lotto extends JFrame {
 		JRadioButton rdbAuto = new JRadioButton("자동");
 		JRadioButton rdbSemiAuto = new JRadioButton("반자동");
 		JRadioButton rdbdummy = new JRadioButton();
-
 		// 라디오 버튼 그룹
 		ButtonGroup group = new ButtonGroup();
 		group.add(rdbAuto);
 		group.add(rdbManual);
 		group.add(rdbSemiAuto);
 		group.add(rdbdummy);
-		
+
 		// 유형별 경계선 만들기; 추가기능, 번호선택, 선택번호확인 3가지
 		pnlLeftBtn.setBorder(tbBtn);
 		pnlLeft.setBorder(tbSelect);
@@ -347,7 +352,7 @@ public class Lotto extends JFrame {
 		btnConfirm.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				rdbdummy.setSelected(true);
+					rdbdummy.setSelected(true);
 				if (checkedList.size() == 6) {
 					int count = 0;
 					if (count < 5) {
@@ -362,7 +367,6 @@ public class Lotto extends JFrame {
 					}
 
 					user.setLottoNumber(chBoxAll);
-
 					
 					if (count < 5) {
 						for (int i = 0; i < user.getLottoNumber().size(); i++) {
@@ -379,7 +383,11 @@ public class Lotto extends JFrame {
 				for (JCheckBox checkBox : listOfChkBox) {
 					checkBox.setSelected(false);
 				}
-				// 로또넘버 리스트 확인용
+				
+				// 라디오 버튼이 그룹화되어서 사용 불가.
+//				rdbAuto.set
+//				rdbManual.setSelected(false);
+//				rdbSemiAuto.setSelected(false);
 			}
 		});
 
@@ -453,7 +461,6 @@ public class Lotto extends JFrame {
 						chkBox.setSelected(true);
 					}
 					rdbManual.setSelected(true);
-
 				}
 			});
 		}
@@ -476,7 +483,21 @@ public class Lotto extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				dialog = new LottoEndPage(Lotto.this, gameCount);
+				// 당첨번호 뽑는 구간.
+				List<Integer> winNumber = new LinkedList<>();
+				Random random = new Random();
+				while (winNumber.size() < 6) {
+					int r = random.nextInt(45) + 1;
+					winNumber.add(r + 1);
+				}
+				Collections.sort(winNumber);
+				// 보너스 번호 뽑는 구간.
+				int a = random.nextInt(45) + 1;
+				if (!winNumber.contains(a)) {
+					bonusNumber = a;
+				}
+
+				dialog = new LottoEndPage(Lotto.this, user, winNumber, bonusNumber);
 				dialog.setVisible(true);
 			}
 		});
@@ -517,7 +538,12 @@ public class Lotto extends JFrame {
 		btnMyInfo.setPreferredSize(new Dimension(160, 60));
 		// 추천번호 액션 리스너
 		btnMyInfo.addActionListener(new ActionListener() {
+			private MyInfo dialog;
 			public void actionPerformed(ActionEvent e) {
+
+				dialog = new MyInfo(Lotto.this, user);
+				dialog.setVisible(true);
+
 			}
 		});
 		// 추가 기능 버튼 ( 번호 추천 )

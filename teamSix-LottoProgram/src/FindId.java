@@ -90,7 +90,6 @@ public class FindId extends JPanel {
 				} else {
 					JOptionPane.showMessageDialog(FindId.this, nameTf.getText() + " 이름으로 등록된 아이디가 없습니다.");
 					nameTf.setText("");
-					phoneTf.setText("");
 				}
 			}
 		});

@@ -405,13 +405,6 @@ public class ShLotto extends JFrame {
 //			btnResultCopy[i] = new JButton("번호 복사");
 //		}
 		
-		ActionListener radioButtonReset = new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				rdbdummy.setSelected(true);
-			}
-		};
-		
 		for (int i = 0; i < btnResultInst.length; i++) {
 			// i가 안먹혀서 새로만듬;;
 			int index = i;
