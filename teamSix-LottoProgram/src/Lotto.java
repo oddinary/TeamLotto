@@ -89,11 +89,15 @@ public class Lotto extends JFrame {
 		JPanel pnlAuto = new JPanel();
 		JPanel pnlButton = new JPanel();
 		JPanel pnlResult = new JPanel();
-		
+
 		// 선택번호 확인 패널
 		JPanel[] pnlResultBox = new JPanel[5];
 		for (int i = 0; i < pnlResultBox.length; i++) {
 			pnlResultBox[i] = new JPanel();
+		}
+		JPanel[] pnlResultbtn = new JPanel[5];
+		for (int i = 0; i < pnlResultBox.length; i++) {
+			pnlResultbtn[i] = new JPanel();
 		}
 
 		// 선택번호 확인 패널 ; 위의 반복문으로 해결
@@ -127,9 +131,28 @@ public class Lotto extends JFrame {
 		for (int i = 0; i < lblResult.length; i++) {
 			lblResult[i] = new JLabel((i + 1) + " 미지정");
 		}
+		// 입력한 로또가 오른쪽에 뜨기 위한 라벨
 		JLabel[] lblResultNum = new JLabel[5];
-		for (int i = 0; i < lblResultNum.length; i++) {
-			lblResultNum[i] = new JLabel("");
+		for (int i = 0; i < lblResult.length; i++) {
+			lblResultNum[i] = new JLabel();
+		}
+		// 입력한 로또 각각에 수정, 삭제 , 번호 추가 버튼을 만들기 위한 패널
+		JPanel[] pnlResultBtn = new JPanel[5];
+		for (int i = 0; i < lblResult.length; i++) {
+			pnlResultBtn[i] = new JPanel();
+		}
+		// 입력한 로또 각각에 수정, 삭제 , 번호 추가 버튼
+		JButton[] btnResultInst = new JButton[5];
+		for (int i = 0; i < lblResult.length; i++) {
+			btnResultInst[i] = new JButton("수정");
+		}
+		JButton[] btnResultDel = new JButton[5];
+		for (int i = 0; i < lblResult.length; i++) {
+			btnResultDel[i] = new JButton("삭제");
+		}
+		JButton[] btnResultCopy = new JButton[5];
+		for (int i = 0; i < lblResult.length; i++) {
+			btnResultCopy[i] = new JButton("번호 복사");
 		}
 
 		// 반복문으로 수정
@@ -200,7 +223,7 @@ public class Lotto extends JFrame {
 					Collections.sort(checkedList);
 				}
 			});
-			
+
 			// 초기화 버튼 액션 리스너
 			ActionListener reset = new ActionListener() {
 				int selectNum = Integer.parseInt(checkBox.getText());
@@ -236,13 +259,12 @@ public class Lotto extends JFrame {
 
 		// 반자동 버튼 시작시 비활성화
 		rdbSemiAuto.setEnabled(false);
-		
+
 		// 이름 참고
 //		// 로또 번호 (6개 번호) 담을 리스트 작성 
 //		List<Integer> checkedList = new ArrayList<>();
 //		List<JCheckBox> listOfChkBox = new ArrayList<>();
 //		JCheckBox checkBox = new JCheckBox();
-		
 
 		// 라디오 버튼 액션 리스너 (수동)
 		rdbManual.addItemListener(new ItemListener() {
@@ -315,7 +337,7 @@ public class Lotto extends JFrame {
 				rdbAuto.addActionListener(auto);
 			}
 		});
-		
+
 		// 선택번호 확인 버튼.....
 		btnConfirm.addActionListener(new ActionListener() {
 			@Override
@@ -383,6 +405,10 @@ public class Lotto extends JFrame {
 			pnlResultBox[i].setLayout(new BorderLayout(0, 0));
 			pnlResultBox[i].add(lblResult[i], BorderLayout.WEST);
 			pnlResultBox[i].add(lblResultNum[i], BorderLayout.CENTER);
+			pnlResultBtn[i].add(btnResultInst[i]);
+			pnlResultBtn[i].add(btnResultDel[i]);
+			pnlResultBtn[i].add(btnResultCopy[i]);
+			pnlResultBox[i].add(pnlResultBtn[i], BorderLayout.SOUTH);
 		}
 
 		// 선택번호 확인패널의 선택결과 확인 레이블. ; 위의 반복문으로 생성함
