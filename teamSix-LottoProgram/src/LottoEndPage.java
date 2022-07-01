@@ -126,7 +126,6 @@ public class LottoEndPage extends JDialog {
 					System.exit(0);
 				}
 			}
-
 		});
 
 		setLocationRelativeTo(null);

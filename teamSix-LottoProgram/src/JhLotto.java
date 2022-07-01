@@ -4,9 +4,12 @@ import java.awt.HeadlessException;
 import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import javax.swing.BoxLayout;
@@ -48,6 +51,7 @@ public class JhLotto extends JFrame {
 	// 직전 5주 번호 담는 리스트 // 06/30
 	List<List> savedLottoNum = new ArrayList<>();
 
+	int bonusNumber;
 	// 체크박스 45개
 //	JCheckBox checkBox = new JCheckBox();
 
@@ -56,8 +60,10 @@ public class JhLotto extends JFrame {
 	// 회차 카운트//////
 	int gameCount = 0;
 
-	public JhLotto(User user) {
+	public JhLotto(Map<String, User> userInfo, String id) {
 		gameCount++;
+		User user = userInfo.get(id);
+		// 직전 번호 뽑는 구간.
 		List<String> lottoOne = new ArrayList<>(Arrays.asList("1021회차 : 12, 15, 17, 24, 29, 45, + 16"));
 		List<String> lottoTwo = new ArrayList<>(Arrays.asList("1020회차 : 12, 27, 29, 38, 41, 45, + 6"));
 		List<String> lottoThree = new ArrayList<>(Arrays.asList("1019회차 : 1, 4, 13, 17, 34, 39, + 6"));
@@ -98,7 +104,7 @@ public class JhLotto extends JFrame {
 		for (int i = 0; i < pnlResultBox.length; i++) {
 			pnlResultbtn[i] = new JPanel();
 		}
-		
+
 		// 선택번호 확인 패널
 //		JPanel pnlResultA = new JPanel();
 //		JPanel pnlResultB = new JPanel();
@@ -416,14 +422,25 @@ public class JhLotto extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				dialog = new LottoEndPage(JhLotto.this, gameCount);
+				// 당첨번호 뽑는 구간.
+				List<Integer> winNumber = new LinkedList<>();
+				Random random = new Random();
+				while (winNumber.size() < 6) {
+					int r = random.nextInt(45) + 1;
+					winNumber.add(r + 1);
+				}
+				Collections.sort(winNumber);
+				// 보너스 번호 뽑는 구간.
+				int a = random.nextInt(45) + 1;
+				if (!winNumber.contains(a)) {
+					bonusNumber = a;
+				}
+
+				dialog = new LottoEndPage(JhLotto.this, user, winNumber, bonusNumber);
 				dialog.setVisible(true);
 			}
 		});
-		
-		
-		
-		
+
 		// 선택번호 확인패널의 선택결과 확인 레이블.
 		for (int i = 0; i < pnlResultBox.length; i++) {
 			pnlResult.add(pnlResultBox[i]);
@@ -432,8 +449,8 @@ public class JhLotto extends JFrame {
 			pnlResultBox[i].add(lblResultNum[i], BorderLayout.CENTER);
 			pnlResultBtn[i].add(btnResultInst[i]);
 			pnlResultBtn[i].add(btnResultDel[i]);
-			pnlResultBtn[i].add(btnResultCopy[i]);			
-			pnlResultBox[i].add(pnlResultBtn[i],BorderLayout.SOUTH);
+			pnlResultBtn[i].add(btnResultCopy[i]);
+			pnlResultBox[i].add(pnlResultBtn[i], BorderLayout.SOUTH);
 		}
 
 		// 선택번호 확인패널의 선택결과 확인 레이블.
@@ -460,8 +477,12 @@ public class JhLotto extends JFrame {
 		btnMyInfo.setPreferredSize(new Dimension(160, 60));
 		// 추천번호 액션 리스너
 		btnMyInfo.addActionListener(new ActionListener() {
+			private MyInfo dialog;
 			public void actionPerformed(ActionEvent e) {
-				
+
+				dialog = new MyInfo(JhLotto.this, user);
+				dialog.setVisible(true);
+
 			}
 		});
 		// 추가 기능 버튼 ( 번호 추천 )
@@ -491,7 +512,7 @@ public class JhLotto extends JFrame {
 		// 버튼 정렬할 레이아웃.
 		pnlRecommend.setLayout(new GridLayout(5, 0, 0, 10));
 		// 컴포넌트 추가
-		
+
 		pnlRecommend.add(lblMyName);
 		pnlRecommend.add(btnMyInfo);
 		pnlRecommend.add(btnRecommend);
