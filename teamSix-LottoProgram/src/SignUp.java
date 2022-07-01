@@ -21,11 +21,16 @@ import javax.swing.JPasswordField;
 import javax.swing.JRootPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
+import java.awt.GridLayout;
+import javax.swing.SpringLayout;
 
 public class SignUp extends JDialog {
 	private Map<String, User> map = new HashMap<String, User>();
 	private boolean idCheck;
 	private JTextField tf;
+	private JTextField tf2;
+	private JPasswordField pf;
+	private JPasswordField checkPf;
 
 	public Map<String, User> getMap() {
 		return map;
@@ -42,50 +47,7 @@ public class SignUp extends JDialog {
 		JPanel menu = new JPanel();
 		BoxLayout box = new BoxLayout(menu, BoxLayout.Y_AXIS);
 		menu.setLayout(box);
-
-		JPanel idPnl = new JPanel();
-		JLabel idLbl = new JLabel("ID 입력 (4 ~ 8자)");
-		tf = new JTextField(15);
-		JButton idCheckBtn = new JButton("ID 체크!");
 		idCheck = false;
-
-		idPnl.add(idLbl);
-		idPnl.add(tf);
-		idPnl.add(idCheckBtn);
-
-		JPanel namePnl = new JPanel();
-		JLabel nameLbl = new JLabel("이름 입력");
-		JTextField tf2 = new JTextField(15);
-
-		namePnl.add(nameLbl);
-		namePnl.add(tf2);
-
-		JPanel pwPnl = new JPanel();
-		JLabel pwLbl = new JLabel("PW 입력 (4 ~ 8자)");
-		JPasswordField pf = new JPasswordField(15);
-
-		pwPnl.add(pwLbl);
-		pwPnl.add(pf);
-
-		JPanel pwCheckPnl = new JPanel();
-		JLabel pwCheckLbl = new JLabel("PW 확인");
-		JPasswordField checkPf = new JPasswordField(15);
-
-		pwCheckPnl.add(pwCheckLbl);
-		pwCheckPnl.add(checkPf);
-
-		JPanel btnPnl = new JPanel();
-		JButton cancelBtn = new JButton("취소");
-		JButton signUpBtn = new JButton("가입");
-
-		btnPnl.add(signUpBtn);
-		btnPnl.add(cancelBtn);
-
-		menu.add(idPnl);
-		menu.add(namePnl);
-		menu.add(pwPnl);
-		menu.add(pwCheckPnl);
-		menu.add(btnPnl);
 
 		ActionListener escListener = new ActionListener() {
 			@Override
@@ -97,8 +59,6 @@ public class SignUp extends JDialog {
 				dispose();
 			}
 		};
-
-		cancelBtn.addActionListener(escListener);
 
 		// esc키 누르면 가입버튼 (단 다른 버튼이 escListener를 사용하면 곤란쓰)
 		this.getRootPane().registerKeyboardAction(escListener, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
@@ -152,19 +112,64 @@ public class SignUp extends JDialog {
 			}
 		};
 
+		// enter키 누르면 가입버튼
+		this.getRootPane().registerKeyboardAction(enterListener, KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0),
+				JComponent.WHEN_IN_FOCUSED_WINDOW);
+		SpringLayout sl_pnl = new SpringLayout();
+		sl_pnl.putConstraint(SpringLayout.NORTH, menu, 87, SpringLayout.NORTH, pnl);
+		sl_pnl.putConstraint(SpringLayout.WEST, menu, 428, SpringLayout.WEST, pnl);
+		pnl.setLayout(sl_pnl);
+
+		JPanel panel_3 = new JPanel();
+		sl_pnl.putConstraint(SpringLayout.NORTH, panel_3, 131, SpringLayout.NORTH, pnl);
+		sl_pnl.putConstraint(SpringLayout.WEST, panel_3, 56, SpringLayout.WEST, pnl);
+		pnl.add(panel_3);
+		panel_3.setLayout(new BoxLayout(panel_3, BoxLayout.Y_AXIS));
+
+		JPanel panel_2 = new JPanel();
+		panel_3.add(panel_2);
+
+		JPanel panel = new JPanel();
+		panel_2.add(panel);
+		panel.setLayout(new GridLayout(4, 0, 0, 20));
+		JLabel idLbl = new JLabel("ID 입력 (4 ~ 8자)");
+		panel.add(idLbl);
+		JLabel nameLbl = new JLabel("이름 입력");
+		panel.add(nameLbl);
+		JLabel pwLbl = new JLabel("PW 입력 (4 ~ 8자)");
+		panel.add(pwLbl);
+		JLabel pwCheckLbl = new JLabel("PW 확인");
+		panel.add(pwCheckLbl);
+
+		JPanel panel_1 = new JPanel();
+		panel_2.add(panel_1);
+		panel_1.setLayout(new GridLayout(4, 0, 0, 12));
+		tf = new JTextField(15);
+		panel_1.add(tf);
+		tf2 = new JTextField(15);
+		panel_1.add(tf2);
+		pf = new JPasswordField(15);
+		panel_1.add(pf);
+		checkPf = new JPasswordField(15);
+		panel_1.add(checkPf);
+
+		JPanel idPnl = new JPanel();
+		panel_2.add(idPnl);
+		JButton idCheckBtn = new JButton("ID 체크!");
+		idPnl.setLayout(new GridLayout(4, 0, 0, 10));
+		idPnl.add(idCheckBtn);
+
+		JPanel btnPnl = new JPanel();
+		panel_3.add(btnPnl);
+		JButton cancelBtn = new JButton("취소");
+		JButton signUpBtn = new JButton("가입");
+
+		btnPnl.add(signUpBtn);
+		btnPnl.add(cancelBtn);
+
+		cancelBtn.addActionListener(escListener);
+
 		signUpBtn.addActionListener(enterListener);
-
-		tf.addFocusListener(new FocusListener() {
-
-			@Override
-			public void focusLost(FocusEvent e) {
-			}
-
-			@Override
-			public void focusGained(FocusEvent e) {
-				idCheck = false;
-			}
-		});
 
 		idCheckBtn.addActionListener(new ActionListener() {
 			@Override
@@ -196,13 +201,21 @@ public class SignUp extends JDialog {
 			}
 		});
 
-		// enter키 누르면 가입버튼
-		this.getRootPane().registerKeyboardAction(enterListener, KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0),
-				JComponent.WHEN_IN_FOCUSED_WINDOW);
+		tf.addFocusListener(new FocusListener() {
+
+			@Override
+			public void focusLost(FocusEvent e) {
+			}
+
+			@Override
+			public void focusGained(FocusEvent e) {
+				idCheck = false;
+			}
+		});
 
 		pnl.add(menu);
 
-		add(pnl);
+		getContentPane().add(pnl);
 
 		setSize(500, 500);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
