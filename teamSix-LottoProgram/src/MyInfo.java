@@ -21,20 +21,21 @@ public class MyInfo extends JDialog {
 		JPanel pnl = new JPanel();
 		JLabel lblName = new JLabel(user.getName() + " 님의 정보");
 		JPanel pnlbtn = new JPanel();
-		
-		
-		
+
+		JPanel pnlMoney = new JPanel();
+
 		pnl.setBorder(tbMyInfo);
-		
+
 		JPanel panel = new JPanel();
 		pnl.add(panel);
-		panel.setLayout(new GridLayout(5, 0, 0, 10));
+		panel.setLayout(new GridLayout(6, 0, 0, 10));
 		panel.add(lblName);
 		JLabel lblPhone = new JLabel("전화번호 : " + user.getPhoneNum());
 		JLabel lblPrime = new JLabel("일반회원입니다.");
 		if (user.isPremier() == true) {
 			lblPrime.setText("프리미엄회원입니다.");
 		}
+
 		JButton btnPrime = new JButton("프리미엄 전환");
 		btnPrime.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -42,7 +43,8 @@ public class MyInfo extends JDialog {
 				lblPrime.setText("프리미엄회원입니다.");
 			}
 		});
-		JButton btnExit = new JButton("종료");		
+		
+		JButton btnExit = new JButton("종료");
 		btnExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
@@ -52,8 +54,19 @@ public class MyInfo extends JDialog {
 		pnlbtn.add(btnExit);
 		panel.add(lblPhone);
 		panel.add(lblPrime);
-		JLabel lblMoney = new JLabel("보유금" + user.getHaveMoney());
+		JLabel lblMoney = new JLabel("보유금 : " + user.getHaveMoney() + " 원");
 		panel.add(lblMoney);
+		JButton btnMoney = new JButton("보유금 충전(5000)");
+		btnMoney.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int money = user.getHaveMoney();
+				money += 5000;
+				user.setHaveMoney(money);
+				lblMoney.setText("보유금 : " + money + " 원");
+			}
+		});
+		pnlMoney.add(btnMoney);
+		panel.add(pnlMoney);
 		panel.add(pnlbtn);
 
 		getContentPane().add(pnl);
