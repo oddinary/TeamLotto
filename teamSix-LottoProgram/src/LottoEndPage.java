@@ -19,11 +19,12 @@ import javax.swing.GroupLayout.Alignment;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.List;
 import java.awt.event.ActionEvent;
 
 public class LottoEndPage extends JDialog {
 
-	public LottoEndPage(JFrame owner, int gameCount) {
+	public LottoEndPage(JFrame owner,User user,List<Integer> winNumber, int bonusNumber) {
 		super(owner, true);
 
 		JPanel pnlLotto = new JPanel();
@@ -45,10 +46,13 @@ public class LottoEndPage extends JDialog {
 
 		pnlTop.setBorder(tbNumber);
 		pnlTop.setLayout(new BorderLayout(0, 0));
-		JLabel lblRound = new JLabel("" + " 님의"); // 회차
+		JLabel lblRound = new JLabel(user.getName() + " 님의"); // 회차
 		pnlTop.add(lblRound, BorderLayout.NORTH);
 		JLabel lblLotto = new JLabel("당첨번호는");
 		pnlTop.add(lblLotto, BorderLayout.WEST);
+		JLabel lblWin = new JLabel();
+		lblWin.setText(" \t\t\t"+String.valueOf(winNumber) + " + " + bonusNumber);
+		pnlTop.add(lblWin, BorderLayout.CENTER);
 		JLabel lblLotto2 = new JLabel("입니다.");
 		pnlTop.add(lblLotto2, BorderLayout.EAST);
 		pnlLotto.add(pnlTop);

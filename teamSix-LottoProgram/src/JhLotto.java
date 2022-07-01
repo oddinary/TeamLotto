@@ -453,7 +453,7 @@ public class JhLotto extends JFrame {
 		// 추가 기능 패널 - pnlLeft의 왼쪽에 추가기능 버튼 패널 추가함
 		JPanel pnlRecommend = new JPanel();
 		pnlLeftBtn.add(pnlRecommend);
-		JLabel lblRound = new JLabel(gameCount + " 회차");
+		JLabel lblMyName = new JLabel(user.getName() + " 님의 로또 게임");
 		// 추가 기능 버튼 ( 나의 정보 )
 		JButton btnMyInfo = new JButton("나의 정보");
 		// 버튼 크기설정
@@ -461,6 +461,7 @@ public class JhLotto extends JFrame {
 		// 추천번호 액션 리스너
 		btnMyInfo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 			}
 		});
 		// 추가 기능 버튼 ( 번호 추천 )
@@ -490,6 +491,8 @@ public class JhLotto extends JFrame {
 		// 버튼 정렬할 레이아웃.
 		pnlRecommend.setLayout(new GridLayout(5, 0, 0, 10));
 		// 컴포넌트 추가
+		
+		pnlRecommend.add(lblMyName);
 		pnlRecommend.add(btnMyInfo);
 		pnlRecommend.add(btnRecommend);
 		pnlRecommend.add(btnRecent);
