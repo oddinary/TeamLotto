@@ -79,7 +79,7 @@ public class LottoEndPage extends JDialog {
 			lblInputNum[i] = new JLabel();
 			lblInputNum[i].setText(user.getLottoNumber().get(i).toString());
 		}
-		System.out.println(user.getLottoNumber());
+//		System.out.println(user.getLottoNumber());
 		
 		for (int i = 0; i < user.getLottoNumber().size(); i++) {
 			pnlCenter.add(pnlResultBox[i]);

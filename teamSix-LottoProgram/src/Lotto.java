@@ -566,7 +566,7 @@ public class Lotto extends JFrame {
 					}
 				}
 				Collections.sort(todayNumber);
-				System.out.println(todayNumber);
+//				System.out.println(todayNumber);
 				JOptionPane.showMessageDialog(Lotto.this, String.valueOf(todayNumber), "오늘의 추천번호",
 						JOptionPane.QUESTION_MESSAGE);
 
