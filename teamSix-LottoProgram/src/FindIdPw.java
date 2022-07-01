@@ -93,10 +93,4 @@ public class FindIdPw extends JDialog {
 		setSize(300, 300);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 	}
-	
-	public String showDialog() {
-		setVisible(true);
-		
-		return idWindow.nameTf.getText();
-	}
 }

@@ -31,6 +31,7 @@ public class SignUp extends JDialog {
 	private JTextField tf2;
 	private JPasswordField pf;
 	private JPasswordField checkPf;
+	private JTextField tf3;
 
 	public Map<String, User> getMap() {
 		return map;
@@ -69,42 +70,58 @@ public class SignUp extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				String id = tf.getText();
 				String name = tf2.getText();
+				String phoneNum = tf3.getText();
 				String pw = String.valueOf(pf.getPassword());
 				String checkPw = String.valueOf(checkPf.getPassword());
-				boolean blank = false;
+				boolean nameBlank = false;
+				boolean phoneBlank = false;
 
 				for (int i = 0; i < name.length(); i++) {
 					if (name.charAt(i) == ' ') {
-						blank = true;
+						nameBlank = true;
 					}
 				}
 
-				if (blank || name.length() < 2) {
+				for (int i = 0; i < phoneNum.length(); i++) {
+					if (phoneNum.charAt(i) == ' ') {
+						phoneBlank = true;
+					}
+				}
+
+				if (nameBlank || name.length() < 2) {
 					JOptionPane.showMessageDialog(SignUp.this, "이름은 2글자이상, 공백불가입니다.");
+					tf2.setText("");
 				} else {
-					if (pw.length() < 4 || pw.length() > 8) {
-						JOptionPane.showMessageDialog(SignUp.this, "PW는 4 ~ 8자로 입력해주세요.");
-						pf.setText("");
-						checkPf.setText("");
+					if (tf3.getText().length() != 11 || phoneBlank) {
+						JOptionPane.showMessageDialog(SignUp.this, "xxx-xxxx-xxxx (-빼고 입력해주세요, 공백불가)");
+						tf3.setText("");
 					} else {
-						if (idCheck == false) {
-							JOptionPane.showMessageDialog(SignUp.this, "ID체크가 필요합니다.");
+						if (pw.length() < 4 || pw.length() > 8) {
+							JOptionPane.showMessageDialog(SignUp.this, "PW는 4 ~ 8자로 입력해주세요.");
+							pf.setText("");
+							checkPf.setText("");
 						} else {
-							if (pw.equals(checkPw)) {
-								User user = new User();
-								map.put(id, user);
-								user.setName(tf2.getText());
-								user.setPw(String.valueOf(pf.getPassword()));
-								JOptionPane.showMessageDialog(SignUp.this, "가입 축하드립니다.");
-								tf.setText("");
-								tf2.setText("");
-								pf.setText("");
-								checkPf.setText("");
-								dispose();
+							if (idCheck == false) {
+								JOptionPane.showMessageDialog(SignUp.this, "ID체크가 필요합니다.");
 							} else {
-								JOptionPane.showMessageDialog(SignUp.this, "비밀번호가 일치하지않습니다.");
-								pf.setText("");
-								checkPf.setText("");
+								if (pw.equals(checkPw)) {
+									User user = new User();
+									map.put(id, user);
+									user.setName(tf2.getText());
+									user.setPhoneNum(tf3.getText());
+									user.setPw(String.valueOf(pf.getPassword()));
+									JOptionPane.showMessageDialog(SignUp.this, "가입 축하드립니다.");
+									tf.setText("");
+									tf2.setText("");
+									tf3.setText("");
+									pf.setText("");
+									checkPf.setText("");
+									dispose();
+								} else {
+									JOptionPane.showMessageDialog(SignUp.this, "비밀번호가 일치하지않습니다.");
+									pf.setText("");
+									checkPf.setText("");
+								}
 							}
 						}
 					}
@@ -131,11 +148,13 @@ public class SignUp extends JDialog {
 
 		JPanel panel = new JPanel();
 		panel_2.add(panel);
-		panel.setLayout(new GridLayout(4, 0, 0, 20));
+		panel.setLayout(new GridLayout(5, 0, 0, 20));
 		JLabel idLbl = new JLabel("ID 입력 (4 ~ 8자)");
 		panel.add(idLbl);
-		JLabel nameLbl = new JLabel("이름 입력");
+		JLabel nameLbl = new JLabel("이름 입력 (2자 이상)");
 		panel.add(nameLbl);
+		JLabel phoneLbl = new JLabel("전화번호 (-없이 11자)");
+		panel.add(phoneLbl);
 		JLabel pwLbl = new JLabel("PW 입력 (4 ~ 8자)");
 		panel.add(pwLbl);
 		JLabel pwCheckLbl = new JLabel("PW 확인");
@@ -143,11 +162,13 @@ public class SignUp extends JDialog {
 
 		JPanel panel_1 = new JPanel();
 		panel_2.add(panel_1);
-		panel_1.setLayout(new GridLayout(4, 0, 0, 12));
+		panel_1.setLayout(new GridLayout(5, 0, 0, 12));
 		tf = new JTextField(15);
 		panel_1.add(tf);
 		tf2 = new JTextField(15);
 		panel_1.add(tf2);
+		tf3 = new JTextField(15);
+		panel_1.add(tf3);
 		pf = new JPasswordField(15);
 		panel_1.add(pf);
 		checkPf = new JPasswordField(15);
@@ -156,7 +177,7 @@ public class SignUp extends JDialog {
 		JPanel idPnl = new JPanel();
 		panel_2.add(idPnl);
 		JButton idCheckBtn = new JButton("ID 체크!");
-		idPnl.setLayout(new GridLayout(4, 0, 0, 10));
+		idPnl.setLayout(new GridLayout(5, 0, 0, 10));
 		idPnl.add(idCheckBtn);
 
 		JPanel btnPnl = new JPanel();
