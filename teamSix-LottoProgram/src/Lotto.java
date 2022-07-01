@@ -276,7 +276,8 @@ public class Lotto extends JFrame {
 
 		// 라디오 버튼 액션 리스너 (수동)
 		rdbManual.addItemListener(new ItemListener() {
-			@Override
+
+	@Override
 			public void itemStateChanged(ItemEvent e) {
 				if (e.getStateChange() == ItemEvent.SELECTED) {
 					for (JCheckBox checkBox : listOfChkBox) {
@@ -490,24 +491,27 @@ public class Lotto extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// 당첨번호 뽑는 구간.
-				List<Integer> winNumber = new LinkedList<>();
-				Random random = new Random();
-				while (winNumber.size() < 6) {
-					int r = random.nextInt(45) + 1;
-					winNumber.add(r + 1);
-				}
-				Collections.sort(winNumber);
-				// 보너스 번호 뽑는 구간.
-				int a = random.nextInt(45) + 1;
-				if (!winNumber.contains(a)) {
-					bonusNumber = a;
-				}
+				   // 당첨번호 뽑는 구간.
+	            List<Integer> winNumber = new LinkedList<>();
+	            Random random = new Random();
+	            while (winNumber.size() < 6) {
+	               int r = (random.nextInt(45)) + 1;
+	               if (!winNumber.contains(r)) {
+	                  winNumber.add(r);
+	               }
+	            }
+	            Collections.sort(winNumber);
+	            // 보너스 번호 뽑는 구간.
+	            int a = (random.nextInt(45)) + 1;
+	            if (!winNumber.contains(a)) {
+	               bonusNumber = a;
+	            }
 
-				dialog = new LottoEndPage(Lotto.this, user, winNumber, bonusNumber);
-				dialog.setVisible(true);
+	            dialog = new LottoEndPage(Lotto.this, user, winNumber, bonusNumber);
+	            dialog.setVisible(true);
 			}
 		});
+
 
 		// 선택번호 확인패널의 선택결과 확인 레이블.
 		for (int i = 0; i < pnlResultBox.length; i++) {
