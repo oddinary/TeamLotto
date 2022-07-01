@@ -61,7 +61,7 @@ public class JhLotto extends JFrame {
 	int gameCount = 0;
 
 	public JhLotto(Map<String, User> userInfo, String id) {
-		gameCount++;
+		
 		User user = userInfo.get(id);
 		// 직전 번호 뽑는 구간.
 		List<String> lottoOne = new ArrayList<>(Arrays.asList("1021회차 : 12, 15, 17, 24, 29, 45, + 16"));
@@ -402,6 +402,9 @@ public class JhLotto extends JFrame {
 		pnlButton.add(btnReset);
 		pnlButton.add(btnConfirm);
 
+//		for (int i = 0; i < user.getLottoNumber().size(); i++) {
+//			lblResultNum[i].setText(user.getLottoNumber().get(i).toString());
+//		}
 // ***********************************************************************
 // ************************** 선택번호 확인 ***********************************
 		// 구매금액.
@@ -426,17 +429,19 @@ public class JhLotto extends JFrame {
 				List<Integer> winNumber = new LinkedList<>();
 				Random random = new Random();
 				while (winNumber.size() < 6) {
-					int r = random.nextInt(45) + 1;
-					winNumber.add(r + 1);
+					int r = (random.nextInt(45)) + 1;
+					if (!winNumber.contains(r)) {
+						winNumber.add(r);
+					}
 				}
 				Collections.sort(winNumber);
 				// 보너스 번호 뽑는 구간.
-				int a = random.nextInt(45) + 1;
+				int a = (random.nextInt(45)) + 1;
 				if (!winNumber.contains(a)) {
 					bonusNumber = a;
 				}
 
-				dialog = new LottoEndPage(JhLotto.this, user, winNumber, bonusNumber);
+				dialog = new LottoEndPage(JhLotto.this, user, winNumber, bonusNumber, gameCount);
 				dialog.setVisible(true);
 			}
 		});
@@ -476,15 +481,7 @@ public class JhLotto extends JFrame {
 		// 버튼 크기설정
 		btnMyInfo.setPreferredSize(new Dimension(160, 60));
 		// 추천번호 액션 리스너
-		btnMyInfo.addActionListener(new ActionListener() {
-			private MyInfo dialog;
-			public void actionPerformed(ActionEvent e) {
-
-				dialog = new MyInfo(JhLotto.this, user);
-				dialog.setVisible(true);
-
-			}
-		});
+		
 		// 추가 기능 버튼 ( 번호 추천 )
 		JButton btnRecommend = new JButton("번호 추천");
 		// 버튼 크기설정
@@ -507,6 +504,7 @@ public class JhLotto extends JFrame {
 		// 보유금액 확인 구간
 		JPanel pnlHasMoney = new JPanel();
 		JLabel lblHasMoney = new JLabel("보유금액");
+		JLabel lblMoney = new JLabel(String.valueOf(user.getHaveMoney()));
 		JLabel lblWon2 = new JLabel("원");
 
 		// 버튼 정렬할 레이아웃.
@@ -520,7 +518,20 @@ public class JhLotto extends JFrame {
 		pnlRecommend.add(pnlHasMoney);
 		pnlHasMoney.setLayout(new BorderLayout(0, 0));
 		pnlHasMoney.add(lblHasMoney, BorderLayout.WEST);
+		pnlHasMoney.add(lblMoney, BorderLayout.CENTER);
 		pnlHasMoney.add(lblWon2, BorderLayout.EAST);
+		btnMyInfo.addActionListener(new ActionListener() {
+			private MyInfo dialog;
+
+			public void actionPerformed(ActionEvent e) {
+
+				dialog = new MyInfo(JhLotto.this, user);
+				dialog.setVisible(true);
+				
+				int money = user.getHaveMoney();
+				lblMoney.setText(String.valueOf(money));
+			}
+		});
 // *********************************************************************
 // ************************* 메인패널 추가 **********************************
 		// 메인 패널에 주요 패널 3가지 집어넣기 / 3분할 되어있음
