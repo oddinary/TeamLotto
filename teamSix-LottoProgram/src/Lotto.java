@@ -353,7 +353,7 @@ public class Lotto extends JFrame {
 		btnConfirm.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-					rdbdummy.setSelected(true);
+				rdbdummy.setSelected(true);
 				if (checkedList.size() == 6) {
 					int count = 0;
 					if (count < 5) {
@@ -376,13 +376,14 @@ public class Lotto extends JFrame {
 					} else {
 						JOptionPane.showMessageDialog(Lotto.this, "한번에 5개까지만 구매가능합니다.");
 					}
-
 					checkedList = new ArrayList<Integer>();
+					
+					for (JCheckBox checkBox : listOfChkBox) {
+						checkBox.setSelected(false);
+					}
 				} else {
+					rdbManual.setSelected(true);
 					JOptionPane.showMessageDialog(Lotto.this, "6개 다 체크해주세요.");
-				}
-				for (JCheckBox checkBox : listOfChkBox) {
-					checkBox.setSelected(false);
 				}
 				
 				// 라디오 버튼이 그룹화되어서 사용 불가.
@@ -423,6 +424,9 @@ public class Lotto extends JFrame {
 			btnResultInst[index].addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
+					for (JCheckBox checkBox : listOfChkBox) {
+						checkBox.setSelected(false);
+					}
 					for (int j = 0; j < user.getLottoNumber().get(index).size(); j++) {
 						List<Integer> list = user.getLottoNumber().get(index);
 						JCheckBox chkBox = listOfChkBox.get(list.get(j) - 1);
@@ -456,6 +460,9 @@ public class Lotto extends JFrame {
 			btnResultCopy[index].addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
+					for (JCheckBox checkBox : listOfChkBox) {
+						checkBox.setSelected(false);
+					}
 					for (int j = 0; j < user.getLottoNumber().get(index).size(); j++) {
 						List<Integer> list = user.getLottoNumber().get(index);
 						JCheckBox chkBox = listOfChkBox.get(list.get(j) - 1);
