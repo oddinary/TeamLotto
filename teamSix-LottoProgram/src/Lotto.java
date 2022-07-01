@@ -59,6 +59,8 @@ public class Lotto extends JFrame {
 //	int checkCount = 0;
 	// 회차 카운트//////
 	int gameCount = 0;
+	//로또타입필드
+	String lottoType;
 
 	public Lotto(Map<String, User> userInfo, String id) {
 		gameCount++;
@@ -143,10 +145,11 @@ public class Lotto extends JFrame {
 		JButton btnConfirm = new JButton("확인 ");
 		JButton btnResult = new JButton("결과");
 
-		String type = "";
+		lottoType = "미지정";
+		
 		JLabel[] lblResult = new JLabel[5];
 		for (int i = 0; i < lblResult.length; i++) {
-			lblResult[i] = new JLabel((i + 1) + ". " + type);
+			lblResult[i] = new JLabel((i + 1) + ". " + lottoType);
 		}
 
 		// 입력한 로또가 오른쪽에 뜨기 위한 라벨
@@ -302,6 +305,7 @@ public class Lotto extends JFrame {
 					rdbSemiAuto.setEnabled(false);
 				}
 				Collections.sort(checkedList);
+				lottoType = "수동";
 			}
 		});
 
@@ -316,14 +320,11 @@ public class Lotto extends JFrame {
 						int autoNum = (int) (Math.random() * 45);
 						JCheckBox chkBox = listOfChkBox.get(autoNum);
 						chkBox.setSelected(true);
-						// 체크리스트 확인용
-
-//						System.out.println(checkedList);
 					} else {
 						break;
 					}
 				}
-//				}
+				lottoType = "자동";
 			}
 		};
 		rdbAuto.addActionListener(auto);
@@ -343,6 +344,7 @@ public class Lotto extends JFrame {
 						break;
 					}
 				}
+				lottoType = "반자동";
 			}
 		});
 
@@ -352,7 +354,7 @@ public class Lotto extends JFrame {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				Toolkit.getDefaultToolkit().beep();
-				btnReset.doClick();
+				btnReset.doClick(0);
 				rdbAuto.addActionListener(auto);
 			}
 		});
@@ -380,9 +382,11 @@ public class Lotto extends JFrame {
 							lblResultNum[i].setText(user.getLottoNumber().get(i).toString());
 						}
 					} else {
+						count--;
 						JOptionPane.showMessageDialog(Lotto.this, "한번에 5개까지만 구매가능합니다.");
 					}
 					checkedList = new ArrayList<Integer>();
+					lblResult[count].setText((count + 1) + ". " + lottoType);
 					
 					for (JCheckBox checkBox : listOfChkBox) {
 						checkBox.setSelected(false);
@@ -422,7 +426,8 @@ public class Lotto extends JFrame {
 //		for (int i = 0; i < lblResult.length; i++) {
 //			btnResultCopy[i] = new JButton("번호 복사");
 //		}
-
+		
+		// '수정'버튼
 		for (int i = 0; i < btnResultInst.length; i++) {
 			// i가 안먹혀서 새로만듬;;
 			int index = i;
@@ -442,10 +447,12 @@ public class Lotto extends JFrame {
 					lblResultNum[index].setText(user.getLottoNumber().get(index).toString());
 					// 라디오 버튼 전체 해제(더미버튼작동)
 					rdbManual.setSelected(true);
+					lottoType = "미지정";
 				}
 			});
 		}
 
+		//'삭제'버튼
 		for (int i = 0; i < btnResultDel.length; i++) {
 			// i가 안먹혀서 새로만듬;;
 			int index = i;
@@ -455,10 +462,12 @@ public class Lotto extends JFrame {
 				public void actionPerformed(ActionEvent e) {
 					user.getLottoNumber().set(index, new ArrayList<Integer>());
 					lblResultNum[index].setText(user.getLottoNumber().get(index).toString());
+					lottoType = "미지정";
 				}
 			});
 		}
 
+		//'전체복사'버튼
 		for (int i = 0; i < btnResultCopy.length; i++) {
 			// i가 안먹혀서 새로만듬;;
 			int index = i;
@@ -472,6 +481,7 @@ public class Lotto extends JFrame {
 						chkBox.setSelected(true);
 					}
 					rdbManual.setSelected(true);
+					lottoType = "미지정";
 				}
 			});
 		}
