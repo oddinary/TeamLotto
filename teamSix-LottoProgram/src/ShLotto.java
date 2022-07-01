@@ -112,7 +112,7 @@ public class ShLotto extends JFrame {
 		JRadioButton rdbAuto = new JRadioButton("자동");
 		JRadioButton rdbSemiAuto = new JRadioButton("반자동");
 		JRadioButton rdbdummy = new JRadioButton();
-		
+
 		// 라디오 버튼 그룹
 		ButtonGroup group = new ButtonGroup();
 		group.add(rdbAuto);
@@ -342,12 +342,13 @@ public class ShLotto extends JFrame {
 		for (int i = 0; i < 5; i++) {
 			chBoxAll.add(new ArrayList<Integer>());
 		}
-		
+
 		// 선택번호 확인 버튼.....
 		btnConfirm.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				rdbdummy.setSelected(true);
+
 				if (checkedList.size() == 6) {
 					int count = 0;
 					if (count < 5) {
@@ -361,7 +362,7 @@ public class ShLotto extends JFrame {
 						}
 					}
 					user.setLottoNumber(chBoxAll);
-					
+
 					if (count < 5) {
 						for (int i = 0; i < user.getLottoNumber().size(); i++) {
 							lblResultNum[i].setText(user.getLottoNumber().get(i).toString());
@@ -369,14 +370,15 @@ public class ShLotto extends JFrame {
 					} else {
 						JOptionPane.showMessageDialog(ShLotto.this, "한번에 5개까지만 구매가능합니다.");
 					}
-
 					checkedList = new ArrayList<Integer>();
+					
+					for (JCheckBox checkBox : listOfChkBox) {
+						checkBox.setSelected(false);
+					}
 				} else {
+					rdbManual.setSelected(true);
 					JOptionPane.showMessageDialog(ShLotto.this, "6개 다 체크해주세요.");
 				}
-				for (JCheckBox checkBox : listOfChkBox) {
-					checkBox.setSelected(false);
-				} 
 				// 로또넘버 리스트 확인용
 			}
 		});
@@ -391,7 +393,7 @@ public class ShLotto extends JFrame {
 // ***********************************************************************
 // ************************** 선택번호 확인 ***********************************
 		// 수정 , 삭제 , 복사 버튼 구현.
-		
+
 //		JButton[] btnResultInst = new JButton[5];
 //		for (int i = 0; i < lblResult.length; i++) {
 //			btnResultInst[i] = new JButton("수정");
@@ -404,14 +406,16 @@ public class ShLotto extends JFrame {
 //		for (int i = 0; i < lblResult.length; i++) {
 //			btnResultCopy[i] = new JButton("번호 복사");
 //		}
-		
+
 		for (int i = 0; i < btnResultInst.length; i++) {
 			// i가 안먹혀서 새로만듬;;
 			int index = i;
 			btnResultInst[index].addActionListener(new ActionListener() {
-				
 				@Override
 				public void actionPerformed(ActionEvent e) {
+					for (JCheckBox checkBox : listOfChkBox) {
+						checkBox.setSelected(false);
+					}
 					for (int j = 0; j < user.getLottoNumber().get(index).size(); j++) {
 						List<Integer> list = user.getLottoNumber().get(index);
 						JCheckBox chkBox = listOfChkBox.get(list.get(j) - 1);
@@ -421,14 +425,16 @@ public class ShLotto extends JFrame {
 					lblResultNum[index].setText(user.getLottoNumber().get(index).toString());
 					// 라디오 버튼 전체 해제(더미버튼작동)
 					rdbManual.setSelected(true);
+					// 최종 리스트 출력
+					System.out.println(chBoxAll);
 				}
 			});
 		}
-		
+
 		for (int i = 0; i < btnResultDel.length; i++) {
 			// i가 안먹혀서 새로만듬;;
 			int index = i;
-			
+
 			btnResultDel[index].addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -437,13 +443,16 @@ public class ShLotto extends JFrame {
 				}
 			});
 		}
-		
+
 		for (int i = 0; i < btnResultCopy.length; i++) {
 			// i가 안먹혀서 새로만듬;;
 			int index = i;
 			btnResultCopy[index].addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
+					for (JCheckBox checkBox : listOfChkBox) {
+						checkBox.setSelected(false);
+					}
 					for (int j = 0; j < user.getLottoNumber().get(index).size(); j++) {
 						List<Integer> list = user.getLottoNumber().get(index);
 						JCheckBox chkBox = listOfChkBox.get(list.get(j) - 1);
@@ -453,7 +462,7 @@ public class ShLotto extends JFrame {
 				}
 			});
 		}
-		
+
 		// 구매금액.
 		JPanel pnlLast = new JPanel();
 		pnlLast.setLayout(new BorderLayout(0, 0));
