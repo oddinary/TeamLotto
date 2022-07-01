@@ -519,7 +519,7 @@ public class Lotto extends JFrame {
 					bonusNumber = a;
 				}
 
-				dialog = new LottoEndPage(Lotto.this, user, winNumber, bonusNumber);
+				dialog = new LottoEndPage(Lotto.this, user, winNumber, bonusNumber, gameCount);
 				dialog.setVisible(true);
 			}
 		});
