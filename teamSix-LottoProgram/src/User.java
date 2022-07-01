@@ -5,16 +5,16 @@ import java.util.List;
 public class User {
 	String pw;
 	String name;
-	int phoneNum;
+	String phoneNum;
 	boolean Premier;
 	int haveMoney;
 	List<List<Integer>> lottoNumber;
 
-	public int getPhoneNum() {
+	public String getPhoneNum() {
 		return phoneNum;
 	}
 
-	public void setPhoneNum(int phoneNum) {
+	public void setPhoneNum(String phoneNum) {
 		this.phoneNum = phoneNum;
 	}
 
