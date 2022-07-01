@@ -31,6 +31,7 @@ public class SignUp extends JDialog {
 	private JTextField tf2;
 	private JPasswordField pf;
 	private JPasswordField checkPf;
+	private JTextField tf3;
 
 	public Map<String, User> getMap() {
 		return map;
@@ -131,11 +132,13 @@ public class SignUp extends JDialog {
 
 		JPanel panel = new JPanel();
 		panel_2.add(panel);
-		panel.setLayout(new GridLayout(4, 0, 0, 20));
+		panel.setLayout(new GridLayout(5, 0, 0, 20));
 		JLabel idLbl = new JLabel("ID 입력 (4 ~ 8자)");
 		panel.add(idLbl);
 		JLabel nameLbl = new JLabel("이름 입력");
 		panel.add(nameLbl);
+		JLabel phoneLbl = new JLabel("전화번호 입력");
+		panel.add(phoneLbl);
 		JLabel pwLbl = new JLabel("PW 입력 (4 ~ 8자)");
 		panel.add(pwLbl);
 		JLabel pwCheckLbl = new JLabel("PW 확인");
@@ -143,11 +146,13 @@ public class SignUp extends JDialog {
 
 		JPanel panel_1 = new JPanel();
 		panel_2.add(panel_1);
-		panel_1.setLayout(new GridLayout(4, 0, 0, 12));
+		panel_1.setLayout(new GridLayout(5, 0, 0, 12));
 		tf = new JTextField(15);
 		panel_1.add(tf);
 		tf2 = new JTextField(15);
 		panel_1.add(tf2);
+		tf3 = new JTextField(15);
+		panel_1.add(tf3);
 		pf = new JPasswordField(15);
 		panel_1.add(pf);
 		checkPf = new JPasswordField(15);
@@ -156,7 +161,7 @@ public class SignUp extends JDialog {
 		JPanel idPnl = new JPanel();
 		panel_2.add(idPnl);
 		JButton idCheckBtn = new JButton("ID 체크!");
-		idPnl.setLayout(new GridLayout(4, 0, 0, 10));
+		idPnl.setLayout(new GridLayout(5, 0, 0, 10));
 		idPnl.add(idCheckBtn);
 
 		JPanel btnPnl = new JPanel();

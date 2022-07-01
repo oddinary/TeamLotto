@@ -5,9 +5,18 @@ import java.util.List;
 public class User {
 	String pw;
 	String name;
+	int phoneNum;
 	boolean Premier;
 	int haveMoney;
 	List<List<Integer>> lottoNumber;
+
+	public int getPhoneNum() {
+		return phoneNum;
+	}
+
+	public void setPhoneNum(int phoneNum) {
+		this.phoneNum = phoneNum;
+	}
 
 	public String getPw() {
 		return pw;
