@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,10 +33,12 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.net.URL;
 import java.awt.event.ActionEvent;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import javax.swing.GroupLayout;
+import javax.swing.ImageIcon;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.Box;
 import java.awt.BorderLayout;
@@ -58,7 +61,7 @@ public class Lotto extends JFrame {
 	// 체크박스 체크 개수 카운트.
 //	int checkCount = 0;
 	// 회차 카운트//////
-	int gameCount = 0;
+	int gameCount = 1022;
 	// 로또타입필드
 	String lottoType;
 
@@ -194,13 +197,17 @@ public class Lotto extends JFrame {
 
 //	*************************************************************************
 //	************************ 번호 선택 (체크박스잇는 패널) ****************************
-
 		// 구현해야 할 것 : 수동 자동 반자동 선택 전에 체크 눌렀을경우 경고 메세지 뜨게
 		for (int i = 1; i <= 45; i++) {
-			JCheckBox checkBox = new JCheckBox(String.valueOf(i));
-
+			URL url = Lotto.class.getClassLoader().getResource("images/un" + String.format("%02d", i) + ".png");
+			URL url2 = Lotto.class.getClassLoader().getResource("images/" + String.format("%02d", i) + ".png");
+			ImageIcon icon = new ImageIcon(url);
+			ImageIcon setIcon = new ImageIcon(url2);
+			JCheckBox checkBox = new JCheckBox(icon);
+			checkBox.setSelectedIcon(setIcon);
 			pnlNum.add(checkBox);
 
+			int index = i;
 			// 체크박스 액션 리스너
 			checkBox.addActionListener(new ActionListener() {
 				@Override
@@ -222,7 +229,7 @@ public class Lotto extends JFrame {
 				@Override
 				public void itemStateChanged(ItemEvent e) {
 					int state = e.getStateChange();
-					int selectNum = Integer.parseInt(checkBox.getText());
+					int selectNum = index;
 					if (state == ItemEvent.SELECTED) {
 						if (checkedList.size() <= 6) {
 							checkedList.add(selectNum);
@@ -247,7 +254,7 @@ public class Lotto extends JFrame {
 
 			// 초기화 버튼 액션 리스너
 			ActionListener reset = new ActionListener() {
-				int selectNum = Integer.parseInt(checkBox.getText());
+				int selectNum = index;
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -320,6 +327,8 @@ public class Lotto extends JFrame {
 						int autoNum = (int) (Math.random() * 45);
 						JCheckBox chkBox = listOfChkBox.get(autoNum);
 						chkBox.setSelected(true);
+						// 랜덤으로 선택된 수만 활성화
+						chkBox.setEnabled(true);
 					} else {
 						break;
 					}
@@ -338,6 +347,12 @@ public class Lotto extends JFrame {
 						int autoNum = (int) (Math.random() * 45);
 						JCheckBox chkBox = listOfChkBox.get(autoNum);
 						chkBox.setSelected(true);
+						// 고른 수만 활성화!
+						for (int i = 0; i < listOfChkBox.size(); i++) {
+							if (listOfChkBox.get(i).isSelected()) {
+								listOfChkBox.get(i).setEnabled(true);
+							}
+						}
 						// 체크리스트 확인용
 //						System.out.println(checkedList);
 					} else {
@@ -380,6 +395,12 @@ public class Lotto extends JFrame {
 					if (count < 5) {
 						for (int i = 0; i < user.getLottoNumber().size(); i++) {
 							if (!user.getLottoNumber().get(i).toString().equals("[]")) {
+								for (int j = 0; j < user.getLottoNumber().get(i).size(); j++) {
+									int num = user.getLottoNumber().get(i).get(j);
+									URL url = Lotto.class.getClassLoader().getResource("images/small" + String.format("%02d", num) + ".png");
+									ImageIcon icon = new ImageIcon(url);
+//									lblResultNum[i].appen
+								}
 								lblResultNum[i].setText(user.getLottoNumber().get(i).toString());
 							}
 						}
@@ -392,12 +413,14 @@ public class Lotto extends JFrame {
 
 					for (JCheckBox checkBox : listOfChkBox) {
 						checkBox.setSelected(false);
+						checkBox.setEnabled(false);
 					}
 				} else {
 					rdbManual.setSelected(true);
 					JOptionPane.showMessageDialog(Lotto.this, "6개 다 체크해주세요.");
 				}
 
+				
 				// 배열이 생기면 버튼들 활성화
 				for (int i = 0; i < btnResultInst.length; i++) {
 					if (user.getLottoNumber().get(i).size() > 2) {
@@ -604,6 +627,7 @@ public class Lotto extends JFrame {
 		// 추가 기능 패널 - pnlLeft의 왼쪽에 추가기능 버튼 패널 추가함
 		JPanel pnlRecommend = new JPanel();
 		pnlLeftBtn.add(pnlRecommend);
+		JLabel countGame = new JLabel(gameCount + "회차");
 		JLabel lblMyName = new JLabel(user.getName() + " 님의 로또 게임");
 		// 추가 기능 버튼 ( 나의 정보 )
 		JButton btnMyInfo = new JButton("나의 정보");
@@ -614,6 +638,13 @@ public class Lotto extends JFrame {
 		JButton btnRecommend = new JButton("번호 추천");
 		// 버튼 크기설정
 		btnRecommend.setPreferredSize(new Dimension(160, 60));
+		
+		if (user.isPremier()) {
+			btnRecommend.setEnabled(true);
+		} else {
+			btnRecommend.setEnabled(false);
+		}
+		
 		// 추천번호 액션 리스너
 		btnRecommend.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -652,6 +683,7 @@ public class Lotto extends JFrame {
 		pnlRecommend.setLayout(new GridLayout(5, 0, 0, 10));
 
 		// 컴포넌트 추가
+//		pnlRecommend.add(countGame);  // <- 이거 추가 가능하게 부탁드려요 ㅠㅠ
 		pnlRecommend.add(lblMyName);
 		pnlRecommend.add(btnMyInfo);
 		pnlRecommend.add(btnRecommend);
@@ -672,6 +704,13 @@ public class Lotto extends JFrame {
 				dialog.setVisible(true);
 
 				int money = user.getHaveMoney();
+				boolean premier = user.isPremier();
+				
+				if (premier) {
+					btnRecommend.setEnabled(true);
+				} else {
+					btnRecommend.setEnabled(false);
+				}
 				lblMoney.setText(String.valueOf(money));
 
 			}
