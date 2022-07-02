@@ -156,5 +156,7 @@ public class LottoEndPage extends JDialog {
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		// 창의 크기를 조절할수 없게끔
 		setResizable(false);
+		// 창이 중앙에 뜨게끔
+		setLocationRelativeTo(null);
 	}
 }
