@@ -59,7 +59,7 @@ public class Lotto extends JFrame {
 //	int checkCount = 0;
 	// 회차 카운트//////
 	int gameCount = 0;
-	//로또타입필드
+	// 로또타입필드
 	String lottoType;
 
 	public Lotto(Map<String, User> userInfo, String id) {
@@ -146,7 +146,7 @@ public class Lotto extends JFrame {
 		JButton btnResult = new JButton("결과");
 
 		lottoType = "미지정";
-		
+
 		JLabel[] lblResult = new JLabel[5];
 		for (int i = 0; i < lblResult.length; i++) {
 			lblResult[i] = new JLabel((i + 1) + ". " + lottoType);
@@ -379,7 +379,9 @@ public class Lotto extends JFrame {
 
 					if (count < 5) {
 						for (int i = 0; i < user.getLottoNumber().size(); i++) {
-							lblResultNum[i].setText(user.getLottoNumber().get(i).toString());
+							if (!user.getLottoNumber().get(i).toString().equals("[]")) {
+								lblResultNum[i].setText(user.getLottoNumber().get(i).toString());
+							}
 						}
 					} else {
 						count--;
@@ -387,7 +389,7 @@ public class Lotto extends JFrame {
 					}
 					checkedList = new ArrayList<Integer>();
 					lblResult[count].setText((count + 1) + ". " + lottoType);
-					
+
 					for (JCheckBox checkBox : listOfChkBox) {
 						checkBox.setSelected(false);
 					}
@@ -396,6 +398,14 @@ public class Lotto extends JFrame {
 					JOptionPane.showMessageDialog(Lotto.this, "6개 다 체크해주세요.");
 				}
 
+				// 배열이 생기면 버튼들 활성화
+				for (int i = 0; i < btnResultInst.length; i++) {
+					if (user.getLottoNumber().get(i).size() > 2) {
+						btnResultInst[i].setEnabled(true);
+						btnResultDel[i].setEnabled(true);
+						btnResultCopy[i].setEnabled(true);
+					}
+				}
 				// 라디오 버튼이 그룹화되어서 사용 불가.
 //				rdbAuto.set
 //				rdbManual.setSelected(false);
@@ -426,11 +436,24 @@ public class Lotto extends JFrame {
 //		for (int i = 0; i < lblResult.length; i++) {
 //			btnResultCopy[i] = new JButton("번호 복사");
 //		}
+
 		
+		// 수정 버튼 , 삭제 버튼 , 번호복사 버튼 비활성화후 배열 들어오면 활성화
+		for (int i = 0; i < btnResultInst.length; i++) {
+			btnResultInst[i].setEnabled(false);
+			btnResultDel[i].setEnabled(false);
+			btnResultCopy[i].setEnabled(false);
+		}
+
+		
+
 		// '수정'버튼
+
 		for (int i = 0; i < btnResultInst.length; i++) {
 			// i가 안먹혀서 새로만듬;;
 			int index = i;
+
+			;
 
 			btnResultInst[index].addActionListener(new ActionListener() {
 				@Override
@@ -444,15 +467,24 @@ public class Lotto extends JFrame {
 						chkBox.setSelected(true);
 					}
 					user.getLottoNumber().set(index, new ArrayList<Integer>());
-					lblResultNum[index].setText(user.getLottoNumber().get(index).toString());
+					lblResultNum[index].setText("");
 					// 라디오 버튼 전체 해제(더미버튼작동)
 					rdbManual.setSelected(true);
 					lottoType = "미지정";
+					
+					//배열이 사라지면 버튼들 비활성화
+					for (int i = 0; i < btnResultInst.length; i++) {
+						if (user.getLottoNumber().get(i).size() < 2) {
+							btnResultInst[i].setEnabled(false);
+							btnResultDel[i].setEnabled(false);
+							btnResultCopy[i].setEnabled(false);
+						}
+					}
 				}
 			});
 		}
 
-		//'삭제'버튼
+		// '삭제'버튼
 		for (int i = 0; i < btnResultDel.length; i++) {
 			// i가 안먹혀서 새로만듬;;
 			int index = i;
@@ -461,13 +493,22 @@ public class Lotto extends JFrame {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					user.getLottoNumber().set(index, new ArrayList<Integer>());
-					lblResultNum[index].setText(user.getLottoNumber().get(index).toString());
+					lblResultNum[index].setText("");
 					lottoType = "미지정";
+					
+					//배열이 사라지면 버튼들 비활성화
+					for (int i = 0; i < btnResultInst.length; i++) {
+						if (user.getLottoNumber().get(i).size() < 2) {
+							btnResultInst[i].setEnabled(false);
+							btnResultDel[i].setEnabled(false);
+							btnResultCopy[i].setEnabled(false);
+						}
+					}
 				}
 			});
 		}
 
-		//'전체복사'버튼
+		// '전체복사'버튼
 		for (int i = 0; i < btnResultCopy.length; i++) {
 			// i가 안먹혀서 새로만듬;;
 			int index = i;
@@ -482,6 +523,15 @@ public class Lotto extends JFrame {
 					}
 					rdbManual.setSelected(true);
 					lottoType = "미지정";
+					
+					for (int i = 0; i < btnResultInst.length; i++) {
+						// i가 안먹혀서 새로만듬;;
+						if (user.getLottoNumber().get(i).size() > 2) {
+							btnResultInst[i].setEnabled(true);
+							btnResultDel[i].setEnabled(true);
+							btnResultCopy[i].setEnabled(true);
+						}
+					}
 				}
 			});
 		}
