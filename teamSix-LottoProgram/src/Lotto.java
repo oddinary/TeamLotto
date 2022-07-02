@@ -146,7 +146,7 @@ public class Lotto extends JFrame {
 		// 오른쪽 선택번호확인 패널의 기능 버튼
 		JButton btnReset = new JButton("초기화");
 		JButton btnConfirm = new JButton("확인 ");
-		JButton btnResult = new JButton("결과");
+		JButton btnResult = new JButton("구매 & 결과");
 
 		lottoType = "미지정";
 
@@ -158,14 +158,14 @@ public class Lotto extends JFrame {
 		// 입력한 로또가 오른쪽에 뜨기 위한 라벨
 		JPanel[] lblResultNum = new JPanel[5];
 		JLabel[][] iconlbl = new JLabel[5][6];
-		for (int i = 0; i < lblResult.length; i++) {
+		for (int i = 0; i < iconlbl.length; i++) {
 			lblResultNum[i] = new JPanel();
-			for (int j = 0; j < iconlbl.length; j++) {
+			for (int j = 0; j < iconlbl[i].length; j++) {
 				iconlbl[i][j] = new JLabel();
 				lblResultNum[i].add(iconlbl[i][j]);
 			}
 		}
-		
+
 		// 입력한 로또 각각에 수정, 삭제 , 번호 추가 버튼을 만들기 위한 패널
 		JPanel[] pnlResultBtn = new JPanel[5];
 		for (int i = 0; i < lblResult.length; i++) {
@@ -309,7 +309,9 @@ public class Lotto extends JFrame {
 					for (JCheckBox checkBox : listOfChkBox) {
 						checkBox.setEnabled(true);
 					}
-					rdbSemiAuto.setEnabled(true);
+					if (listOfChkBox.size() < 6) {
+						rdbSemiAuto.setEnabled(true);
+					}
 				} else {
 					for (JCheckBox checkBox : listOfChkBox) {
 						// 체크박스들 끄게 함
@@ -341,7 +343,7 @@ public class Lotto extends JFrame {
 				for (int i = 0; i < listOfChkBox.size(); i++) {
 					if (listOfChkBox.get(i).isSelected()) {
 						listOfChkBox.get(i).setEnabled(true);
-					}else {
+					} else {
 						listOfChkBox.get(i).setEnabled(false);
 					}
 				}
@@ -409,12 +411,13 @@ public class Lotto extends JFrame {
 							if (!user.getLottoNumber().get(i).toString().equals("[]")) {
 								for (int j = 0; j < user.getLottoNumber().get(i).size(); j++) {
 									int num = user.getLottoNumber().get(i).get(j);
-									URL url = Lotto.class.getClassLoader().getResource("images/small" + String.format("%02d", num) + ".png");
+									URL url = Lotto.class.getClassLoader()
+											.getResource("images/middle" + String.format("%02d", num) + ".png");
 									ImageIcon icon = new ImageIcon(url);
-//									iconlbl[i][j].setIcon(icon);
-//									System.out.println(iconlbl[i][j]);
-//								lblResultNum[i].setText(user.getLottoNumber().get(i).toString());
+									iconlbl[i][j].setIcon(icon);
 								}
+//								lblResultNum[i].setText(user.getLottoNumber().get(i).toString());
+
 							}
 						}
 					} else {
@@ -433,7 +436,6 @@ public class Lotto extends JFrame {
 					JOptionPane.showMessageDialog(Lotto.this, "6개 다 체크해주세요.");
 				}
 
-				
 				// 배열이 생기면 버튼들 활성화
 				for (int i = 0; i < btnResultInst.length; i++) {
 					if (user.getLottoNumber().get(i).size() > 2) {
@@ -473,15 +475,12 @@ public class Lotto extends JFrame {
 //			btnResultCopy[i] = new JButton("번호 복사");
 //		}
 
-		
 		// 수정 버튼 , 삭제 버튼 , 번호복사 버튼 비활성화후 배열 들어오면 활성화
 		for (int i = 0; i < btnResultInst.length; i++) {
 			btnResultInst[i].setEnabled(false);
 			btnResultDel[i].setEnabled(false);
 			btnResultCopy[i].setEnabled(false);
 		}
-
-		
 
 		// '수정'버튼
 
@@ -501,14 +500,18 @@ public class Lotto extends JFrame {
 						List<Integer> list = user.getLottoNumber().get(index);
 						JCheckBox chkBox = listOfChkBox.get(list.get(j) - 1);
 						chkBox.setSelected(true);
+						// 번호삭제
+						iconlbl[index][j].setIcon(null);
 					}
+
+					// 배열초기화
 					user.getLottoNumber().set(index, new ArrayList<Integer>());
-//					lblResultNum[index].setText("");
+
 					// 라디오 버튼 전체 해제(더미버튼작동)
 					rdbManual.setSelected(true);
 					lottoType = "미지정";
-					
-					//배열이 사라지면 버튼들 비활성화
+
+					// 배열이 사라지면 버튼들 비활성화
 					for (int i = 0; i < btnResultInst.length; i++) {
 						if (user.getLottoNumber().get(i).size() < 2) {
 							btnResultInst[i].setEnabled(false);
@@ -528,11 +531,17 @@ public class Lotto extends JFrame {
 			btnResultDel[index].addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
+					// 번호 삭제
+					for (int j = 0; j < user.getLottoNumber().get(index).size(); j++) {
+						iconlbl[index][j].setIcon(null);
+					}
+
+					// 배열초기화
 					user.getLottoNumber().set(index, new ArrayList<Integer>());
-//					lblResultNum[index].setText("");
+
 					lottoType = "미지정";
-					
-					//배열이 사라지면 버튼들 비활성화
+
+					// 배열이 사라지면 버튼들 비활성화
 					for (int i = 0; i < btnResultInst.length; i++) {
 						if (user.getLottoNumber().get(i).size() < 2) {
 							btnResultInst[i].setEnabled(false);
@@ -559,7 +568,7 @@ public class Lotto extends JFrame {
 					}
 					rdbManual.setSelected(true);
 					lottoType = "미지정";
-					
+
 					for (int i = 0; i < btnResultInst.length; i++) {
 						// i가 안먹혀서 새로만듬;;
 						if (user.getLottoNumber().get(i).size() > 2) {
@@ -651,13 +660,13 @@ public class Lotto extends JFrame {
 		JButton btnRecommend = new JButton("번호 추천");
 		// 버튼 크기설정
 		btnRecommend.setPreferredSize(new Dimension(160, 60));
-		
+
 		if (user.isPremier()) {
 			btnRecommend.setEnabled(true);
 		} else {
 			btnRecommend.setEnabled(false);
 		}
-		
+
 		// 추천번호 액션 리스너
 		btnRecommend.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -718,7 +727,7 @@ public class Lotto extends JFrame {
 
 				int money = user.getHaveMoney();
 				boolean premier = user.isPremier();
-				
+
 				if (premier) {
 					btnRecommend.setEnabled(true);
 				} else {
