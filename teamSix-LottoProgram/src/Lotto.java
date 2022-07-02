@@ -258,30 +258,29 @@ public class Lotto extends JFrame {
 				}
 			});
 
-			// 초기화 버튼 액션 리스너
-			ActionListener reset = new ActionListener() {
-				int selectNum = index;
-
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					for (int i = 0; i < checkedList.size(); i++) {
-						if (selectNum == checkedList.get(i)) {
-							checkedList.remove(i);
-						}
-					}
-					for (JCheckBox checkBox : listOfChkBox) {
-						checkBox.setSelected(false);
-					}
-				}
-			};
-
-			// 초기화 버튼 액션리스너 작동
-			btnReset.addActionListener(reset);
-
 			listOfChkBox.add(checkBox);
 
 			checkBox.setEnabled(false);
 		}
+		
+		// 'reset' 버튼 액션 리스너
+		ActionListener reset = new ActionListener() {
+			int selectNum;
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				for (int i = 0; i < checkedList.size(); i++) {
+					if (selectNum == checkedList.get(i)) {
+						checkedList.remove(i);
+					}
+				}
+				for (JCheckBox checkBox : listOfChkBox) {
+					checkBox.setSelected(false);
+				}
+			}
+		};
+		//초기화버튼 '리셋'기능
+		btnReset.addActionListener(reset);
+
 		// 번호선택 패널에 추가
 		pnlLeft.add(pnlNum);
 		pnlLeft.add(pnlAuto);
@@ -350,7 +349,10 @@ public class Lotto extends JFrame {
 				lottoType = "자동";
 			}
 		};
+
+		// 자동 버튼 'auto','reset' 기능
 		rdbAuto.addActionListener(auto);
+		rdbAuto.addActionListener(reset);
 
 		// 라디오 버튼 액션 리스너 (반자동)
 		rdbSemiAuto.addItemListener(new ItemListener() {
@@ -379,14 +381,14 @@ public class Lotto extends JFrame {
 
 		// '자동'라디오 버튼을 마우스로 클릭하면
 		// '초기화'버튼을 기능 하게 해줌
-		rdbAuto.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent e) {
-				Toolkit.getDefaultToolkit().beep();
-				btnReset.doClick(0);
-				rdbAuto.addActionListener(auto);
-			}
-		});
+//		rdbAuto.addMouseListener(new MouseAdapter() {
+//			@Override
+//			public void mousePressed(MouseEvent e) {
+//				Toolkit.getDefaultToolkit().beep();
+//				btnReset.doClick(0);
+//				rdbAuto.addActionListener(auto);
+//			}
+//		});
 
 		// 선택번호 확인 버튼.....
 		btnConfirm.addActionListener(new ActionListener() {
@@ -561,6 +563,9 @@ public class Lotto extends JFrame {
 			btnResultCopy[index].addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
+					for (JCheckBox checkBox : listOfChkBox) {
+						checkBox.setSelected(false);
+					}
 					for (int j = 0; j < user.getLottoNumber().get(index).size(); j++) {
 						List<Integer> list = user.getLottoNumber().get(index);
 						JCheckBox chkBox = listOfChkBox.get(list.get(j) - 1);
@@ -569,14 +574,13 @@ public class Lotto extends JFrame {
 					rdbManual.setSelected(true);
 					lottoType = "미지정";
 
-					for (int i = 0; i < btnResultInst.length; i++) {
-						// i가 안먹혀서 새로만듬;;
-						if (user.getLottoNumber().get(i).size() > 2) {
-							btnResultInst[i].setEnabled(true);
-							btnResultDel[i].setEnabled(true);
-							btnResultCopy[i].setEnabled(true);
-						}
-					}
+//					for (int i = 0; i < btnResultInst.length; i++) {
+//						if (user.getLottoNumber().get(i).size() > 2) {
+//							btnResultInst[i].setEnabled(true);
+//							btnResultDel[i].setEnabled(true);
+//							btnResultCopy[i].setEnabled(true);
+//						}
+//					}
 				}
 			});
 		}
