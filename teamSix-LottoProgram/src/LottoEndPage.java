@@ -58,19 +58,19 @@ public class LottoEndPage extends JDialog {
 		JPanel lblWin = new JPanel();
 		JLabel[] lblWinIcon = new JLabel[winNumber.size()];
 		JLabel plus = new JLabel(" + ");
-		JLabel bonuseIcon = new JLabel(new ImageIcon(Lotto.class.getClassLoader().getResource("images/middle" + String.format("%02d", bonusNumber) + ".png")));
+		JLabel bonuseIcon = new JLabel(new ImageIcon(Lotto.class.getClassLoader()
+				.getResource("images/middle" + String.format("%02d", bonusNumber) + ".png")));
 		for (int i = 0; i < winNumber.size(); i++) {
 			lblWinIcon[i] = new JLabel();
 			lblWin.add(lblWinIcon[i]);
 			int num = winNumber.get(i);
-			URL url = Lotto.class.getClassLoader()
-					.getResource("images/middle" + String.format("%02d", num) + ".png");
+			URL url = Lotto.class.getClassLoader().getResource("images/middle" + String.format("%02d", num) + ".png");
 			ImageIcon icon = new ImageIcon(url);
 			lblWinIcon[i].setIcon(icon);
 		}
 		lblWin.add(plus);
 		lblWin.add(bonuseIcon);
-		
+
 		// lblWin.setText(String.valueOf(winNumber) + " + " + bonusNumber);
 		pnlTop.add(lblWin, BorderLayout.CENTER);
 		JLabel lblLotto2 = new JLabel("입니다.");
@@ -107,28 +107,56 @@ public class LottoEndPage extends JDialog {
 		JLabel[] winCountLbl = new JLabel[user.getLottoNumber().size()];
 		// 당첨 이미지 삽입완료
 		for (int i = 0; i < user.getLottoNumber().size(); i++) {
-			
+
 			int winCount = 0;
 			lblInputNum[i] = new JPanel();
 			winCountLbl[i] = new JLabel();
-			
+
 			for (int j = 0; j < user.getLottoNumber().get(i).size(); j++) {
 				iconlbl[i][j] = new JLabel();
 				lblInputNum[i].add(iconlbl[i][j]);
 				int num = user.getLottoNumber().get(i).get(j);
-				URL url = Lotto.class.getClassLoader().getResource("images/smallun" + String.format("%02d", num) + ".png");
-				URL url2 = Lotto.class.getClassLoader().getResource("images/middle" + String.format("%02d", num) + ".png");
+				URL url = Lotto.class.getClassLoader()
+						.getResource("images/smallun" + String.format("%02d", num) + ".png");
+				URL url2 = Lotto.class.getClassLoader()
+						.getResource("images/middle" + String.format("%02d", num) + ".png");
 				ImageIcon icon = new ImageIcon(url);
 				ImageIcon icon2 = new ImageIcon(url2);
-				
-				if (winNumber.get(j) == num) {
-					iconlbl[i][j].setIcon(icon2);
-					winCount++;
-				} else {
-					iconlbl[i][j].setIcon(icon);
+
+				for (int k = 0; k < 6; k++) {
+					if (winNumber.get(k) == num) {
+						iconlbl[i][j].setIcon(icon2);
+						winCount++;
+						break;
+					} else {
+						iconlbl[i][j].setIcon(icon);
+					}
 				}
 				lblInputNum[i].add(winCountLbl[i]);
-				winCountLbl[i].setText(String.valueOf(winCount) + "개 맞음");
+
+				switch (winCount) {
+				case 3:
+					winCountLbl[i].setText("5등 당첨 !");
+					break;
+				case 4:
+					winCountLbl[i].setText("4등 당첨 !");
+					break;
+				case 5:
+					if (bonusNumber == user.getLottoNumber().get(i).get(j)) {
+						winCountLbl[i].setText("2등 당첨 !");
+						iconlbl[i][j].setIcon(icon2);
+					} else {
+						winCountLbl[i].setText("3등 당첨 !");
+					}
+					break;
+				case 6:
+					winCountLbl[i].setText("1등 당첨 !");
+					break;
+				default:
+					winCountLbl[i].setText("낙첨 ㅠㅠ");
+					break;
+				}
+//				winCountLbl[i].setText(String.valueOf(winCount) + "개 맞음");
 			}
 //			lblInputNum[i].setText(user.getLottoNumber().get(i).toString());
 		}

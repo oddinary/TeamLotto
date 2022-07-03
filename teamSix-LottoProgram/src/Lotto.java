@@ -613,10 +613,14 @@ public class Lotto extends JFrame {
 					}
 				}
 				Collections.sort(winNumber);
-				// 보너스 번호 뽑는 구간.
+				// 보너스 번호 뽑는 구간
+				// while 이 없어서 a가 윈넘버에 들어있으면 오류남 (수정완료)
+				while (true) {
 				int a = (random.nextInt(45)) + 1;
-				if (!winNumber.contains(a)) {
-					bonusNumber = a;
+					if (!winNumber.contains(a)) {
+						bonusNumber = a;
+						break;
+					}
 				}
 
 				dialog = new LottoEndPage(Lotto.this, user, winNumber, bonusNumber, gameCount);
