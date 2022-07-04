@@ -52,7 +52,8 @@ public class Lotto extends JFrame {
 	List<JCheckBox> listOfChkBox = new ArrayList<>();
 
 	// 직전 5주 번호 담는 리스트 // 06/30
-	List<List> savedLottoNum = new ArrayList<>();
+//	List<List> savedLottoNum = new ArrayList<>();
+	private List<String> lottoFive;
 
 	int bonusNumber;
 	// 체크박스 45개
@@ -66,7 +67,6 @@ public class Lotto extends JFrame {
 	String lottoType;
 
 	public Lotto(Map<String, User> userInfo, String id) {
-		gameCount++;
 
 		User user = userInfo.get(id);
 
@@ -76,20 +76,24 @@ public class Lotto extends JFrame {
 
 		user.setLottoNumber(chBoxAll);
 
-		// 직전 번호 뽑는 구간.
-		List<String> lottoOne = new ArrayList<>(Arrays.asList("1021회차 : 12, 15, 17, 24, 29, 45, + 16"));
-		List<String> lottoTwo = new ArrayList<>(Arrays.asList("1020회차 : 12, 27, 29, 38, 41, 45, + 6"));
-		List<String> lottoThree = new ArrayList<>(Arrays.asList("1019회차 : 1, 4, 13, 17, 34, 39, + 6"));
-		List<String> lottoFour = new ArrayList<>(Arrays.asList("1018회차 : 3, 19, 21, 25, 37, 45, + 35"));
-		List<String> lottoFive = new ArrayList<>(Arrays.asList("1017회차 : 12, 18, 22, 23, 30, 34, + 32"));
-		savedLottoNum.add(lottoOne);
-		savedLottoNum.add(lottoTwo);
-		savedLottoNum.add(lottoThree);
-		savedLottoNum.add(lottoFour);
-		savedLottoNum.add(lottoFive);
+		lottoFive = new ArrayList<String>();
+		lottoFive.add("1017회차 : [12, 18, 22, 23, 30, 34] + 32");
+		lottoFive.add("1018회차 : [3, 19, 21, 25, 37, 45] + 35");
+		lottoFive.add("1019회차 : [1, 4, 13, 17, 34, 39] + 6");
+		lottoFive.add("1020회차 : [12, 27, 29, 38, 41, 45] + 6");
+		lottoFive.add("1021회차 : [12, 15, 17, 24, 29, 45] + 16");
+//		List<String> lottoOne = new ArrayList<>(Arrays.asList("1021회차 : 12, 15, 17, 24, 29, 45, + 16"));
+//		List<String> lottoTwo = new ArrayList<>(Arrays.asList("1020회차 : 12, 27, 29, 38, 41, 45, + 6"));
+//		List<String> lottoThree = new ArrayList<>(Arrays.asList("1019회차 : 1, 4, 13, 17, 34, 39, + 6"));
+//		List<String> lottoFour = new ArrayList<>(Arrays.asList("1018회차 : 3, 19, 21, 25, 37, 45, + 35"));
+//		List<String> lottoFive = new ArrayList<>(Arrays.asList("1017회차 : 12, 18, 22, 23, 30, 34, + 32"));
+//		savedLottoNum.add(lottoOne);
+//		savedLottoNum.add(lottoTwo);
+//		savedLottoNum.add(lottoThree);
+//		savedLottoNum.add(lottoFour);
+//		savedLottoNum.add(lottoFive);
 
-		String lottoNumber = "직전 5회차 번호 + 보너스 번호\n" + lottoOne.toString() + "\n" + lottoTwo.toString() + "\n"
-				+ lottoThree.toString() + "\n" + lottoFour.toString() + "\n" + lottoFive.toString();
+		
 		TitledBorder tbBtn = new TitledBorder(new LineBorder(Color.black), "추가 기능");
 		tbBtn.setTitleColor(new Color(245, 136, 110));
 		TitledBorder tbSelect = new TitledBorder(new LineBorder(Color.black), "번호 선택");
@@ -625,6 +629,9 @@ public class Lotto extends JFrame {
 
 				dialog = new LottoEndPage(Lotto.this, user, winNumber, bonusNumber, gameCount);
 				dialog.setVisible(true);
+				lottoFive.add(gameCount + "회차 : " + winNumber + " + " + bonusNumber);
+				lottoFive.remove(0);
+				gameCount++;
 			}
 		});
 
@@ -694,13 +701,15 @@ public class Lotto extends JFrame {
 			}
 		});
 		// 추가 기능 버튼 ( 직전 5주 )
-		JButton btnRecent = new JButton("직전 5주");
+		JButton btnRecent = new JButton("직전 5회차");
 		// 버튼 크기설정
 		btnRecent.setPreferredSize(new Dimension(160, 60));
 		// 직전 5주 액션 리스너
 		btnRecent.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(Lotto.this, lottoNumber, "직전 5주차 당첨번호", JOptionPane.PLAIN_MESSAGE);
+				String lottoNumber = "직전 5회차 번호 + 보너스 번호\n" + lottoFive.get(4) + "\n" + lottoFive.get(3) + "\n"
+						+ lottoFive.get(2) + "\n" + lottoFive.get(1) + "\n" + lottoFive.get(0);
+				JOptionPane.showMessageDialog(Lotto.this, lottoNumber, "직전 5회차 당첨번호", JOptionPane.PLAIN_MESSAGE);
 			}
 		});
 		// 보유금액 확인 구간
