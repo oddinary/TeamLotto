@@ -25,13 +25,19 @@ import java.util.List;
 import java.util.Map;
 import java.awt.event.ActionEvent;
 import java.awt.Point;
+import javax.swing.SwingConstants;
 
 public class LottoEndPage extends JDialog {
+
+	private int winMoney = 0;
+
+	public int getWinMoney() {
+		return winMoney;
+	}
 
 	public LottoEndPage(JFrame owner, User user, List<Integer> winNumber, int bonusNumber, int gameCount,
 			Map<String, User> userInfo) {
 		super(owner, true);
-
 		JPanel pnlLotto = new JPanel();
 		JPanel pnlTop = new JPanel(); // 당첨번호
 
@@ -120,8 +126,7 @@ public class LottoEndPage extends JDialog {
 				int num = user.getLottoNumber().get(i).get(j);
 				URL url = Lotto.class.getClassLoader()
 						.getResource("images/middleun" + String.format("%02d", num) + ".png");
-				URL url2 = Lotto.class.getClassLoader()
-						.getResource("images/middle" + String.format("%02d", num) + ".png");
+				URL url2 = Lotto.class.getClassLoader().getResource("images/" + String.format("%02d", num) + ".png");
 				ImageIcon icon = new ImageIcon(url);
 				ImageIcon icon2 = new ImageIcon(url2);
 
@@ -135,27 +140,36 @@ public class LottoEndPage extends JDialog {
 					}
 				}
 
-				switch (winCount) {
-				case 3:
-					winCountLbl[i].setText("5등 당첨 !");
-					break;
-				case 4:
-					winCountLbl[i].setText("4등 당첨 !");
-					break;
-				case 5:
-					if (bonusNumber == user.getLottoNumber().get(i).get(j)) {
-						winCountLbl[i].setText("2등 당첨 !");
-						iconlbl[i][j].setIcon(icon2);
-					} else {
-						winCountLbl[i].setText("3등 당첨 !");
+				// 당첨금 초기화
+				if (j == 5) {
+					switch (winCount) {
+					case 3:
+						winCountLbl[i].setText("5등 당첨 !");
+						winMoney += 5000;
+
+						break;
+					case 4:
+						winCountLbl[i].setText("4등 당첨 !");
+						winMoney += 50000;
+						break;
+					case 5:
+						if (bonusNumber == user.getLottoNumber().get(i).get(j)) {
+							winCountLbl[i].setText("2등 당첨 !");
+							iconlbl[i][j].setIcon(icon2);
+							winMoney += 100000000;
+						} else {
+							winCountLbl[i].setText("3등 당첨 !");
+							winMoney += 1000000;
+						}
+						break;
+					case 6:
+						winCountLbl[i].setText("1등 당첨 !");
+						winMoney += 1000000000;
+						break;
+					default:
+						winCountLbl[i].setText("낙첨 ㅠㅠ");
+						break;
 					}
-					break;
-				case 6:
-					winCountLbl[i].setText("1등 당첨 !");
-					break;
-				default:
-					winCountLbl[i].setText("낙첨 ㅠㅠ");
-					break;
 				}
 //				winCountLbl[i].setText(String.valueOf(winCount) + "개 맞음");
 			}
@@ -186,15 +200,17 @@ public class LottoEndPage extends JDialog {
 		sl_pnlLotto.putConstraint(SpringLayout.SOUTH, pnlCenter, -6, SpringLayout.NORTH, pnlSouth);
 		sl_pnlLotto.putConstraint(SpringLayout.EAST, pnlSouth, 0, SpringLayout.EAST, pnlTop);
 		sl_pnlLotto.putConstraint(SpringLayout.WEST, pnlSouth, 10, SpringLayout.WEST, pnlLotto);
+
 		JLabel lblWon = new JLabel("원");
 		pnlSouth.setBorder(tbMoney);
 		pnlSouth.setLayout(new BorderLayout(0, 0));
 
+		JLabel lblNewLabel = new JLabel(String.valueOf(winMoney));
+		lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		pnlSouth.add(lblNewLabel, BorderLayout.CENTER);
+
 		pnlSouth.add(lblWon, BorderLayout.EAST);
 		pnlLotto.add(pnlSouth);
-
-		JLabel lblNewLabel = new JLabel("New label");
-		pnlSouth.add(lblNewLabel, BorderLayout.WEST);
 
 		JButton btnReplay = new JButton("다시하기");
 		sl_pnlLotto.putConstraint(SpringLayout.NORTH, btnReplay, 6, SpringLayout.SOUTH, pnlSouth);

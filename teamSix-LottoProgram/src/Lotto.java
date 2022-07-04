@@ -775,6 +775,7 @@ public class Lotto extends JFrame {
 //				lottoFive.add(0, gameCount + "회차 : " + winNumber + " + " + bonusNumber);
 				gameCount++;
 				countGame.setText(gameCount + "회차");
+				lblMoney.setText(String.valueOf(user.getHaveMoney()));
 			}
 		});
 
