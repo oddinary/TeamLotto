@@ -64,7 +64,7 @@ public class LottoEndPage extends JDialog {
 		// 당첨번호 부분 이미지 삽입 완료
 		JPanel lblWin = new JPanel();
 		JLabel[] lblWinIcon = new JLabel[winNumber.size()];
-		JLabel plus = new JLabel(new ImageIcon(Lotto.class.getClassLoader().getResource("images/plus.png")));
+		JLabel plus = new JLabel(new ImageIcon(Lotto.class.getClassLoader().getResource("images/Plus.png")));
 		JLabel bonuseIcon = new JLabel(new ImageIcon(Lotto.class.getClassLoader()
 				.getResource("images/middle" + String.format("%02d", bonusNumber) + ".png")));
 		for (int i = 0; i < winNumber.size(); i++) {
