@@ -440,6 +440,7 @@ public class Lotto extends JFrame {
 					}
 				} else {
 					rdbManual.setSelected(true);
+					rdbSemiAuto.setEnabled(true);
 					JOptionPane.showMessageDialog(Lotto.this, "6개 다 체크해주세요.");
 				}
 
