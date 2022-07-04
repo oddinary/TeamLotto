@@ -22,12 +22,14 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.net.URL;
 import java.util.List;
+import java.util.Map;
 import java.awt.event.ActionEvent;
 import java.awt.Point;
 
 public class LottoEndPage extends JDialog {
 
-	public LottoEndPage(JFrame owner, User user, List<Integer> winNumber, int bonusNumber, int gameCount) {
+	public LottoEndPage(JFrame owner, User user, List<Integer> winNumber, int bonusNumber, int gameCount,
+			Map<String, User> userInfo) {
 		super(owner, true);
 
 		JPanel pnlLotto = new JPanel();
@@ -56,8 +58,7 @@ public class LottoEndPage extends JDialog {
 		// 당첨번호 부분 이미지 삽입 완료
 		JPanel lblWin = new JPanel();
 		JLabel[] lblWinIcon = new JLabel[winNumber.size()];
-		JLabel plus = new JLabel(new ImageIcon(Lotto.class.getClassLoader()
-				.getResource("images/plus.png")));
+		JLabel plus = new JLabel(new ImageIcon(Lotto.class.getClassLoader().getResource("images/plus.png")));
 		JLabel bonuseIcon = new JLabel(new ImageIcon(Lotto.class.getClassLoader()
 				.getResource("images/middle" + String.format("%02d", bonusNumber) + ".png")));
 		for (int i = 0; i < winNumber.size(); i++) {
@@ -133,7 +134,6 @@ public class LottoEndPage extends JDialog {
 						iconlbl[i][j].setIcon(icon);
 					}
 				}
-				
 
 				switch (winCount) {
 				case 3:
@@ -211,18 +211,7 @@ public class LottoEndPage extends JDialog {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				String[] yesNo = { "로그아웃", "종료", "취소" };
-				int result = JOptionPane.showOptionDialog(LottoEndPage.this, "종료하시겠습니까?", "종료 및 로그아웃",
-						JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, yesNo, yesNo[0]);
-				if (result == JOptionPane.YES_OPTION) {
-					dispose();
-					owner.dispose();
-					LottoEndPage.this.dispose();
-					new Login().setVisible(true);
-					LottoEndPage.this.dispose();
-				} else if (result == JOptionPane.NO_OPTION) {
-					System.exit(0);
-				}
+				dispose();
 			}
 
 		});

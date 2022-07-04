@@ -627,7 +627,7 @@ public class Lotto extends JFrame {
 					}
 				}
 
-				dialog = new LottoEndPage(Lotto.this, user, winNumber, bonusNumber, gameCount);
+				dialog = new LottoEndPage(Lotto.this, user, winNumber, bonusNumber, gameCount, userInfo);
 				dialog.setVisible(true);
 				lottoFive.add(gameCount + "회차 : " + winNumber + " + " + bonusNumber);
 				lottoFive.remove(0);
@@ -766,7 +766,7 @@ public class Lotto extends JFrame {
 				if (result == JOptionPane.YES_OPTION) {
 					dispose();
 					Lotto.this.dispose();
-					new Login().setVisible(true);
+					new Login(userInfo).setVisible(true);
 					Lotto.this.dispose();
 				} else if (result == JOptionPane.NO_OPTION) {
 					System.exit(0);

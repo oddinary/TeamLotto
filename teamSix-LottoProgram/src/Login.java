@@ -33,9 +33,9 @@ public class Login extends JFrame {
 	ImageIcon i = new ImageIcon(url);
 	Image im = i.getImage();
 
-	SignUp signUp = new SignUp(Login.this);
+	static SignUp signUp = new SignUp(null);
 
-	private Map<String, User> userInfo = signUp.getMap();
+	private static Map<String, User> userInfo = signUp.getMap();
 
 	public SignUp getSignUp() {
 		return signUp;
@@ -44,9 +44,9 @@ public class Login extends JFrame {
 	public void setSignUp(SignUp signUp) {
 		this.signUp = signUp;
 	}
-
+	
 	// 생성자
-	Login() {
+	Login(Map<String, User> userInfo) {
 		userInfo.put("admin", new User());
 		userInfo.get("admin").setName("관리자");
 		userInfo.get("admin").setPw("qwqw1234");
@@ -171,6 +171,6 @@ public class Login extends JFrame {
 
 	// 메인
 	public static void main(String[] args) {
-		new Login().setVisible(true);
+		new Login(userInfo).setVisible(true);
 	}
 }
