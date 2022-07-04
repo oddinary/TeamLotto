@@ -742,9 +742,9 @@ public class Lotto extends JFrame {
 				for (int i = 0; i < 6; i++) {
 					while (true) {
 						int r = (random.nextInt(45)) + 1;
-						System.out.println(r);
+//						System.out.println(r);
 						if (!winNumber.contains(r)) {
-							System.out.println(r);
+//							System.out.println(r);
 							winNumber.add(r);
 							break;
 						}
