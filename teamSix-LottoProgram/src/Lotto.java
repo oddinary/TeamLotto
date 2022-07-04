@@ -784,9 +784,9 @@ public class Lotto extends JFrame {
 						break;
 					}
 				}
-				if ((user.getHaveMoney() - gameMoney) < 0) {
-					JOptionPane.showMessageDialog(Lotto.this, "보유금액이 구매금액보다 적습니다.");
-				} else {
+//				if ((user.getHaveMoney() - gameMoney) < 0) {
+//					JOptionPane.showMessageDialog(Lotto.this, "보유금액이 구매금액보다 적습니다.");
+//				} else {
 					user.setHaveMoney(user.getHaveMoney() - gameMoney);
 					dialog = new LottoEndPage(Lotto.this, user, winNumber, bonusNumber, gameCount, userInfo);
 					dialog.setVisible(true);
@@ -798,7 +798,7 @@ public class Lotto extends JFrame {
 					countGame.setText(gameCount + "회차");
 					user.setHaveMoney(user.getHaveMoney() + dialog.getWinMoney());
 					lblMoney.setText(String.valueOf(user.getHaveMoney()));
-				}
+//				}
 			}
 		});
 
