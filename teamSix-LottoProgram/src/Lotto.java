@@ -52,12 +52,11 @@ public class Lotto extends JFrame {
 	List<Integer> checkedList = new ArrayList<>();
 
 	List<JCheckBox> listOfChkBox = new ArrayList<>();
-	
+
 	// 직전 5주 번호 담는 리스트 // 06/30
 //	List<List> savedLottoNum = new ArrayList<>();
 	static List<List<Integer>> lottoFive = new ArrayList<List<Integer>>();
-	
-	
+
 	static int gameCount = 1022;
 	int gameMoney = 0;
 	int bonusNumber;
@@ -67,14 +66,12 @@ public class Lotto extends JFrame {
 	// 체크박스 체크 개수 카운트.
 //	int checkCount = 0;
 	// 회차 카운트//////
-	
+
 	// 로또타입필드
 	String lottoType;
 
 	// 당첨번호 필드
-	
-	
-	
+
 	public Lotto(Map<String, User> userInfo, String id) {
 
 		User user = userInfo.get(id);
@@ -83,7 +80,7 @@ public class Lotto extends JFrame {
 			chBoxAll.add(new ArrayList<Integer>());
 		}
 		user.setLottoNumber(chBoxAll);
-		
+
 		List<Integer> list = new ArrayList<Integer>();
 		list.addAll(Arrays.asList(12, 15, 17, 24, 29, 45, 16));
 		List<Integer> list2 = new ArrayList<Integer>();
@@ -94,7 +91,7 @@ public class Lotto extends JFrame {
 		list4.addAll(Arrays.asList(3, 19, 21, 25, 37, 45, 35));
 		List<Integer> list5 = new ArrayList<Integer>();
 		list5.addAll(Arrays.asList(12, 18, 22, 23, 30, 34, 32));
-		
+
 		lottoFive.add(list);
 		lottoFive.add(list2);
 		lottoFive.add(list3);
@@ -116,7 +113,6 @@ public class Lotto extends JFrame {
 //		savedLottoNum.add(lottoFour);
 //		savedLottoNum.add(lottoFive);
 
-		
 		TitledBorder tbBtn = new TitledBorder(new LineBorder(Color.black), "추가 기능");
 		tbBtn.setTitleColor(new Color(245, 136, 110));
 		TitledBorder tbSelect = new TitledBorder(new LineBorder(Color.black), "번호 선택");
@@ -285,14 +281,30 @@ public class Lotto extends JFrame {
 				}
 			});
 
+			// '자동','반자동' 선택시 수정방지 아이템리스너
+			checkBox.addItemListener(new ItemListener() {
+				@Override
+				public void itemStateChanged(ItemEvent e) {
+					if (e.getStateChange() != ItemEvent.SELECTED) {
+						// '자동'
+						if (rdbAuto.isSelected()) {
+							checkBox.setSelected(true);
+						// '반자동'
+						} else if (rdbSemiAuto.isSelected()) {
+							checkBox.setSelected(true);
+						}
+					}
+				}
+			});
+			
 			listOfChkBox.add(checkBox);
-
 			checkBox.setEnabled(false);
 		}
-		
+
 		// 'reset' 버튼 액션 리스너
 		ActionListener reset = new ActionListener() {
 			int selectNum;
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				for (int i = 0; i < checkedList.size(); i++) {
@@ -305,7 +317,7 @@ public class Lotto extends JFrame {
 				}
 			}
 		};
-		//초기화버튼 '리셋'기능
+		// 초기화버튼 '리셋'기능
 		btnReset.addActionListener(reset);
 
 		// 번호선택 패널에 추가
@@ -488,100 +500,98 @@ public class Lotto extends JFrame {
 		pnlButton.add(btnConfirm);
 		// *************************************************************************
 		// **************************** 추가 기능 **************************************
-				// 추가 기능 패널 - pnlLeft의 왼쪽에 추가기능 버튼 패널 추가함
-				JPanel pnlRecommend = new JPanel();
-				pnlLeftBtn.add(pnlRecommend);
-				JLabel countGame = new JLabel(gameCount + "회차");
-				JLabel lblMyName = new JLabel(user.getName() + " 님의 로또 게임");
-				// 추가 기능 버튼 ( 나의 정보 )
-				JButton btnMyInfo = new JButton("나의 정보");
-				// 버튼 크기설정
-				btnMyInfo.setPreferredSize(new Dimension(160, 60));
+		// 추가 기능 패널 - pnlLeft의 왼쪽에 추가기능 버튼 패널 추가함
+		JPanel pnlRecommend = new JPanel();
+		pnlLeftBtn.add(pnlRecommend);
+		JLabel countGame = new JLabel(gameCount + "회차");
+		JLabel lblMyName = new JLabel(user.getName() + " 님의 로또 게임");
+		// 추가 기능 버튼 ( 나의 정보 )
+		JButton btnMyInfo = new JButton("나의 정보");
+		// 버튼 크기설정
+		btnMyInfo.setPreferredSize(new Dimension(160, 60));
 
-				// 추가 기능 버튼 ( 번호 추천 )
-				JButton btnRecommend = new JButton("번호 추천");
-				// 버튼 크기설정
-				btnRecommend.setPreferredSize(new Dimension(160, 60));
+		// 추가 기능 버튼 ( 번호 추천 )
+		JButton btnRecommend = new JButton("번호 추천");
+		// 버튼 크기설정
+		btnRecommend.setPreferredSize(new Dimension(160, 60));
 
-				if (user.isPremier()) {
+		if (user.isPremier()) {
+			btnRecommend.setEnabled(true);
+		} else {
+			btnRecommend.setEnabled(false);
+		}
+
+		// 추가 기능 버튼 ( 직전 5주 )
+		JButton btnRecent = new JButton("직전 5회차");
+		// 버튼 크기설정
+		btnRecent.setPreferredSize(new Dimension(160, 60));
+		// 직전 5주 액션 리스너
+		btnRecent.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+//						String lottoNumber = "직전 5회차 번호 + 보너스 번호\n" + lottoFive.get(0) + "\n" + lottoFive.get(1) + "\n"
+//								+ lottoFive.get(2) + "\n" + lottoFive.get(3) + "\n" + lottoFive.get(4);
+//						JOptionPane.showMessageDialog(Lotto.this, lottoNumber, "직전 5회차 당첨번호", JOptionPane.PLAIN_MESSAGE);
+				FiveListDialog five = new FiveListDialog(Lotto.this, lottoFive, gameCount);
+				five.setVisible(true);
+			}
+		});
+		// 보유금액 확인 구간
+		JPanel pnlHasMoney = new JPanel();
+		JLabel lblHasMoney = new JLabel("보유금액");
+		JLabel lblMoney = new JLabel(String.valueOf(user.getHaveMoney()));
+		lblMoney.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblMoney.setHorizontalTextPosition(SwingConstants.LEFT);
+		JLabel lblWon2 = new JLabel("원");
+
+		// 버튼 정렬할 레이아웃.
+		pnlRecommend.setLayout(new GridLayout(5, 0, 0, 10));
+
+		// 컴포넌트 추가
+		JPanel pnlLabel = new JPanel();
+		pnlLabel.setLayout(new BorderLayout());
+		pnlLabel.add(countGame, BorderLayout.NORTH); // <- 이거 추가 가능하게 부탁드려요 ㅠㅠ
+		pnlLabel.add(lblMyName, BorderLayout.CENTER);
+		pnlRecommend.add(pnlLabel);
+		pnlRecommend.add(btnMyInfo);
+		pnlRecommend.add(btnRecommend);
+		pnlRecommend.add(btnRecent);
+		pnlRecommend.add(pnlHasMoney);
+		pnlHasMoney.setLayout(new BorderLayout(0, 0));
+		pnlHasMoney.add(lblHasMoney, BorderLayout.WEST);
+		pnlHasMoney.add(lblMoney, BorderLayout.CENTER);
+		pnlHasMoney.add(lblWon2, BorderLayout.EAST);
+
+		// 나의정보 액션 리스너
+		btnMyInfo.addActionListener(new ActionListener() {
+			private MyInfo dialog;
+
+			public void actionPerformed(ActionEvent e) {
+
+				dialog = new MyInfo(Lotto.this, user);
+				dialog.setVisible(true);
+
+				int money = user.getHaveMoney();
+				boolean premier = user.isPremier();
+
+				if (premier) {
 					btnRecommend.setEnabled(true);
 				} else {
 					btnRecommend.setEnabled(false);
 				}
+				lblMoney.setText(String.valueOf(money));
 
-				// 추가 기능 버튼 ( 직전 5주 )
-				JButton btnRecent = new JButton("직전 5회차");
-				// 버튼 크기설정
-				btnRecent.setPreferredSize(new Dimension(160, 60));
-				// 직전 5주 액션 리스너
-				btnRecent.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-//						String lottoNumber = "직전 5회차 번호 + 보너스 번호\n" + lottoFive.get(0) + "\n" + lottoFive.get(1) + "\n"
-//								+ lottoFive.get(2) + "\n" + lottoFive.get(3) + "\n" + lottoFive.get(4);
-//						JOptionPane.showMessageDialog(Lotto.this, lottoNumber, "직전 5회차 당첨번호", JOptionPane.PLAIN_MESSAGE);
-						FiveListDialog five = new FiveListDialog(Lotto.this, lottoFive, gameCount);
-						five.setVisible(true);
-					}
-				});
-				// 보유금액 확인 구간
-				JPanel pnlHasMoney = new JPanel();
-				JLabel lblHasMoney = new JLabel("보유금액");
-				JLabel lblMoney = new JLabel(String.valueOf(user.getHaveMoney()));
-				lblMoney.setHorizontalAlignment(SwingConstants.RIGHT);
-				lblMoney.setHorizontalTextPosition(SwingConstants.LEFT);
-				JLabel lblWon2 = new JLabel("원");
+			}
+		});
 
-				// 버튼 정렬할 레이아웃.
-				pnlRecommend.setLayout(new GridLayout(5, 0, 0, 10));
+		// 추천번호 액션 리스너
+		btnRecommend.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				NonModal recommendNum = new NonModal(Lotto.this);
+				recommendNum.setVisible(true);
 
-				// 컴포넌트 추가
-				JPanel pnlLabel = new JPanel();
-				pnlLabel.setLayout(new BorderLayout());
-				pnlLabel.add(countGame,BorderLayout.NORTH);  // <- 이거 추가 가능하게 부탁드려요 ㅠㅠ
-				pnlLabel.add(lblMyName,BorderLayout.CENTER);
-				pnlRecommend.add(pnlLabel);
-				pnlRecommend.add(btnMyInfo);
-				pnlRecommend.add(btnRecommend);
-				pnlRecommend.add(btnRecent);
-				pnlRecommend.add(pnlHasMoney);
-				pnlHasMoney.setLayout(new BorderLayout(0, 0));
-				pnlHasMoney.add(lblHasMoney, BorderLayout.WEST);
-				pnlHasMoney.add(lblMoney, BorderLayout.CENTER);
-				pnlHasMoney.add(lblWon2, BorderLayout.EAST);
+			}
+		});
 
-				// 나의정보 액션 리스너
-				btnMyInfo.addActionListener(new ActionListener() {
-					private MyInfo dialog;
-
-					public void actionPerformed(ActionEvent e) {
-
-						dialog = new MyInfo(Lotto.this, user);
-						dialog.setVisible(true);
-
-						int money = user.getHaveMoney();
-						boolean premier = user.isPremier();
-
-						if (premier) {
-							btnRecommend.setEnabled(true);
-						} else {
-							btnRecommend.setEnabled(false);
-						}
-						lblMoney.setText(String.valueOf(money));
-
-					}
-				});
-				
-				// 추천번호 액션 리스너
-						btnRecommend.addActionListener(new ActionListener() {
-							public void actionPerformed(ActionEvent e) {
-								NonModal recommendNum = new NonModal(Lotto.this);
-								recommendNum.setVisible(true);
-								
-
-							}
-						});
-		
-		
 // ***********************************************************************
 // ************************** 선택번호 확인 ***********************************
 		// 수정 , 삭제 , 복사 버튼 구현.
@@ -719,9 +729,7 @@ public class Lotto extends JFrame {
 		pnlLast.add(btnResult, BorderLayout.SOUTH);
 		pnlRight.add(pnlResult);
 		pnlRight.add(pnlLast);
-		
 
-		
 		// 결과버튼 액션리스너
 		btnResult.addActionListener(new ActionListener() {
 			private LottoEndPage dialog;
@@ -753,7 +761,7 @@ public class Lotto extends JFrame {
 				// 보너스 번호 뽑는 구간
 				// while 이 없어서 a가 윈넘버에 들어있으면 오류남 (수정완료)
 				while (true) {
-				int a = (random.nextInt(45)) + 1;
+					int a = (random.nextInt(45)) + 1;
 					if (!winNumber.contains(a)) {
 						bonusNumber = a;
 						break;
@@ -794,8 +802,6 @@ public class Lotto extends JFrame {
 //		pnlResultD.add(lblResultD);
 //		pnlResultE.add(lblResultE);
 
-
-		
 // *********************************************************************
 // ************************* 메인패널 추가 **********************************
 		// 메인 패널에 주요 패널 3가지 집어넣기 / 3분할 되어있음
@@ -828,7 +834,6 @@ public class Lotto extends JFrame {
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		setLocationRelativeTo(null);
 	}
-
 
 	public void blankPlus() {
 		for (int i = 0; i < chBoxAll.size(); i++) {
