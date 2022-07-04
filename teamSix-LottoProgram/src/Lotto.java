@@ -682,24 +682,6 @@ public class Lotto extends JFrame {
 			btnRecommend.setEnabled(false);
 		}
 
-		// 추천번호 액션 리스너
-		btnRecommend.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				List<Integer> todayNumber = new LinkedList<>();
-				Random random = new Random();
-				while (todayNumber.size() < 6) {
-					int r = (random.nextInt(45)) + 1;
-					if (!todayNumber.contains(r)) {
-						todayNumber.add(r);
-					}
-				}
-				Collections.sort(todayNumber);
-//				System.out.println(todayNumber);
-				JOptionPane.showMessageDialog(Lotto.this, String.valueOf(todayNumber), "오늘의 추천번호",
-						JOptionPane.QUESTION_MESSAGE);
-
-			}
-		});
 		// 추가 기능 버튼 ( 직전 5주 )
 		JButton btnRecent = new JButton("직전 5회차");
 		// 버튼 크기설정
@@ -754,6 +736,17 @@ public class Lotto extends JFrame {
 
 			}
 		});
+		
+		// 추천번호 액션 리스너
+				btnRecommend.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						NonModal recommendNum = new NonModal(Lotto.this);
+						recommendNum.setVisible(true);
+						
+
+					}
+				});
+		
 // *********************************************************************
 // ************************* 메인패널 추가 **********************************
 		// 메인 패널에 주요 패널 3가지 집어넣기 / 3분할 되어있음
