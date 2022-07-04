@@ -54,7 +54,9 @@ public class Lotto extends JFrame {
 	
 	// 직전 5주 번호 담는 리스트 // 06/30
 //	List<List> savedLottoNum = new ArrayList<>();
-	private List<String> lottoFive;
+	static List<List<Integer>> lottoFive = new ArrayList<List<Integer>>();
+	
+	
 	static int gameCount = 1022;
 	int gameMoney = 0;
 	int bonusNumber;
@@ -68,6 +70,10 @@ public class Lotto extends JFrame {
 	// 로또타입필드
 	String lottoType;
 
+	// 당첨번호 필드
+	
+	
+	
 	public Lotto(Map<String, User> userInfo, String id) {
 
 		User user = userInfo.get(id);
@@ -76,13 +82,28 @@ public class Lotto extends JFrame {
 			chBoxAll.add(new ArrayList<Integer>());
 		}
 		user.setLottoNumber(chBoxAll);
-
-		lottoFive = new ArrayList<String>();
-		lottoFive.add("1017회차 : [12, 18, 22, 23, 30, 34] + 32");
-		lottoFive.add("1018회차 : [3, 19, 21, 25, 37, 45] + 35");
-		lottoFive.add("1019회차 : [1, 4, 13, 17, 34, 39] + 6");
-		lottoFive.add("1020회차 : [12, 27, 29, 38, 41, 45] + 6");
-		lottoFive.add("1021회차 : [12, 15, 17, 24, 29, 45] + 16");
+		
+		List<Integer> list = new ArrayList<Integer>();
+		list.addAll(Arrays.asList(12, 15, 17, 24, 29, 45, 16));
+		List<Integer> list2 = new ArrayList<Integer>();
+		list2.addAll(Arrays.asList(12, 27, 29, 38, 41, 45, 6));
+		List<Integer> list3 = new ArrayList<Integer>();
+		list3.addAll(Arrays.asList(1, 4, 13, 17, 34, 39, 6));
+		List<Integer> list4 = new ArrayList<Integer>();
+		list4.addAll(Arrays.asList(3, 19, 21, 25, 37, 45, 35));
+		List<Integer> list5 = new ArrayList<Integer>();
+		list5.addAll(Arrays.asList(12, 18, 22, 23, 30, 34, 32));
+		
+		lottoFive.add(list);
+		lottoFive.add(list2);
+		lottoFive.add(list3);
+		lottoFive.add(list4);
+		lottoFive.add(list5);
+//		lottoFive.add("1021회차 : [12, 15, 17, 24, 29, 45] + 16");
+//		lottoFive.add("1020회차 : [12, 27, 29, 38, 41, 45] + 6");
+//		lottoFive.add("1019회차 : [1, 4, 13, 17, 34, 39] + 6");
+//		lottoFive.add("1018회차 : [3, 19, 21, 25, 37, 45] + 35");
+//		lottoFive.add("1017회차 : [12, 18, 22, 23, 30, 34] + 32");
 //		List<String> lottoOne = new ArrayList<>(Arrays.asList("1021회차 : 12, 15, 17, 24, 29, 45, + 16"));
 //		List<String> lottoTwo = new ArrayList<>(Arrays.asList("1020회차 : 12, 27, 29, 38, 41, 45, + 6"));
 //		List<String> lottoThree = new ArrayList<>(Arrays.asList("1019회차 : 1, 4, 13, 17, 34, 39, + 6"));
@@ -494,9 +515,11 @@ public class Lotto extends JFrame {
 				// 직전 5주 액션 리스너
 				btnRecent.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						String lottoNumber = "직전 5회차 번호 + 보너스 번호\n" + lottoFive.get(4) + "\n" + lottoFive.get(3) + "\n"
-								+ lottoFive.get(2) + "\n" + lottoFive.get(1) + "\n" + lottoFive.get(0);
-						JOptionPane.showMessageDialog(Lotto.this, lottoNumber, "직전 5회차 당첨번호", JOptionPane.PLAIN_MESSAGE);
+//						String lottoNumber = "직전 5회차 번호 + 보너스 번호\n" + lottoFive.get(0) + "\n" + lottoFive.get(1) + "\n"
+//								+ lottoFive.get(2) + "\n" + lottoFive.get(3) + "\n" + lottoFive.get(4);
+//						JOptionPane.showMessageDialog(Lotto.this, lottoNumber, "직전 5회차 당첨번호", JOptionPane.PLAIN_MESSAGE);
+						FiveListDialog five = new FiveListDialog(Lotto.this, lottoFive, gameCount);
+						five.setVisible(true);
 					}
 				});
 				// 보유금액 확인 구간
@@ -696,9 +719,7 @@ public class Lotto extends JFrame {
 		pnlRight.add(pnlResult);
 		pnlRight.add(pnlLast);
 		
-//		JLabel lblGameMoney = new JLabel(gameMoney);
-//		lblGameMoney.setHorizontalAlignment(SwingConstants.RIGHT);
-//		pnlLast.add(lblGameMoney, BorderLayout.CENTER);
+
 		
 		// 결과버튼 액션리스너
 		btnResult.addActionListener(new ActionListener() {
@@ -709,12 +730,24 @@ public class Lotto extends JFrame {
 				// 당첨번호 뽑는 구간.
 				List<Integer> winNumber = new LinkedList<>();
 				Random random = new Random();
-				while (winNumber.size() < 6) {
-					int r = (random.nextInt(45)) + 1;
-					if (!winNumber.contains(r)) {
-						winNumber.add(r);
+				for (int i = 0; i < 6; i++) {
+					while (true) {
+						int r = (random.nextInt(45)) + 1;
+						System.out.println(r);
+						if (!winNumber.contains(r)) {
+							System.out.println(r);
+							winNumber.add(r);
+							break;
+						}
 					}
 				}
+				// 이러면 6번째 수가 콘테인일수있음
+//				while (winNumber.size() < 6) {
+//					int r = (random.nextInt(45)) + 1;
+//					if (!winNumber.contains(r)) {
+//						winNumber.add(r);
+//					}
+//				}
 				Collections.sort(winNumber);
 				// 보너스 번호 뽑는 구간
 				// while 이 없어서 a가 윈넘버에 들어있으면 오류남 (수정완료)
@@ -728,8 +761,9 @@ public class Lotto extends JFrame {
 
 				dialog = new LottoEndPage(Lotto.this, user, winNumber, bonusNumber, gameCount, userInfo);
 				dialog.setVisible(true);
-				lottoFive.add(gameCount + "회차 : " + winNumber + " + " + bonusNumber);
-				lottoFive.remove(0);
+				winNumber.add(bonusNumber);
+				lottoFive.add(0, winNumber);
+//				lottoFive.add(0, gameCount + "회차 : " + winNumber + " + " + bonusNumber);
 				gameCount++;
 				countGame.setText(gameCount + "회차");
 			}
@@ -793,6 +827,7 @@ public class Lotto extends JFrame {
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		setLocationRelativeTo(null);
 	}
+
 
 	public void blankPlus() {
 		for (int i = 0; i < chBoxAll.size(); i++) {
