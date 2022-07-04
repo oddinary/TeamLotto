@@ -30,8 +30,6 @@ public class LottoEndPage extends JDialog {
 	public LottoEndPage(JFrame owner, User user, List<Integer> winNumber, int bonusNumber, int gameCount) {
 		super(owner, true);
 
-		gameCount++;
-
 		JPanel pnlLotto = new JPanel();
 		JPanel pnlTop = new JPanel(); // 당첨번호
 
@@ -50,7 +48,7 @@ public class LottoEndPage extends JDialog {
 
 		pnlTop.setBorder(tbNumber);
 		pnlTop.setLayout(new BorderLayout(0, 0));
-		JLabel lblRound = new JLabel(user.getName() + " 님의"); // 회차
+		JLabel lblRound = new JLabel(gameCount + "회차"); // 회차
 		pnlTop.add(lblRound, BorderLayout.NORTH);
 		JLabel lblLotto = new JLabel("당첨번호는");
 		pnlTop.add(lblLotto, BorderLayout.WEST);
@@ -70,7 +68,7 @@ public class LottoEndPage extends JDialog {
 			ImageIcon icon = new ImageIcon(url);
 			lblWinIcon[i].setIcon(icon);
 		}
-		lblWin.setLayout(new BoxLayout(lblWin, BoxLayout.X_AXIS));
+		lblWin.setLayout(new GridLayout(0, 8, 0, 0));
 		lblWin.add(plus);
 		lblWin.add(bonuseIcon);
 
@@ -117,7 +115,7 @@ public class LottoEndPage extends JDialog {
 
 			for (int j = 0; j < user.getLottoNumber().get(i).size(); j++) {
 				iconlbl[i][j] = new JLabel();
-				lblInputNum[i].add(iconlbl[i][j]);
+				lblInputNum[i].add(iconlbl[i][j], BorderLayout.CENTER);
 				int num = user.getLottoNumber().get(i).get(j);
 				URL url = Lotto.class.getClassLoader()
 						.getResource("images/smallun" + String.format("%02d", num) + ".png");
@@ -135,7 +133,7 @@ public class LottoEndPage extends JDialog {
 						iconlbl[i][j].setIcon(icon);
 					}
 				}
-				lblInputNum[i].add(winCountLbl[i]);
+				
 
 				switch (winCount) {
 				case 3:
@@ -168,7 +166,8 @@ public class LottoEndPage extends JDialog {
 			pnlCenter.add(pnlResultBox[i]);
 			pnlResultBox[i].setLayout(new BorderLayout(0, 0));
 			pnlResultBox[i].add(lblResult[i], BorderLayout.WEST);
-			pnlResultBox[i].add(lblInputNum[i], BorderLayout.CENTER);
+			pnlResultBox[i].add(lblInputNum[i]);
+			pnlResultBox[i].add(winCountLbl[i], BorderLayout.EAST);
 		}
 
 //		for (int i = 0; i < pnlResultBox.length; i++) {
