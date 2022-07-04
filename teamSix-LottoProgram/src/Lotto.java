@@ -436,69 +436,93 @@ public class Lotto extends JFrame {
 //				rdbAuto.addActionListener(auto);
 //			}
 //		});
+		
+		// 구매금액.
+				JPanel pnlLast = new JPanel();
+				pnlLast.setLayout(new BorderLayout(0, 0));
+				JLabel lblPayMoney = new JLabel("구매금액");
+				pnlLast.add(lblPayMoney, BorderLayout.WEST);
+				JLabel lblWon = new JLabel("원");
 
+				JLabel lblgameMoney = new JLabel(String.valueOf(gameMoney));
+				lblgameMoney.setHorizontalAlignment(SwingConstants.RIGHT);
+				pnlLast.add(lblgameMoney, BorderLayout.CENTER);
+		
+		// 보유금액 확인 구간
+				JPanel pnlHasMoney = new JPanel();
+				JLabel lblHasMoney = new JLabel("보유금액");
+				JLabel lblMoney = new JLabel(String.valueOf(user.getHaveMoney()));
+				lblMoney.setHorizontalAlignment(SwingConstants.RIGHT);
+				lblMoney.setHorizontalTextPosition(SwingConstants.LEFT);
+				JLabel lblWon2 = new JLabel("원");
+				
 		// 선택번호 확인 버튼.....
-		btnConfirm.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				rdbdummy.setSelected(true);
-				if (checkedList.size() == 6) {
-					int count = 0;
-					if (count < 5) {
-						for (int i = 0; i < chBoxAll.size(); i++) {
-							if (chBoxAll.get(i).toString().equals("[]")) {
-								chBoxAll.set(i, checkedList);
-								break;
-							} else {
-								count++;
-							}
-						}
-					}
-
-					if (count < 5) {
-						for (int i = 0; i < user.getLottoNumber().size(); i++) {
-							if (!user.getLottoNumber().get(i).toString().equals("[]")) {
-								for (int j = 0; j < user.getLottoNumber().get(i).size(); j++) {
-									int num = user.getLottoNumber().get(i).get(j);
-									URL url = Lotto.class.getClassLoader()
-											.getResource("images/middle" + String.format("%02d", num) + ".png");
-									ImageIcon icon = new ImageIcon(url);
-									iconlbl[i][j].setIcon(icon);
+				btnConfirm.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						rdbdummy.setSelected(true);
+						if (checkedList.size() == 6) {
+							int count = 0;
+							if (count < 5) {
+								for (int i = 0; i < chBoxAll.size(); i++) {
+									if (chBoxAll.get(i).toString().equals("[]")) {
+										chBoxAll.set(i, checkedList);
+										break;
+									} else {
+										count++;
+									}
 								}
-//								lblResultNum[i].setText(user.getLottoNumber().get(i).toString());
+							}
+
+							if (count < 5) {
+								for (int i = 0; i < user.getLottoNumber().size(); i++) {
+									if (!user.getLottoNumber().get(i).toString().equals("[]")) {
+										for (int j = 0; j < user.getLottoNumber().get(i).size(); j++) {
+											int num = user.getLottoNumber().get(i).get(j);
+											URL url = Lotto.class.getClassLoader()
+													.getResource("images/middle" + String.format("%02d", num) + ".png");
+											ImageIcon icon = new ImageIcon(url);
+											iconlbl[i][j].setIcon(icon);
+										}
+//										lblResultNum[i].setText(user.getLottoNumber().get(i).toString());
+
+									}
+								}
+								gameMoney += 1000;
+							} else {
+								count--;
+								JOptionPane.showMessageDialog(Lotto.this, "한번에 5개까지만 구매가능합니다.");
+							}
+							checkedList = new ArrayList<Integer>();
+							lblResult[count].setText((count + 1) + ". " + lottoType);
+							// 금액 천원 추가
+							
+							lblgameMoney.setText(String.valueOf(gameMoney));
+
+							for (JCheckBox checkBox : listOfChkBox) {
+								checkBox.setSelected(false);
+								checkBox.setEnabled(false);
 
 							}
+						} else {
+							rdbManual.setSelected(true);
+							JOptionPane.showMessageDialog(Lotto.this, "6개 다 체크해주세요.");
 						}
-					} else {
-						count--;
-						JOptionPane.showMessageDialog(Lotto.this, "한번에 5개까지만 구매가능합니다.");
-					}
-					checkedList = new ArrayList<Integer>();
-					lblResult[count].setText((count + 1) + ". " + lottoType);
 
-					for (JCheckBox checkBox : listOfChkBox) {
-						checkBox.setSelected(false);
-						checkBox.setEnabled(false);
+						// 배열이 생기면 버튼들 활성화
+						for (int i = 0; i < btnResultInst.length; i++) {
+							if (user.getLottoNumber().get(i).size() > 2) {
+								btnResultInst[i].setEnabled(true);
+								btnResultDel[i].setEnabled(true);
+								btnResultCopy[i].setEnabled(true);
+							}
+						}
+						// 라디오 버튼이 그룹화되어서 사용 불가.
+//						rdbAuto.set
+//						rdbManual.setSelected(false);
+//						rdbSemiAuto.setSelected(false);
 					}
-				} else {
-					rdbManual.setSelected(true);
-					JOptionPane.showMessageDialog(Lotto.this, "6개 다 체크해주세요.");
-				}
-
-				// 배열이 생기면 버튼들 활성화
-				for (int i = 0; i < btnResultInst.length; i++) {
-					if (user.getLottoNumber().get(i).size() > 2) {
-						btnResultInst[i].setEnabled(true);
-						btnResultDel[i].setEnabled(true);
-						btnResultCopy[i].setEnabled(true);
-					}
-				}
-				// 라디오 버튼이 그룹화되어서 사용 불가.
-//				rdbAuto.set
-//				rdbManual.setSelected(false);
-//				rdbSemiAuto.setSelected(false);
-			}
-		});
+				});
 
 		// 번호 선택패널 => 초기화, 확인 버튼을 가진 pnlButton 삽입
 		pnlLeft.add(pnlButton);
@@ -543,13 +567,6 @@ public class Lotto extends JFrame {
 				five.setVisible(true);
 			}
 		});
-		// 보유금액 확인 구간
-		JPanel pnlHasMoney = new JPanel();
-		JLabel lblHasMoney = new JLabel("보유금액");
-		JLabel lblMoney = new JLabel(String.valueOf(user.getHaveMoney()));
-		lblMoney.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblMoney.setHorizontalTextPosition(SwingConstants.LEFT);
-		JLabel lblWon2 = new JLabel("원");
 
 		// 버튼 정렬할 레이아웃.
 		pnlRecommend.setLayout(new GridLayout(5, 0, 0, 10));
@@ -691,6 +708,8 @@ public class Lotto extends JFrame {
 							btnResultCopy[i].setEnabled(false);
 						}
 					}
+					gameMoney -= 1000;
+					lblgameMoney.setText(String.valueOf(gameMoney));
 				}
 			});
 		}
@@ -724,13 +743,6 @@ public class Lotto extends JFrame {
 				}
 			});
 		}
-
-		// 구매금액.
-		JPanel pnlLast = new JPanel();
-		pnlLast.setLayout(new BorderLayout(0, 0));
-		JLabel lblPayMoney = new JLabel("구매금액");
-		pnlLast.add(lblPayMoney, BorderLayout.WEST);
-		JLabel lblWon = new JLabel("원");
 
 		// 선택번호 확인패널; 결과 패널, 결과버튼 ( 버튼 기능 필요 )
 		pnlLast.add(lblWon, BorderLayout.EAST);
