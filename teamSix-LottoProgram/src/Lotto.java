@@ -742,9 +742,7 @@ public class Lotto extends JFrame {
 				for (int i = 0; i < 6; i++) {
 					while (true) {
 						int r = (random.nextInt(45)) + 1;
-						System.out.println(r);
 						if (!winNumber.contains(r)) {
-							System.out.println(r);
 							winNumber.add(r);
 							break;
 						}
@@ -775,6 +773,7 @@ public class Lotto extends JFrame {
 //				lottoFive.add(0, gameCount + "회차 : " + winNumber + " + " + bonusNumber);
 				gameCount++;
 				countGame.setText(gameCount + "회차");
+				user.setHaveMoney(user.getHaveMoney() + dialog.getWinMoney());
 				lblMoney.setText(String.valueOf(user.getHaveMoney()));
 			}
 		});
