@@ -50,11 +50,11 @@ public class Lotto extends JFrame {
 	List<Integer> checkedList = new ArrayList<>();
 
 	List<JCheckBox> listOfChkBox = new ArrayList<>();
-
+	
 	// 직전 5주 번호 담는 리스트 // 06/30
 //	List<List> savedLottoNum = new ArrayList<>();
 	private List<String> lottoFive;
-
+	int gameCount = 1022;
 	int bonusNumber;
 	// 체크박스 45개
 //	JCheckBox checkBox = new JCheckBox();
@@ -62,7 +62,7 @@ public class Lotto extends JFrame {
 	// 체크박스 체크 개수 카운트.
 //	int checkCount = 0;
 	// 회차 카운트//////
-	int gameCount = 1022;
+	
 	// 로또타입필드
 	String lottoType;
 
@@ -73,7 +73,7 @@ public class Lotto extends JFrame {
 		for (int i = 0; i < 5; i++) {
 			chBoxAll.add(new ArrayList<Integer>());
 		}
-
+		gameCount = 1022;
 		user.setLottoNumber(chBoxAll);
 
 		lottoFive = new ArrayList<String>();

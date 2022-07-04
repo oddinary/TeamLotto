@@ -118,7 +118,7 @@ public class LottoEndPage extends JDialog {
 				lblInputNum[i].add(iconlbl[i][j], BorderLayout.CENTER);
 				int num = user.getLottoNumber().get(i).get(j);
 				URL url = Lotto.class.getClassLoader()
-						.getResource("images/smallun" + String.format("%02d", num) + ".png");
+						.getResource("images/middleun" + String.format("%02d", num) + ".png");
 				URL url2 = Lotto.class.getClassLoader()
 						.getResource("images/middle" + String.format("%02d", num) + ".png");
 				ImageIcon icon = new ImageIcon(url);
