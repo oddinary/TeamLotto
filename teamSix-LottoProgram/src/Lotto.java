@@ -667,7 +667,6 @@ public class Lotto extends JFrame {
 
 					// 라디오 버튼 전체 해제(더미버튼작동)
 					rdbManual.setSelected(true);
-					lottoType = "미지정";
 
 					// 배열이 사라지면 버튼들 비활성화
 					for (int i = 0; i < btnResultInst.length; i++) {
@@ -677,6 +676,7 @@ public class Lotto extends JFrame {
 							btnResultCopy[i].setEnabled(false);
 						}
 					}
+					lblResult[index].setText((index + 1) + ". 미지정");
 				}
 			});
 		}
@@ -709,6 +709,7 @@ public class Lotto extends JFrame {
 					}
 					gameMoney -= 1000;
 					lblgameMoney.setText(String.valueOf(gameMoney));
+					lblResult[index].setText((index + 1) + ". 미지정");
 				}
 			});
 		}
