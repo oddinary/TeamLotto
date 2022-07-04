@@ -72,6 +72,7 @@ public class MyInfo extends JDialog {
 		getContentPane().add(pnl);
 		pack();
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		setLocationRelativeTo(null);
 
 	}
 }

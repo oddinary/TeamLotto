@@ -57,5 +57,6 @@ public class FiveListDialog extends JDialog{
 		
 		add(pnl);
 		setSize(300,300);
+		setLocationRelativeTo(null);
 	}
 }
