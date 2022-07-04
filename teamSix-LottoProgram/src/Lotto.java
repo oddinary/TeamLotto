@@ -515,6 +515,9 @@ public class Lotto extends JFrame {
 						btnResultDel[i].setEnabled(true);
 						btnResultCopy[i].setEnabled(true);
 					}
+					if (btnResultInst[i].isSelected()) {
+						btnResultInst[i].setEnabled(true);
+					}
 				}
 				// 라디오 버튼이 그룹화되어서 사용 불가.
 //						rdbAuto.set
@@ -675,7 +678,12 @@ public class Lotto extends JFrame {
 							btnResultDel[i].setEnabled(false);
 							btnResultCopy[i].setEnabled(false);
 						}
+						if (!btnResultInst[i].isSelected()) {
+							btnResultInst[i].setEnabled(false);
+						}
 					}
+					gameMoney -= 1000;
+					lblgameMoney.setText(String.valueOf(gameMoney));
 					lblResult[index].setText((index + 1) + ". 미지정");
 				}
 			});
@@ -696,8 +704,6 @@ public class Lotto extends JFrame {
 
 					// 배열초기화
 					user.getLottoNumber().set(index, new ArrayList<Integer>());
-
-					lottoType = "미지정";
 
 					// 배열이 사라지면 버튼들 비활성화
 					for (int i = 0; i < btnResultInst.length; i++) {
@@ -731,7 +737,6 @@ public class Lotto extends JFrame {
 						chkBox.setSelected(true);
 					}
 					rdbManual.setSelected(true);
-					lottoType = "미지정";
 
 //					for (int i = 0; i < btnResultInst.length; i++) {
 //						if (user.getLottoNumber().get(i).size() > 2) {
