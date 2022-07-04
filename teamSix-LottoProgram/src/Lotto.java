@@ -282,20 +282,20 @@ public class Lotto extends JFrame {
 			});
 
 			// '자동','반자동' 선택시 수정방지 아이템리스너
-			checkBox.addItemListener(new ItemListener() {
-				@Override
-				public void itemStateChanged(ItemEvent e) {
-					if (e.getStateChange() != ItemEvent.SELECTED) {
-						// '자동'
-						if (rdbAuto.isSelected()) {
-							checkBox.setSelected(true);
-						// '반자동'
-						} else if (rdbSemiAuto.isSelected()) {
-							checkBox.setSelected(true);
-						}
-					}
-				}
-			});
+//			checkBox.addItemListener(new ItemListener() {
+//				@Override
+//				public void itemStateChanged(ItemEvent e) {
+//					if (e.getStateChange() != ItemEvent.SELECTED) {
+//						// '자동'
+//						if (rdbAuto.isSelected()) {
+//							checkBox.setSelected(true);
+//						// '반자동'
+//						} else if (rdbSemiAuto.isSelected()) {
+//							checkBox.setSelected(true);
+//						}
+//					}
+//				}
+//			});
 			
 			listOfChkBox.add(checkBox);
 			checkBox.setEnabled(false);
@@ -312,8 +312,16 @@ public class Lotto extends JFrame {
 						checkedList.remove(i);
 					}
 				}
-				for (JCheckBox checkBox : listOfChkBox) {
-					checkBox.setSelected(false);
+				if (rdbAuto.isSelected()||rdbSemiAuto.isSelected()) {
+					for (JCheckBox checkBox : listOfChkBox) {
+						checkBox.setSelected(false);
+						checkBox.setEnabled(false);
+					}
+				} else if (rdbManual.isSelected()){
+					for (JCheckBox checkBox : listOfChkBox) {
+						checkBox.setSelected(false);
+						checkBox.setEnabled(true);
+					}
 				}
 			}
 		};
