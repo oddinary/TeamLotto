@@ -46,7 +46,7 @@ public class NonModal extends JDialog {
 
 		JPanel pnl = new JPanel();
 		JLabel lblToday = new JLabel("현재 시간: " + d.format(formatter));
-		JLabel lblNum = new JLabel("추천번호: " + todayNumber);
+		JLabel lblNum = new JLabel("" + todayNumber);
 		lblNum.setFont(new Font("굴림", Font.BOLD, 20));
 		JButton pnlBtn = new JButton("확인");
 
