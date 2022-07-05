@@ -488,7 +488,7 @@ public class Lotto extends JFrame {
 					}
 					checkedList = new ArrayList<Integer>();
 					lblResult[count].setText((count + 1) + ". " + lottoType);
-
+					lblResult[count] = new JLabel((count + 1) + ". " + lottoType);
 					// 금액 천원 추가
 					lblgameMoney.setText(String.valueOf(gameMoney));
 
