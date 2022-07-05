@@ -75,7 +75,7 @@ public class Lotto extends JFrame {
 	public Lotto(Map<String, User> userInfo, String id) {
 
 		User user = userInfo.get(id);
-
+		setTitle("로또 게임");
 		for (int i = 0; i < 5; i++) {
 			chBoxAll.add(new ArrayList<Integer>());
 		}
@@ -113,7 +113,7 @@ public class Lotto extends JFrame {
 //		savedLottoNum.add(lottoFour);
 //		savedLottoNum.add(lottoFive);
 
-		TitledBorder tbBtn = new TitledBorder(new LineBorder(Color.black), "추가 기능");
+		TitledBorder tbBtn = new TitledBorder(new LineBorder(Color.black), "메뉴");
 		tbBtn.setTitleColor(new Color(245, 136, 110));
 		TitledBorder tbSelect = new TitledBorder(new LineBorder(Color.black), "번호 선택");
 		tbSelect.setTitleColor(new Color(245, 136, 110));

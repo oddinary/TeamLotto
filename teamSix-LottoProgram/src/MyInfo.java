@@ -56,7 +56,7 @@ public class MyInfo extends JDialog {
 		panel.add(lblPrime);
 		JLabel lblMoney = new JLabel("보유금 : " + user.getHaveMoney() + " 원");
 		panel.add(lblMoney);
-		JButton btnMoney = new JButton("보유금 충전(5000)");
+		JButton btnMoney = new JButton("보유금 충전");
 		btnMoney.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int money = user.getHaveMoney();
@@ -66,6 +66,14 @@ public class MyInfo extends JDialog {
 			}
 		});
 		pnlMoney.add(btnMoney);
+		
+		// 환전 버튼
+		JButton btnChange = new JButton("환전");
+		btnChange.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		pnlMoney.add(btnChange);
 		panel.add(pnlMoney);
 		panel.add(pnlbtn);
 

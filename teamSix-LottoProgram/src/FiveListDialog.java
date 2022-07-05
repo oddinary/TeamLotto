@@ -1,4 +1,5 @@
 
+import java.awt.Color;
 import java.net.URL;
 import java.util.List;
 
@@ -8,17 +9,20 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
 
 public class FiveListDialog extends JDialog{
 	FiveListDialog(JFrame owner, List<List<Integer>> lottoFive, int gameCount) {
 		super(owner, true);
+		setTitle("직전 5회차 번호 + 보너스 번호");
+		TitledBorder tborder = new TitledBorder(new LineBorder(Color.black), "직전 5회차 번호 + 보너스 번호");
+		tborder.setTitleColor(new Color(245, 136, 110));
 		
 		JPanel pnl = new JPanel();
-		
+		pnl.setBorder(tborder);
 		JPanel topPnl = new JPanel();
-		JLabel topLbl = new JLabel("직전 5회차 번호 + 보너스 번호");
 		
-		topPnl.add(topLbl);
 		
 		JPanel[] round = new JPanel[5];
 		JLabel[] roundLbl = new JLabel[5];
