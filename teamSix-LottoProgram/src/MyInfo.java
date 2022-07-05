@@ -62,12 +62,16 @@ class NumInput extends JDialog {
 				blank = true;
 			}
 		}
-		
+
 		if (blank || tf.getText().equals("")) {
 
 		} else {
 			try {
-				num = Integer.valueOf(tf.getText());
+				if (Integer.valueOf(tf.getText()) > 0) {
+					num = Integer.valueOf(tf.getText());
+				} else {
+					JOptionPane.showMessageDialog(NumInput.this, "음수안됨");
+				}
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(NumInput.this, "정수로만 입력하시기 바랍니다.");
 			}
