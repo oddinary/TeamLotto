@@ -22,23 +22,23 @@ class NumInput extends JDialog {
 	public NumInput(JDialog owner) {
 		super(owner, true);
 		setTitle("입력 창");
-		
+
 		JPanel pnlInput = new JPanel();
 		JPanel pnlbtn = new JPanel();
 		JLabel lblInput = new JLabel("금액 입력");
 		lblInput.setHorizontalAlignment(SwingConstants.CENTER);
-		
-		pnlInput.setLayout(new GridLayout(3,0,0,5));
-		
+
+		pnlInput.setLayout(new GridLayout(3, 0, 0, 5));
+
 		tf = new JTextField(10);
 
 		JButton btn = new JButton("확인");
-		
+
 		pnlbtn.add(btn);
 		pnlInput.add(lblInput);
 		pnlInput.add(tf);
 		pnlInput.add(pnlbtn);
-		
+
 		add(pnlInput);
 
 		btn.addActionListener(new ActionListener() {
@@ -56,10 +56,21 @@ class NumInput extends JDialog {
 	public int showDialog() {
 		setVisible(true);
 		int num = 0;
-		try {
-			num = Integer.valueOf(tf.getText());
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(NumInput.this, "정수로만 입력하시기 바랍니다.");
+		boolean blank = false;
+		for (int i = 0; i < tf.getText().length(); i++) {
+			if (tf.getText().charAt(i) == ' ') {
+				blank = true;
+			}
+		}
+		
+		if (blank || tf.getText().equals("")) {
+
+		} else {
+			try {
+				num = Integer.valueOf(tf.getText());
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(NumInput.this, "정수로만 입력하시기 바랍니다.");
+			}
 		}
 		return num;
 	}
@@ -68,6 +79,7 @@ class NumInput extends JDialog {
 public class MyInfo extends JDialog {
 	MyInfo(JFrame owner, User user) {
 		super(owner, true);
+		setTitle("나의 정보");
 
 		TitledBorder tbMyInfo = new TitledBorder(new LineBorder(Color.black), "나의 정보");
 		tbMyInfo.setTitleColor(new Color(245, 136, 110));

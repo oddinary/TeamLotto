@@ -38,6 +38,7 @@ public class LottoEndPage extends JDialog {
 	public LottoEndPage(JFrame owner, User user, List<Integer> winNumber, int bonusNumber, int gameCount,
 			Map<String, User> userInfo) {
 		super(owner, true);
+		setTitle("당첨 결과");
 		JPanel pnlLotto = new JPanel();
 		JPanel pnlTop = new JPanel(); // 당첨번호
 

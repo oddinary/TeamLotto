@@ -539,7 +539,7 @@ public class Lotto extends JFrame {
 		btnMyInfo.setPreferredSize(new Dimension(160, 60));
 
 		// 추가 기능 버튼 ( 번호 추천 )
-		JButton btnRecommend = new JButton("번호 추천");
+		JButton btnRecommend = new JButton("번호 추천 (프리미엄)");
 		// 버튼 크기설정
 		btnRecommend.setPreferredSize(new Dimension(160, 60));
 
@@ -845,50 +845,61 @@ public class Lotto extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// 당첨번호 뽑는 구간.
-				List<Integer> winNumber = new LinkedList<>();
-				Random random = new Random();
-				for (int i = 0; i < 6; i++) {
+				int count = 0;
+
+				for (int i = 0; i < user.getLottoNumber().size(); i++) {
+					if (user.getLottoNumber().get(i).toString().equals("[]")) {
+						count++;
+					}
+				}
+				if (count >= 5) {
+					JOptionPane.showMessageDialog(Lotto.this, "하나는 해야지?");
+				} else {
+					// 당첨번호 뽑는 구간.
+					List<Integer> winNumber = new LinkedList<>();
+					Random random = new Random();
+					for (int i = 0; i < 6; i++) {
+						while (true) {
+							int r = (random.nextInt(45)) + 1;
+							if (!winNumber.contains(r)) {
+								winNumber.add(r);
+								break;
+							}
+						}
+					}
+					// 이러면 6번째 수가 콘테인일수있음
+					// while (winNumber.size() < 6) {
+					// int r = (random.nextInt(45)) + 1;
+					// if (!winNumber.contains(r)) {
+					// winNumber.add(r);
+					// }
+					// }
+					Collections.sort(winNumber);
+					// 보너스 번호 뽑는 구간
+					// while 이 없어서 a가 윈넘버에 들어있으면 오류남 (수정완료)
 					while (true) {
-						int r = (random.nextInt(45)) + 1;
-						if (!winNumber.contains(r)) {
-							winNumber.add(r);
+						int a = (random.nextInt(45)) + 1;
+						if (!winNumber.contains(a)) {
+							bonusNumber = a;
 							break;
 						}
 					}
+					// if ((user.getHaveMoney() - gameMoney) < 0) {
+					// JOptionPane.showMessageDialog(Lotto.this, "보유금액이 구매금액보다 적습니다.");
+					// } else {
+					user.setHaveMoney(user.getHaveMoney() - gameMoney);
+					dialog = new LottoEndPage(Lotto.this, user, winNumber, bonusNumber, gameCount, userInfo);
+					dialog.setVisible(true);
+					winNumber.add(bonusNumber);
+					lottoFive.add(0, winNumber);
+					// lottoFive.add(0, gameCount + "회차 : " + winNumber + " + " + bonusNumber);
+					gameCount++;
+					// 라벨 새로고침
+					countGame.setText(gameCount + "회차");
+					user.setHaveMoney(user.getHaveMoney() + dialog.getWinMoney());
+					lblMoney.setText(String.valueOf(user.getHaveMoney()));
+					// }
 				}
-				// 이러면 6번째 수가 콘테인일수있음
-				// while (winNumber.size() < 6) {
-				// int r = (random.nextInt(45)) + 1;
-				// if (!winNumber.contains(r)) {
-				// winNumber.add(r);
-				// }
-				// }
-				Collections.sort(winNumber);
-				// 보너스 번호 뽑는 구간
-				// while 이 없어서 a가 윈넘버에 들어있으면 오류남 (수정완료)
-				while (true) {
-					int a = (random.nextInt(45)) + 1;
-					if (!winNumber.contains(a)) {
-						bonusNumber = a;
-						break;
-					}
-				}
-				// if ((user.getHaveMoney() - gameMoney) < 0) {
-				// JOptionPane.showMessageDialog(Lotto.this, "보유금액이 구매금액보다 적습니다.");
-				// } else {
-				user.setHaveMoney(user.getHaveMoney() - gameMoney);
-				dialog = new LottoEndPage(Lotto.this, user, winNumber, bonusNumber, gameCount, userInfo);
-				dialog.setVisible(true);
-				winNumber.add(bonusNumber);
-				lottoFive.add(0, winNumber);
-				// lottoFive.add(0, gameCount + "회차 : " + winNumber + " + " + bonusNumber);
-				gameCount++;
-				// 라벨 새로고침
-				countGame.setText(gameCount + "회차");
-				user.setHaveMoney(user.getHaveMoney() + dialog.getWinMoney());
-				lblMoney.setText(String.valueOf(user.getHaveMoney()));
-				// }
 			}
 		});
 
