@@ -55,7 +55,8 @@ public class Lotto extends JFrame {
 	// 체크박스 체크 개수 카운트.
 //	int checkCount = 0;
 	// 회차 카운트//////
-	static JLabel[] lblResult = new JLabel[5];
+	
+	static JLabel[] lblResult2 = new JLabel[5];
 
 	// 로또타입필드
 	String lottoType;
@@ -162,9 +163,10 @@ public class Lotto extends JFrame {
 
 		lottoType = "미지정";
 
-//		JLabel[] lblResult = new JLabel[5];
+		JLabel[] lblResult = new JLabel[5];
 		for (int i = 0; i < lblResult.length; i++) {
 			lblResult[i] = new JLabel((i + 1) + ". " + lottoType);
+			lblResult2[i] = new JLabel((i + 1) + ". " + lottoType);
 		}
 
 		// 입력한 로또가 오른쪽에 뜨기 위한 라벨
@@ -343,7 +345,7 @@ public class Lotto extends JFrame {
 					for (JCheckBox checkBox : listOfChkBox) {
 						checkBox.setEnabled(true);
 					}
-					if (listOfChkBox.size() < 6) {
+					if (1 < listOfChkBox.size() && listOfChkBox.size() < 6 ) {
 						rdbSemiAuto.setEnabled(true);
 					}
 				} else {
@@ -351,7 +353,7 @@ public class Lotto extends JFrame {
 						// 체크박스들 끄게 함
 						checkBox.setEnabled(false);
 					}
-					rdbSemiAuto.setEnabled(false);
+//					rdbSemiAuto.setEnabled(false);
 				}
 				Collections.sort(checkedList);
 				lottoType = "수동";
@@ -475,8 +477,6 @@ public class Lotto extends JFrame {
 									ImageIcon icon = new ImageIcon(url);
 									iconlbl[i][j].setIcon(icon);
 								}
-//										lblResultNum[i].setText(user.getLottoNumber().get(i).toString());
-
 							}
 						}
 						gameMoney += 1000;
@@ -486,6 +486,7 @@ public class Lotto extends JFrame {
 					}
 					checkedList = new ArrayList<Integer>();
 					lblResult[count].setText((count + 1) + ". " + lottoType);
+					lblResult2[count].setText((count + 1) + ". " + lottoType);
 					lblgameMoney.setText(String.valueOf(gameMoney));
 
 					for (JCheckBox checkBox : listOfChkBox) {
@@ -690,8 +691,8 @@ public class Lotto extends JFrame {
 					gameMoney -= 1000;
 					lblgameMoney.setText(String.valueOf(gameMoney));
 					lottoType = "미지정";
-					lblResult[index].setText((index + 1) + lottoType);
-//					lblResult[index].setText((index + 1) + ". 미지정");
+					lblResult[index].setText((index + 1) + ". " + lottoType);
+					lblResult2[index].setText((index + 1) + ". " + lottoType);
 				}
 			});
 		}
@@ -724,7 +725,7 @@ public class Lotto extends JFrame {
 					lblgameMoney.setText(String.valueOf(gameMoney));
 					lottoType = "미지정";
 					lblResult[index].setText((index + 1) + ". " + lottoType);
-//					lblResult[index].setText((index + 1) + ". 미지정");
+					lblResult2[index].setText((index + 1) + ". " + lottoType);
 				}
 			});
 		}

@@ -101,11 +101,6 @@ public class LottoEndPage extends JDialog {
 //			lblResult[i] = new JLabel((i + 1) + " 미지정");
 //		}
 
-		JLabel[] lblResult = new JLabel[5];
-		for (int i = 0; i < Lotto.lblResult.length; i++) {
-			Lotto.lblResult[i].getText();
-		}
-
 		// 번호를 넣을 라벨을 만들기
 //		JPanel[] lblResultNum = new JPanel[5];
 //		for (int i = 0; i < iconlbl.length; i++) {
@@ -186,7 +181,7 @@ public class LottoEndPage extends JDialog {
 			pnlCenter.add(pnlResultBox[i]);
 			pnlResultBox[i].setLayout(new BorderLayout(0, 0));
 //			pnlResultBox[i].add(lblResult[i], BorderLayout.WEST);
-			pnlResultBox[i].add(Lotto.lblResult[i], BorderLayout.WEST);
+			pnlResultBox[i].add(Lotto.lblResult2[i], BorderLayout.WEST);
 			pnlResultBox[i].add(lblInputNum[i]);
 			pnlResultBox[i].add(winCountLbl[i], BorderLayout.EAST);
 		}
