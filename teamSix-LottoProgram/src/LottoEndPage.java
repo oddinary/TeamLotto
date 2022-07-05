@@ -219,6 +219,10 @@ public class LottoEndPage extends JDialog {
 		sl_pnlLotto.putConstraint(SpringLayout.WEST, btnReplay, 148, SpringLayout.WEST, pnlLotto);
 		btnReplay.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				for (int i = 0; i < Lotto.lblResult2.length; i++) {
+					String lottoType = "미지정";
+					Lotto.lblResult2[i] = new JLabel((i + 1) + ". " + lottoType);
+				}
 				dispose();
 			}
 		});
@@ -229,6 +233,10 @@ public class LottoEndPage extends JDialog {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
+				for (int i = 0; i < Lotto.lblResult2.length; i++) {
+					String lottoType = "미지정";
+					Lotto.lblResult2[i] = new JLabel((i + 1) + ". " + lottoType);
+				}
 				dispose();
 			}
 
