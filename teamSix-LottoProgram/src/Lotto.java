@@ -486,10 +486,6 @@ public class Lotto extends JFrame {
 					}
 					checkedList = new ArrayList<Integer>();
 					lblResult[count].setText((count + 1) + ". " + lottoType);
-					// 이게 문제임 삭제 버튼 눌러도 미지정 글자 반응
-					// 없음.*******************************************************************************
-					lblResult[count] = new JLabel((count + 1) + ". " + lottoType);
-					// 금액 천원 추가
 					lblgameMoney.setText(String.valueOf(gameMoney));
 
 					for (JCheckBox checkBox : listOfChkBox) {
@@ -810,7 +806,7 @@ public class Lotto extends JFrame {
 		pnlRight.add(panel);
 
 		// 초기화
-		JButton btnGameClear = new JButton("초기화");
+		JButton btnGameClear = new JButton("전체초기화");
 		panel.add(btnGameClear);
 		btnGameClear.addActionListener(new ActionListener() {
 			@Override
@@ -833,7 +829,8 @@ public class Lotto extends JFrame {
 					}
 					gameMoney = 0;
 					lblgameMoney.setText(String.valueOf(gameMoney));
-					lblResult[index].setText((index + 1) + ". 미지정");
+					lottoType = "미지정";
+					lblResult[index].setText((index + 1) + ". " + lottoType);
 				}
 			}
 //				for (int j = 0; j < lblResultNum.length; j++) {
