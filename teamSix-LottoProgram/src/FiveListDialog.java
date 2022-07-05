@@ -1,5 +1,7 @@
 
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.net.URL;
 import java.util.List;
 
@@ -61,6 +63,9 @@ public class FiveListDialog extends JDialog{
 		
 		add(pnl);
 		setSize(320,300);
-		setLocationRelativeTo(null);
+		Dimension frameSize = this.getSize();
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		this.setLocation((screenSize.width - frameSize.width) / 5, (screenSize.height - frameSize.height) / 2);
+//		setLocationRelativeTo(null);
 	}
 }
