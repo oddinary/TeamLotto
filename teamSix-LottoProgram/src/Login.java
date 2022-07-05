@@ -156,7 +156,7 @@ public class Login extends JFrame {
 		menuPnl.add(lblImgLabel);
 //		pnl.add(bgLbl);
 
-		setSize(602, 421);
+		setSize(600, 420);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 	}

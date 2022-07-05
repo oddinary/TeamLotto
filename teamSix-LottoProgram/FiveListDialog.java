@@ -16,7 +16,7 @@ import javax.swing.border.TitledBorder;
 
 public class FiveListDialog extends JDialog{
 	FiveListDialog(JFrame owner, List<List<Integer>> lottoFive, int gameCount) {
-		super(owner, true);
+		super(owner, false);
 		setTitle("직전 5회차 번호 + 보너스 번호");
 		TitledBorder tborder = new TitledBorder(new LineBorder(Color.black), "직전 5회차 번호 + 보너스 번호");
 		tborder.setTitleColor(new Color(245, 136, 110));

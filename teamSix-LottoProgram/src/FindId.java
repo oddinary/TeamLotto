@@ -35,8 +35,8 @@ public class FindId extends JPanel {
 		setLayout(springLayout);
 
 		JPanel panel = new JPanel();
-		springLayout.putConstraint(SpringLayout.NORTH, panel, 103, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.EAST, panel, -54, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, panel, 76, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, panel, 36, SpringLayout.WEST, this);
 		add(panel);
 		JPanel pnl = new JPanel();
 		panel.add(pnl);
