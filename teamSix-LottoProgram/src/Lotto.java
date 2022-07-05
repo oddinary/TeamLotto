@@ -1,13 +1,18 @@
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.HeadlessException;
-import java.awt.Image;
-import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +20,7 @@ import java.util.Random;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
-import javax.swing.ButtonModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
@@ -25,27 +30,9 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.net.URL;
-import java.awt.event.ActionEvent;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import javax.swing.GroupLayout;
-import javax.swing.ImageIcon;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.Box;
-import java.awt.BorderLayout;
-import javax.swing.SwingConstants;
 
 public class Lotto extends JFrame {
 	// 체크리스트를 모두 담는 리스트.(체크박스에서 6개 체크된 리스트가 여기에 담김)
@@ -175,10 +162,11 @@ public class Lotto extends JFrame {
 
 		lottoType = "미지정";
 
+//		JLabel[] lblResult = new JLabel[5];
 		for (int i = 0; i < lblResult.length; i++) {
 			lblResult[i] = new JLabel((i + 1) + ". " + lottoType);
 		}
-		
+
 		// 입력한 로또가 오른쪽에 뜨기 위한 라벨
 		JPanel[] lblResultNum = new JPanel[5];
 		JLabel[][] iconlbl = new JLabel[5][6];
@@ -450,7 +438,7 @@ public class Lotto extends JFrame {
 		JLabel lblWon2 = new JLabel("원");
 
 		JLabel lblgameMoney = new JLabel(String.valueOf(gameMoney));
-		
+
 		// JSpinner 사용; 로또 개수 1 ~ 5개 한번에 같은번호 만들 수 있게 도와줄 스피너
 		// 텍스트 입력 불가처리 화살표만 사용 가능
 		JSpinner spinner = new JSpinner();
@@ -458,7 +446,7 @@ public class Lotto extends JFrame {
 		JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) spinner.getEditor();
 		editor.getTextField().setEnabled(true);
 		editor.getTextField().setEditable(false);
-		
+
 		// 선택번호 확인 버튼.....
 		btnConfirm.addActionListener(new ActionListener() {
 			@Override
@@ -498,6 +486,8 @@ public class Lotto extends JFrame {
 					}
 					checkedList = new ArrayList<Integer>();
 					lblResult[count].setText((count + 1) + ". " + lottoType);
+					// 이게 문제임 삭제 버튼 눌러도 미지정 글자 반응
+					// 없음.*******************************************************************************
 					lblResult[count] = new JLabel((count + 1) + ". " + lottoType);
 					// 금액 천원 추가
 					lblgameMoney.setText(String.valueOf(gameMoney));
@@ -574,16 +564,16 @@ public class Lotto extends JFrame {
 				five.setVisible(true);
 			}
 		});
+
+		// 로또 도움말 버튼
 		JButton btnHelp = new JButton("※로또 게임 방법");
 		btnHelp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null, "1 ~ 45까지 6개의 숫자를 고르면\r\n" + 
-						"\r\n" + 
-						"로또는 보너스 번호를 포함해 총 7개의 번호를 뽑습니다.\r\n" + 
-						"\r\n" + 
-						"본번호 6개가 다 맞으면 1등, 본번호 5개 + 보너스번호 1개가 같으면 2등\r\n" + 
-						"\r\n" + 
-						"본번호 5개가 맞으면 3등, 본번호 4개가 같으면 4등, 본번호 3개가 같으면 5등입니다.", "로또 게임 정보", JOptionPane.DEFAULT_OPTION);
+				JOptionPane.showMessageDialog(null,
+						"1 ~ 45까지 6개의 숫자를 고르면\r\n" + "\r\n" + "로또는 보너스 번호를 포함해 총 7개의 번호를 뽑습니다.\r\n" + "\r\n"
+								+ "본번호 6개가 다 맞으면 1등, 본번호 5개 + 보너스번호 1개가 같으면 2등\r\n" + "\r\n"
+								+ "본번호 5개가 맞으면 3등, 본번호 4개가 같으면 4등, 본번호 3개가 같으면 5등입니다.",
+						"로또 게임 정보", JOptionPane.DEFAULT_OPTION);
 			}
 		});
 		btnHelp.setPreferredSize(new Dimension(160, 50));
@@ -606,7 +596,6 @@ public class Lotto extends JFrame {
 		pnlHasMoney.add(lblHasMoney, BorderLayout.WEST);
 		pnlHasMoney.add(lblMoney, BorderLayout.CENTER);
 		pnlHasMoney.add(lblWon2, BorderLayout.EAST);
-		
 
 		// 나의정보 액션 리스너
 		btnMyInfo.addActionListener(new ActionListener() {
@@ -705,7 +694,8 @@ public class Lotto extends JFrame {
 					gameMoney -= 1000;
 					lblgameMoney.setText(String.valueOf(gameMoney));
 					lottoType = "미지정";
-					lblResult[index].setText((index + 1) + ". " + lottoType);
+					lblResult[index].setText((index + 1) + lottoType);
+//					lblResult[index].setText((index + 1) + ". 미지정");
 				}
 			});
 		}
@@ -738,6 +728,7 @@ public class Lotto extends JFrame {
 					lblgameMoney.setText(String.valueOf(gameMoney));
 					lottoType = "미지정";
 					lblResult[index].setText((index + 1) + ". " + lottoType);
+//					lblResult[index].setText((index + 1) + ". 미지정");
 				}
 			});
 		}
