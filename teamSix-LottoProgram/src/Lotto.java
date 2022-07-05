@@ -536,12 +536,12 @@ public class Lotto extends JFrame {
 		// 추가 기능 버튼 ( 나의 정보 )
 		JButton btnMyInfo = new JButton("나의 정보");
 		// 버튼 크기설정
-		btnMyInfo.setPreferredSize(new Dimension(160, 60));
+		btnMyInfo.setPreferredSize(new Dimension(160, 50));
 
 		// 추가 기능 버튼 ( 번호 추천 )
 		JButton btnRecommend = new JButton("번호 추천 (프리미엄)");
 		// 버튼 크기설정
-		btnRecommend.setPreferredSize(new Dimension(160, 60));
+		btnRecommend.setPreferredSize(new Dimension(160, 50));
 
 		if (user.isPremier()) {
 			btnRecommend.setEnabled(true);
@@ -552,7 +552,7 @@ public class Lotto extends JFrame {
 		// 추가 기능 버튼 ( 직전 5주 )
 		JButton btnRecent = new JButton("직전 5회차");
 		// 버튼 크기설정
-		btnRecent.setPreferredSize(new Dimension(160, 60));
+		btnRecent.setPreferredSize(new Dimension(160, 50));
 		// 직전 5주 액션 리스너
 		btnRecent.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -563,9 +563,22 @@ public class Lotto extends JFrame {
 				five.setVisible(true);
 			}
 		});
+		JButton btnHelp = new JButton("※로또 게임 방법");
+		btnHelp.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(null, "1 ~ 45까지 6개의 숫자를 고르면\r\n" + 
+						"\r\n" + 
+						"로또는 보너스 번호를 포함해 총 7개의 번호를 뽑습니다.\r\n" + 
+						"\r\n" + 
+						"본번호 6개가 다 맞으면 1등, 본번호 5개 + 보너스번호 1개가 같으면 2등\r\n" + 
+						"\r\n" + 
+						"본번호 5개가 맞으면 3등, 본번호 4개가 같으면 4등, 본번호 3개가 같으면 5등입니다.", "로또 게임 정보", JOptionPane.DEFAULT_OPTION);
+			}
+		});
+		btnHelp.setPreferredSize(new Dimension(160, 50));
 
 		// 버튼 정렬할 레이아웃.
-		pnlRecommend.setLayout(new GridLayout(5, 0, 0, 10));
+		pnlRecommend.setLayout(new GridLayout(6, 0, 0, 10));
 
 		// 컴포넌트 추가
 		JPanel pnlLabel = new JPanel();
@@ -573,14 +586,16 @@ public class Lotto extends JFrame {
 		pnlLabel.add(countGame, BorderLayout.NORTH); // <- 이거 추가 가능하게 부탁드려요 ㅠㅠ
 		pnlLabel.add(lblMyName, BorderLayout.CENTER);
 		pnlRecommend.add(pnlLabel);
+		pnlRecommend.add(pnlHasMoney);
 		pnlRecommend.add(btnMyInfo);
 		pnlRecommend.add(btnRecommend);
 		pnlRecommend.add(btnRecent);
-		pnlRecommend.add(pnlHasMoney);
+		pnlRecommend.add(btnHelp);
 		pnlHasMoney.setLayout(new BorderLayout(0, 0));
 		pnlHasMoney.add(lblHasMoney, BorderLayout.WEST);
 		pnlHasMoney.add(lblMoney, BorderLayout.CENTER);
 		pnlHasMoney.add(lblWon2, BorderLayout.EAST);
+		
 
 		// 나의정보 액션 리스너
 		btnMyInfo.addActionListener(new ActionListener() {
