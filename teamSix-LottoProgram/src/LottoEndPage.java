@@ -10,6 +10,7 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.SpringLayout;
@@ -91,15 +92,15 @@ public class LottoEndPage extends JDialog {
 		sl_pnlLotto.putConstraint(SpringLayout.WEST, pnlCenter, 0, SpringLayout.WEST, pnlTop);
 		sl_pnlLotto.putConstraint(SpringLayout.EAST, pnlCenter, 0, SpringLayout.EAST, pnlTop);
 
-		JPanel[] pnlResultBox = new JPanel[5];
+		JPanel[] pnlResultBox = new JPanel[user.getLottoNumber().size()];
 		for (int i = 0; i < pnlResultBox.length; i++) {
 			pnlResultBox[i] = new JPanel();
 		}
 		// 574673e;
-//		JLabel[] lblResult = new JLabel[5];
-//		for (int i = 0; i < lblResult.length; i++) {
-//			lblResult[i] = new JLabel((i + 1) + " 미지정");
-//		}
+		JLabel[] lblResult = new JLabel[user.getLottoNumber().size()];
+		for (int i = 0; i < lblResult.length; i++) {
+			lblResult[i] = new JLabel((i + 1) + " 미지정");
+		}
 
 		// 번호를 넣을 라벨을 만들기
 //		JPanel[] lblResultNum = new JPanel[5];
@@ -176,15 +177,21 @@ public class LottoEndPage extends JDialog {
 			}
 //			lblInputNum[i].setText(user.getLottoNumber().get(i).toString());
 		}
-
+		// 스크롤 박스 추가부분
+		JPanel pnlMiddle = new JPanel();
+		pnlMiddle.setLayout(new BoxLayout(pnlMiddle, BoxLayout.Y_AXIS));
+		
 		for (int i = 0; i < user.getLottoNumber().size(); i++) {
-			pnlCenter.add(pnlResultBox[i]);
+			pnlMiddle.add(pnlResultBox[i]);
 			pnlResultBox[i].setLayout(new BorderLayout(0, 0));
-//			pnlResultBox[i].add(lblResult[i], BorderLayout.WEST);
-			pnlResultBox[i].add(Lotto.lblResult2[i], BorderLayout.WEST);
+			pnlResultBox[i].add(lblResult[i], BorderLayout.WEST);
+//			pnlResultBox[i].add(lblResult2[i], BorderLayout.WEST);
 			pnlResultBox[i].add(lblInputNum[i]);
 			pnlResultBox[i].add(winCountLbl[i], BorderLayout.EAST);
 		}
+		JScrollPane scroll = new JScrollPane(pnlMiddle);
+		scroll.setSize(pnlCenter.getX(), pnlCenter.getY());
+		pnlCenter.add(scroll);
 
 //		for (int i = 0; i < pnlResultBox.length; i++) {
 //			pnlCenter.add(pnlResultBox[i]);
@@ -219,10 +226,10 @@ public class LottoEndPage extends JDialog {
 		sl_pnlLotto.putConstraint(SpringLayout.WEST, btnReplay, 148, SpringLayout.WEST, pnlLotto);
 		btnReplay.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				for (int i = 0; i < Lotto.lblResult2.length; i++) {
-					String lottoType = "미지정";
-					Lotto.lblResult2[i] = new JLabel((i + 1) + ". " + lottoType);
-				}
+//				for (int i = 0; i < lblResult2.length; i++) {
+//					String lottoType = "미지정";
+//					lblResult2[i] = new JLabel((i + 1) + ". " + lottoType);
+//				}
 				dispose();
 			}
 		});
@@ -233,10 +240,10 @@ public class LottoEndPage extends JDialog {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				for (int i = 0; i < Lotto.lblResult2.length; i++) {
-					String lottoType = "미지정";
-					Lotto.lblResult2[i] = new JLabel((i + 1) + ". " + lottoType);
-				}
+//				for (int i = 0; i < lblResult2.length; i++) {
+//					String lottoType = "미지정";
+//					lblResult2[i] = new JLabel((i + 1) + ". " + lottoType);
+//				}
 				dispose();
 			}
 
