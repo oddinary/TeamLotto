@@ -66,6 +66,7 @@ public class Lotto extends JFrame {
 	// 체크박스 체크 개수 카운트.
 //	int checkCount = 0;
 	// 회차 카운트//////
+	static JLabel[] lblResult = new JLabel[5];
 
 	// 로또타입필드
 	String lottoType;
@@ -172,11 +173,10 @@ public class Lotto extends JFrame {
 
 		lottoType = "미지정";
 
-		JLabel[] lblResult = new JLabel[5];
 		for (int i = 0; i < lblResult.length; i++) {
 			lblResult[i] = new JLabel((i + 1) + ". " + lottoType);
 		}
-
+		
 		// 입력한 로또가 오른쪽에 뜨기 위한 라벨
 		JPanel[] lblResultNum = new JPanel[5];
 		JLabel[][] iconlbl = new JLabel[5][6];
@@ -678,7 +678,8 @@ public class Lotto extends JFrame {
 					}
 					gameMoney -= 1000;
 					lblgameMoney.setText(String.valueOf(gameMoney));
-					lblResult[index].setText((index + 1) + ". 미지정");
+					lottoType = "미지정";
+					lblResult[index].setText((index + 1) + ". " + lottoType);
 				}
 			});
 		}
@@ -709,7 +710,8 @@ public class Lotto extends JFrame {
 					}
 					gameMoney -= 1000;
 					lblgameMoney.setText(String.valueOf(gameMoney));
-					lblResult[index].setText((index + 1) + ". 미지정");
+					lottoType = "미지정";
+					lblResult[index].setText((index + 1) + ". " + lottoType);
 				}
 			});
 		}
