@@ -132,6 +132,7 @@ public class SignUp extends JDialog {
 										tf3.setText("");
 										pf.setText("");
 										checkPf.setText("");
+										idCheck = false;
 										dispose();
 									} else {
 										JOptionPane.showMessageDialog(SignUp.this, "비밀번호가 일치하지않습니다.");

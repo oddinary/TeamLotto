@@ -443,11 +443,11 @@ public class Lotto extends JFrame {
 
 		// JSpinner 사용; 로또 개수 1 ~ 5개 한번에 같은번호 만들 수 있게 도와줄 스피너
 		// 텍스트 입력 불가처리 화살표만 사용 가능
-		JSpinner spinner = new JSpinner();
-		spinner.setModel(new SpinnerNumberModel(1, 1, 5, 1));
-		JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) spinner.getEditor();
-		editor.getTextField().setEnabled(true);
-		editor.getTextField().setEditable(false);
+//		JSpinner spinner = new JSpinner();
+//		spinner.setModel(new SpinnerNumberModel(1, 1, 5, 1));
+//		JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) spinner.getEditor();
+//		editor.getTextField().setEnabled(true);
+//		editor.getTextField().setEditable(false);
 
 		// 선택번호 확인 버튼.....
 		btnConfirm.addActionListener(new ActionListener() {
@@ -520,7 +520,7 @@ public class Lotto extends JFrame {
 		// 번호 선택패널 => 초기화, 확인 버튼을 가진 pnlButton 삽입
 		pnlLeft.add(pnlButton);
 		// 개수 스피너;
-		pnlButton.add(spinner);
+//		pnlButton.add(spinner);
 		// 초기화, 확인 기능필요한 버튼 두개
 		pnlButton.add(btnReset);
 		pnlButton.add(btnConfirm);
