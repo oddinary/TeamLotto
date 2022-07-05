@@ -44,7 +44,7 @@ public class FiveListDialog extends JDialog{
 				roundNumLbl[i][j] = new JLabel(icon);
 				round[i].add(roundNumLbl[i][j]);
 			}
-			plusLbl[i] = new JLabel(new ImageIcon(Lotto.class.getClassLoader().getResource("images/plus.png")));
+			plusLbl[i] = new JLabel(new ImageIcon(Lotto.class.getClassLoader().getResource("images/Plus.png")));
 			URL url = Lotto.class.getClassLoader()
 					.getResource("images/middle" + String.format("%02d", lottoFive.get(i).get(6)) + ".png");
 			ImageIcon icon = new ImageIcon(url);
