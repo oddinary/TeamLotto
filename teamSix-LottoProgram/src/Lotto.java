@@ -446,11 +446,9 @@ public class Lotto extends JFrame {
 		lblMoney.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblMoney.setHorizontalTextPosition(SwingConstants.LEFT);
 		JLabel lblWon2 = new JLabel("원");
-		
-		
+
 		JLabel lblgameMoney = new JLabel(String.valueOf(gameMoney));
-		
-		
+
 		// 선택번호 확인 버튼.....
 		btnConfirm.addActionListener(new ActionListener() {
 			@Override
@@ -490,8 +488,8 @@ public class Lotto extends JFrame {
 					}
 					checkedList = new ArrayList<Integer>();
 					lblResult[count].setText((count + 1) + ". " + lottoType);
+
 					// 금액 천원 추가
-					
 					lblgameMoney.setText(String.valueOf(gameMoney));
 
 					for (JCheckBox checkBox : listOfChkBox) {
@@ -777,7 +775,7 @@ public class Lotto extends JFrame {
 		pnlMain.add(pnlLeftBtn);
 		pnlMain.add(pnlLeft);
 		pnlMain.add(pnlRight);
-		
+
 		JPanel panel_1 = new JPanel();
 		pnlRight.add(panel_1);
 		panel_1.setLayout(new BorderLayout(0, 0));
@@ -785,75 +783,114 @@ public class Lotto extends JFrame {
 		panel_1.add(lblPayMoney, BorderLayout.WEST);
 		JLabel lblWon = new JLabel("원");
 		panel_1.add(lblWon, BorderLayout.EAST);
-		
-				
-				panel_1.add(lblgameMoney, BorderLayout.CENTER);
-				lblgameMoney.setHorizontalAlignment(SwingConstants.RIGHT);
-		
+
+		panel_1.add(lblgameMoney, BorderLayout.CENTER);
+		lblgameMoney.setHorizontalAlignment(SwingConstants.RIGHT);
+
 		JPanel panel = new JPanel();
 		pnlRight.add(panel);
-		
-		
-		//초기화
+
+		// 초기화
 		JButton btnGameClear = new JButton("초기화");
 		panel.add(btnGameClear);
-		
-		//결과 확인 버튼
+		btnGameClear.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				for (int i = 0; i < btnResultDel.length; i++) {
+					int index = i;
+					// 번호 삭제
+					for (int j = 0; j < user.getLottoNumber().get(index).size(); j++) {
+						iconlbl[index][j].setIcon(null);
+					}
+					// 배열초기화
+					user.getLottoNumber().set(index, new ArrayList<Integer>());
+					// 배열이 사라지면 버튼들 비활성화
+					for (int j = 0; j < btnResultInst.length; j++) {
+						if (user.getLottoNumber().get(j).size() < 2) {
+							btnResultInst[j].setEnabled(false);
+							btnResultDel[j].setEnabled(false);
+							btnResultCopy[j].setEnabled(false);
+						}
+					}
+					gameMoney = 0;
+					lblgameMoney.setText(String.valueOf(gameMoney));
+					lblResult[index].setText((index + 1) + ". 미지정");
+				}
+			}
+//				for (int j = 0; j < lblResultNum.length; j++) {
+//					for (int i = 0; i < user.getLottoNumber().get(j).size(); i++) {
+//						iconlbl[j][i].setIcon(null);
+//					}
+//					lblResult[j].setText((j + 1) + ". 미지정");
+//					gameMoney = 0;
+//					lblgameMoney.setText(String.valueOf(gameMoney));
+//					btnResultInst[j].setEnabled(false);
+//					btnResultDel[j].setEnabled(false);
+//					btnResultCopy[j].setEnabled(false);
+//				}
+//				for (int i = 0; i < user.getLottoNumber().size(); i++) {
+//					chBoxAll.remove(i);
+//					user.getLottoNumber().remove(i);
+//				}
+//			}
+		});
+
+		// 결과 확인 버튼
 		JButton btnResult = new JButton("구매 & 결과");
 		panel.add(btnResult);
-		
-				// 결과버튼 액션리스너
-				btnResult.addActionListener(new ActionListener() {
-					private LottoEndPage dialog;
-		
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						// 당첨번호 뽑는 구간.
-						List<Integer> winNumber = new LinkedList<>();
-						Random random = new Random();
-						for (int i = 0; i < 6; i++) {
-							while (true) {
-								int r = (random.nextInt(45)) + 1;
-								if (!winNumber.contains(r)) {
-									winNumber.add(r);
-									break;
-								}
-							}
+
+		// 결과버튼 액션리스너
+		btnResult.addActionListener(new ActionListener() {
+			private LottoEndPage dialog;
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// 당첨번호 뽑는 구간.
+				List<Integer> winNumber = new LinkedList<>();
+				Random random = new Random();
+				for (int i = 0; i < 6; i++) {
+					while (true) {
+						int r = (random.nextInt(45)) + 1;
+						if (!winNumber.contains(r)) {
+							winNumber.add(r);
+							break;
 						}
-						// 이러면 6번째 수가 콘테인일수있음
-		//				while (winNumber.size() < 6) {
-		//					int r = (random.nextInt(45)) + 1;
-		//					if (!winNumber.contains(r)) {
-		//						winNumber.add(r);
-		//					}
-		//				}
-						Collections.sort(winNumber);
-						// 보너스 번호 뽑는 구간
-						// while 이 없어서 a가 윈넘버에 들어있으면 오류남 (수정완료)
-						while (true) {
-							int a = (random.nextInt(45)) + 1;
-							if (!winNumber.contains(a)) {
-								bonusNumber = a;
-								break;
-							}
-						}
-		//				if ((user.getHaveMoney() - gameMoney) < 0) {
-		//					JOptionPane.showMessageDialog(Lotto.this, "보유금액이 구매금액보다 적습니다.");
-		//				} else {
-							user.setHaveMoney(user.getHaveMoney() - gameMoney);
-							dialog = new LottoEndPage(Lotto.this, user, winNumber, bonusNumber, gameCount, userInfo);
-							dialog.setVisible(true);
-							winNumber.add(bonusNumber);
-							lottoFive.add(0, winNumber);
-		//				lottoFive.add(0, gameCount + "회차 : " + winNumber + " + " + bonusNumber);
-							gameCount++;
-							// 라벨 새로고침
-							countGame.setText(gameCount + "회차");
-							user.setHaveMoney(user.getHaveMoney() + dialog.getWinMoney());
-							lblMoney.setText(String.valueOf(user.getHaveMoney()));
-		//				}
 					}
-				});
+				}
+				// 이러면 6번째 수가 콘테인일수있음
+				// while (winNumber.size() < 6) {
+				// int r = (random.nextInt(45)) + 1;
+				// if (!winNumber.contains(r)) {
+				// winNumber.add(r);
+				// }
+				// }
+				Collections.sort(winNumber);
+				// 보너스 번호 뽑는 구간
+				// while 이 없어서 a가 윈넘버에 들어있으면 오류남 (수정완료)
+				while (true) {
+					int a = (random.nextInt(45)) + 1;
+					if (!winNumber.contains(a)) {
+						bonusNumber = a;
+						break;
+					}
+				}
+				// if ((user.getHaveMoney() - gameMoney) < 0) {
+				// JOptionPane.showMessageDialog(Lotto.this, "보유금액이 구매금액보다 적습니다.");
+				// } else {
+				user.setHaveMoney(user.getHaveMoney() - gameMoney);
+				dialog = new LottoEndPage(Lotto.this, user, winNumber, bonusNumber, gameCount, userInfo);
+				dialog.setVisible(true);
+				winNumber.add(bonusNumber);
+				lottoFive.add(0, winNumber);
+				// lottoFive.add(0, gameCount + "회차 : " + winNumber + " + " + bonusNumber);
+				gameCount++;
+				// 라벨 새로고침
+				countGame.setText(gameCount + "회차");
+				user.setHaveMoney(user.getHaveMoney() + dialog.getWinMoney());
+				lblMoney.setText(String.valueOf(user.getHaveMoney()));
+				// }
+			}
+		});
 
 		getContentPane().add(pnlMain);
 
