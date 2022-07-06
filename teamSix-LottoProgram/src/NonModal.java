@@ -28,6 +28,25 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 public class NonModal extends JDialog {
+	private JButton btnCopy;
+	private List<Integer> todayNumber;
+
+	public List<Integer> getTodayNumber() {
+		return todayNumber;
+	}
+
+	public void setTodayNumber(List<Integer> todayNumber) {
+		this.todayNumber = todayNumber;
+	}
+
+	public JButton getBtnCopy() {
+		return btnCopy;
+	}
+
+	public void setBtnCopy(JButton btnCopy) {
+		this.btnCopy = btnCopy;
+	}
+
 	NonModal(JFrame owner) {
 		super(owner, false);
 		setTitle("프리미엄 전용");
@@ -82,7 +101,7 @@ public class NonModal extends JDialog {
 		}
 
 
-		List<Integer> todayNumber = new ArrayList<>();
+		todayNumber = new ArrayList<>();
 		for (int i = 0; i < 6; i++) {
 			todayNumber.add(recNumber.get(i));
 		}
@@ -118,7 +137,7 @@ public class NonModal extends JDialog {
 		JPanel panelbtn = new JPanel();
 		pnl.add(panelbtn);
 
-		JButton btnCopy = new JButton("추천 번호 복사");
+		btnCopy = new JButton("추천 번호 복사");
 		panelbtn.add(btnCopy);
 		JButton pnlBtn = new JButton("확인");
 		panelbtn.add(pnlBtn);
@@ -133,20 +152,20 @@ public class NonModal extends JDialog {
 		pnlBtn.addActionListener(escListener);
 
 		// 추천번호 복사 액션리스너 => 바로 체크박스에 체크 시키기.
-		btnCopy.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				for (JCheckBox checkBox : Lotto.listOfChkBox) {
-					checkBox.setSelected(false);
-				}
-				for (int i = 0; i < todayNumber.size(); i++) {
-					List<Integer> list = todayNumber;
-					JCheckBox chkBox = Lotto.listOfChkBox.get(list.get(i) - 1);
-					chkBox.setSelected(true);
-				}
-				Lotto.rdbManual.setSelected(true);
-			}
-		});
+//		btnCopy.addActionListener(new ActionListener() {
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				for (JCheckBox checkBox : Lotto.listOfChkBox2) {
+//					checkBox.setSelected(false);
+//				}
+//				for (int i = 0; i < todayNumber.size(); i++) {
+//					List<Integer> list = todayNumber;
+//					JCheckBox chkBox = Lotto.listOfChkBox2.get(list.get(i) - 1);
+//					chkBox.setSelected(true);
+//				}
+//				Lotto.rdbManual.setSelected(true);
+//			}
+//		});
 
 		this.getRootPane().registerKeyboardAction(escListener, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
 				JComponent.WHEN_IN_FOCUSED_WINDOW);
