@@ -23,6 +23,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
+import java.awt.BorderLayout;
 
 public class NonModal extends JDialog {
 	NonModal(JFrame owner) {
@@ -131,17 +132,23 @@ public class NonModal extends JDialog {
 		JLabel lblToday = new JLabel("현재 시간: " + d.format(formatter));
 		JLabel lblNum = new JLabel("" + todayNumber);
 		lblNum.setFont(new Font("굴림", Font.BOLD, 20));
-		JButton pnlBtn = new JButton("확인");
 
 		pnl.setBorder(tbNonModal);
-		pnl.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		pnl.setLayout(new BoxLayout(pnl, BoxLayout.Y_AXIS));
 
 		JPanel panel = new JPanel();
 		pnl.add(panel);
-		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		panel.add(lblToday);
+		panel.setLayout(new BorderLayout(0, 0));
+		panel.add(lblToday, BorderLayout.NORTH);
 		panel.add(lblNum);
-		pnl.add(pnlBtn);
+		
+		JPanel panelbtn = new JPanel();
+		pnl.add(panelbtn);
+		
+		JButton btnCopy = new JButton("추천 번호 복사");
+		panelbtn.add(btnCopy);
+		JButton pnlBtn = new JButton("확인");
+		panelbtn.add(pnlBtn);
 
 		pnlBtn.addActionListener(new ActionListener() {
 			@Override
