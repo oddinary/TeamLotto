@@ -3,6 +3,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -33,6 +34,8 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public class Lotto extends JFrame {
 	// 체크리스트를 모두 담는 리스트.(체크박스에서 6개 체크된 리스트가 여기에 담김)
@@ -58,9 +61,18 @@ public class Lotto extends JFrame {
 
 	static JLabel[] lblResult2 = new JLabel[5];
 
+	// 스피너 관련
+		int spinnerNum = 1;
+
+		List<Integer> copyList = new ArrayList<Integer>();
+		private boolean si;
+		private boolean si2;
+		private boolean si3;
+
 	// 로또타입필드
 	String lottoType;
 	static JLabel lblMoney;
+
 	static JRadioButton rdbManual;
 	// 당첨번호 필드
 
@@ -444,93 +456,133 @@ public class Lotto extends JFrame {
 
 		// JSpinner 사용; 로또 개수 1 ~ 5개 한번에 같은번호 만들 수 있게 도와줄 스피너
 		// 텍스트 입력 불가처리 화살표만 사용 가능
-//		JSpinner spinner = new JSpinner();
-//		spinner.setModel(new SpinnerNumberModel(1, 1, 5, 1));
-//		JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) spinner.getEditor();
-//		editor.getTextField().setEnabled(true);
-//		editor.getTextField().setEditable(false);
+		JSpinner spinner = new JSpinner();
+		spinner.setModel(new SpinnerNumberModel(1, 1, 5, 1));
+		JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) spinner.getEditor();
+		editor.getTextField().setEnabled(true);
+		editor.getTextField().setEditable(false);
+
+		spinner.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				System.out.println("spinner value : " + spinner.getValue());
+				spinnerNum = Integer.valueOf((spinner.getValue().toString()));
+
+			}
+		});
 
 		JButton btnGameClear = new JButton("전체초기화");
 		btnGameClear.setEnabled(false);
 		JButton btnResult = new JButton("구매 & 결과");
 		btnResult.setEnabled(false);
 
+		si = false;
+		si2 = false;
+
 		// 선택번호 확인 버튼.....
 		btnConfirm.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				rdbdummy.setSelected(true);
-				if (checkedList.size() == 6) {
-					int count = 0;
-					for (int i = 0; i < chBoxAll.size(); i++) {
-						if (chBoxAll.get(i).toString().equals("[]")) {
-							chBoxAll.set(i, checkedList);
-							break;
-						} else {
-							count++;
+				for (int s = 0; s < spinnerNum; s++) {
+					if (s == 0) {
+						if (rdbAuto.isSelected()) {
+							si = true;
+							si2 = false;
+							si3 = false;
+						} else if (rdbManual.isSelected()) {
+							copyList = checkedList;
+							si = false;
+							si2 = true;
+							si3 = false;
+						} else if (rdbSemiAuto.isSelected()) {
+							copyList = checkedList;
+							si = false;
+							si2 = false;
+							si3 = true;
 						}
 					}
+					if (si && s > 0) {
+						Toolkit.getDefaultToolkit().beep();
+						rdbAuto.doClick();
+					} else if (si2 && s > 0) {
+						checkedList = copyList;
+					} else if (si3 && s > 0) {
+						checkedList = copyList;
+					}
 
-					int setCount = 0;
-					if (count < 5) {
-						for (int i = 0; i < user.getLottoNumber().size(); i++) {
-							if (!user.getLottoNumber().get(i).toString().equals("[]")) {
-								for (int j = 0; j < user.getLottoNumber().get(i).size(); j++) {
-									int num = user.getLottoNumber().get(i).get(j);
-									URL url = Lotto.class.getClassLoader()
-											.getResource("images/middle" + String.format("%02d", num) + ".png");
-									ImageIcon icon = new ImageIcon(url);
-									iconlbl[i][j].setIcon(icon);
-								}
-								setCount++;
+					rdbdummy.setSelected(true);
+					if (checkedList.size() == 6) {
+						int count = 0;
+						for (int i = 0; i < chBoxAll.size(); i++) {
+							if (chBoxAll.get(i).toString().equals("[]")) {
+								chBoxAll.set(i, checkedList);
+								break;
+							} else {
+								count++;
 							}
 						}
-						if (setCount > 0) {
-							btnGameClear.setEnabled(true);
-							btnResult.setEnabled(true);
+
+						int setCount = 0;
+						if (count < 5) {
+							for (int i = 0; i < user.getLottoNumber().size(); i++) {
+								if (!user.getLottoNumber().get(i).toString().equals("[]")) {
+									for (int j = 0; j < user.getLottoNumber().get(i).size(); j++) {
+										int num = user.getLottoNumber().get(i).get(j);
+										URL url = Lotto.class.getClassLoader()
+												.getResource("images/middle" + String.format("%02d", num) + ".png");
+										ImageIcon icon = new ImageIcon(url);
+										iconlbl[i][j].setIcon(icon);
+									}
+									setCount++;
+								}
+							}
+							if (setCount > 0) {
+								btnGameClear.setEnabled(true);
+								btnResult.setEnabled(true);
+							}
+							gameMoney += 1000;
+						} else {
+							count--;
+							JOptionPane.showMessageDialog(Lotto.this, "한번에 5개까지만 구매가능합니다.");
 						}
-						gameMoney += 1000;
+						checkedList = new ArrayList<Integer>();
+						lblResult[count].setText((count + 1) + ". " + lottoType);
+						lblResult2[count].setText((count + 1) + ". " + lottoType);
+						lblgameMoney.setText(String.valueOf(gameMoney));
+
+						for (JCheckBox checkBox : listOfChkBox) {
+							checkBox.setSelected(false);
+							checkBox.setEnabled(false);
+
+						}
 					} else {
-						count--;
-						JOptionPane.showMessageDialog(Lotto.this, "한번에 5개까지만 구매가능합니다.");
+						rdbManual.setSelected(true);
+						JOptionPane.showMessageDialog(Lotto.this, "6개 다 체크해주세요.");
 					}
-					checkedList = new ArrayList<Integer>();
-					lblResult[count].setText((count + 1) + ". " + lottoType);
-					lblResult2[count].setText((count + 1) + ". " + lottoType);
-					lblgameMoney.setText(String.valueOf(gameMoney));
 
-					for (JCheckBox checkBox : listOfChkBox) {
-						checkBox.setSelected(false);
-						checkBox.setEnabled(false);
-
+					// 배열이 생기면 버튼들 활성화
+					for (int i = 0; i < btnResultInst.length; i++) {
+						if (user.getLottoNumber().get(i).size() > 2) {
+							btnResultInst[i].setEnabled(true);
+							btnResultDel[i].setEnabled(true);
+							btnResultCopy[i].setEnabled(true);
+						}
+						if (btnResultInst[i].isSelected()) {
+							btnResultInst[i].setEnabled(true);
+						}
 					}
-				} else {
-					rdbManual.setSelected(true);
-					JOptionPane.showMessageDialog(Lotto.this, "6개 다 체크해주세요.");
-				}
-
-				// 배열이 생기면 버튼들 활성화
-				for (int i = 0; i < btnResultInst.length; i++) {
-					if (user.getLottoNumber().get(i).size() > 2) {
-						btnResultInst[i].setEnabled(true);
-						btnResultDel[i].setEnabled(true);
-						btnResultCopy[i].setEnabled(true);
-					}
-					if (btnResultInst[i].isSelected()) {
-						btnResultInst[i].setEnabled(true);
-					}
-				}
-				// 라디오 버튼이 그룹화되어서 사용 불가.
+					// 라디오 버튼이 그룹화되어서 사용 불가.
 //						rdbAuto.set
 //						rdbManual.setSelected(false);
 //						rdbSemiAuto.setSelected(false);
+				}
 			}
 		});
 
 		// 번호 선택패널 => 초기화, 확인 버튼을 가진 pnlButton 삽입
 		pnlLeft.add(pnlButton);
 		// 개수 스피너;
-//		pnlButton.add(spinner);
+		pnlButton.add(spinner);
 		// 초기화, 확인 기능필요한 버튼 두개
 		pnlButton.add(btnReset);
 		pnlButton.add(btnConfirm);
@@ -578,12 +630,9 @@ public class Lotto extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				JOptionPane.showMessageDialog(null,
 						"1 ~ 45까지 6개의 숫자를 고르면\r\n" + "\r\n" + "로또는 보너스 번호를 포함해 총 7개의 번호를 뽑습니다.\r\n" + "\r\n"
-								+ "본번호 6개가 다 맞으면 1등(10억)\r\n" + "\r\n" 
-								+ "본번호 5개 + 보너스번호 1개가 같으면 2등(1억)\r\n" + "\r\n"
-								+ "본번호 5개가 맞으면 3등(100만원)\r\n" + "\r\n" 
-								+ "본번호 4개가 같으면 4등(5만원)\r\n" + "\r\n"
-								+ "본번호 3개가 같으면 5등(5천원)입니다.\r\n" +"\r\n"
-								+ "1위~3위의 당첨금액은 프로그램에서 임의로 정한 금액이며 실제와 다릅니다.",
+								+ "본번호 6개가 다 맞으면 1등(10억)\r\n" + "\r\n" + "본번호 5개 + 보너스번호 1개가 같으면 2등(1억)\r\n" + "\r\n"
+								+ "본번호 5개가 맞으면 3등(100만원)\r\n" + "\r\n" + "본번호 4개가 같으면 4등(5만원)\r\n" + "\r\n"
+								+ "본번호 3개가 같으면 5등(5천원)입니다.\r\n" + "\r\n" + "1위~3위의 당첨금액은 프로그램에서 임의로 정한 금액이며 실제와 다릅니다.",
 						"로또 게임 정보", JOptionPane.DEFAULT_OPTION);
 			}
 		});
@@ -902,7 +951,7 @@ public class Lotto extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+
 				int count = 0;
 				for (int i = 0; i < user.getLottoNumber().size(); i++) {
 					if (user.getLottoNumber().get(i).toString().equals("[]")) {
@@ -986,14 +1035,6 @@ public class Lotto extends JFrame {
 		setLocationRelativeTo(null);
 	}
 
-	public void blankPlus() {
-		for (int i = 0; i < chBoxAll.size(); i++) {
-			if (chBoxAll.get(i).toString().equals("[]")) {
-				chBoxAll.set(i, checkedList);
-				break;
-			}
-		}
-	}
 //	public String showDialog() {
 //		setVisible(true);
 //
