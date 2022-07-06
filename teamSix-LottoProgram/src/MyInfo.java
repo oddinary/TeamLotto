@@ -3,21 +3,27 @@ import java.awt.Color;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.ActionEvent;
 
 class NumInput extends JDialog {
 	private JTextField tf;
+	int num;
 
 	public NumInput(JDialog owner) {
 		super(owner, true);
@@ -44,9 +50,44 @@ class NumInput extends JDialog {
 		btn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				dispose();
+				boolean blank = false;
+				for (int i = 0; i < tf.getText().length(); i++) {
+					if (tf.getText().charAt(i) == ' ') {
+						blank = true;
+					}
+				}
+
+				if (blank || tf.getText().equals("")) {
+					JOptionPane.showMessageDialog(NumInput.this, "공백은 입력하실 수 없습니다.");
+				} else {
+					try {
+						if (Integer.valueOf(tf.getText()) > 0) {
+							if (Integer.valueOf(tf.getText()) % 1000 == 0) {
+								num = Integer.valueOf(tf.getText());
+								dispose();
+							} else {
+								JOptionPane.showMessageDialog(NumInput.this, "천원단위로만 입금가능합니다.");
+							}
+						} else {
+							JOptionPane.showMessageDialog(NumInput.this, "정확한 금액을 입력해주시기 바랍니다.");
+						}
+					} catch (Exception e1) {
+						JOptionPane.showMessageDialog(NumInput.this, "정수로만 입력해주시기 바랍니다.");
+					}
+				}
 			}
 		});
+		
+		ActionListener escListener = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				tf.setText("");
+				dispose();
+			}
+		};
+
+		this.getRootPane().registerKeyboardAction(escListener, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
+				JComponent.WHEN_IN_FOCUSED_WINDOW);
 
 		pack();
 //		setSize(150,150);
@@ -55,32 +96,9 @@ class NumInput extends JDialog {
 
 	public int showDialog() {
 		setVisible(true);
-		int num = 0;
-		boolean blank = false;
-		for (int i = 0; i < tf.getText().length(); i++) {
-			if (tf.getText().charAt(i) == ' ') {
-				blank = true;
-			}
-		}
-
-		if (blank || tf.getText().equals("")) {
-
-		} else {
-			try {
-				if (Integer.valueOf(tf.getText()) > 0) {
-					if (Integer.valueOf(tf.getText()) % 1000 == 0) {
-						num = Integer.valueOf(tf.getText());
-					} else {
-						JOptionPane.showMessageDialog(NumInput.this, "천원단위로만 입금가능합니다.");
-					}
-				} else {
-					JOptionPane.showMessageDialog(NumInput.this, "정확한 금액을 입력해주시기 바랍니다.");
-				}
-			} catch (Exception e) {
-				JOptionPane.showMessageDialog(NumInput.this, "정수로만 입력해주시기 바랍니다.");
-			}
-		}
-		return num;
+		int result = num;
+		
+		return result;
 	}
 }
 
@@ -120,6 +138,7 @@ public class MyInfo extends JDialog {
 		btnMoney.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				NumInput dialog = new NumInput(MyInfo.this);
+				
 				int result = dialog.showDialog();
 
 				if (result != 0) {
@@ -181,6 +200,16 @@ public class MyInfo extends JDialog {
 				}
 			}
 		});
+		
+		ActionListener escListener = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		};
+
+		this.getRootPane().registerKeyboardAction(escListener, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
+				JComponent.WHEN_IN_FOCUSED_WINDOW);
 
 		JButton btnExit = new JButton("종료");
 		btnExit.addActionListener(new ActionListener() {
@@ -188,6 +217,7 @@ public class MyInfo extends JDialog {
 				dispose();
 			}
 		});
+		
 		pnlbtn.add(btnPrime);
 		pnlbtn.add(btnExit);
 		panel.add(lblPhone);
