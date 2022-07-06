@@ -3,17 +3,22 @@ import java.awt.Color;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.ActionEvent;
 
 class NumInput extends JDialog {
@@ -47,6 +52,17 @@ class NumInput extends JDialog {
 				dispose();
 			}
 		});
+		
+		ActionListener escListener = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				tf.setText("");
+				dispose();
+			}
+		};
+
+		this.getRootPane().registerKeyboardAction(escListener, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
+				JComponent.WHEN_IN_FOCUSED_WINDOW);
 
 		pack();
 //		setSize(150,150);
@@ -120,6 +136,7 @@ public class MyInfo extends JDialog {
 		btnMoney.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				NumInput dialog = new NumInput(MyInfo.this);
+				
 				int result = dialog.showDialog();
 
 				if (result != 0) {
@@ -181,6 +198,16 @@ public class MyInfo extends JDialog {
 				}
 			}
 		});
+		
+		ActionListener escListener = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		};
+
+		this.getRootPane().registerKeyboardAction(escListener, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
+				JComponent.WHEN_IN_FOCUSED_WINDOW);
 
 		JButton btnExit = new JButton("종료");
 		btnExit.addActionListener(new ActionListener() {
@@ -188,6 +215,7 @@ public class MyInfo extends JDialog {
 				dispose();
 			}
 		});
+		
 		pnlbtn.add(btnPrime);
 		pnlbtn.add(btnExit);
 		panel.add(lblPhone);
