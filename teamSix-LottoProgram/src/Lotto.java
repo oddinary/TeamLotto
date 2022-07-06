@@ -832,6 +832,7 @@ public class Lotto extends JFrame {
 					lblgameMoney.setText(String.valueOf(gameMoney));
 					lottoType = "미지정";
 					lblResult[index].setText((index + 1) + ". " + lottoType);
+					lblResult2[index].setText((index + 1) + ". " + lottoType);
 				}
 			}
 //				for (int j = 0; j < lblResultNum.length; j++) {
