@@ -59,7 +59,7 @@ public class Lotto extends JFrame {
 	static JLabel[] lblResult2 = new JLabel[5];
 
 	// 스피너 관련
-	static int spinnerNum = 1;
+	int spinnerNum = 1;
 
 	List<Integer> copyList = new ArrayList<Integer>();
 	private boolean si;
@@ -434,7 +434,6 @@ public class Lotto extends JFrame {
 		spinner.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				System.out.println("spinner value : " + spinner.getValue());
 				spinnerNum = Integer.valueOf((spinner.getValue().toString()));
 			}
 		});
@@ -520,13 +519,6 @@ public class Lotto extends JFrame {
 						btnReset.setEnabled(false);
 						btnConfirm.setEnabled(false);
 						rdbSemiAuto.setEnabled(false);
-//						if (setCount < 5) {
-//							System.out.println(setCount);
-//							System.out.println(spinnerNum);
-//							spinner.setModel(new SpinnerNumberModel(1, 1, 5 - setCount, 1));
-//						} else {
-//							spinnerNum = 0;
-//						}
 						for (JCheckBox checkBox : listOfChkBox) {
 							checkBox.setSelected(false);
 							checkBox.setEnabled(false);
@@ -547,6 +539,24 @@ public class Lotto extends JFrame {
 						if (btnResultInst[i].isSelected()) {
 							btnResultInst[i].setEnabled(true);
 						}
+					}
+					int pleaseCount = 0;
+
+					for (int i = 0; i < user.getLottoNumber().size(); i++) {
+						if (!user.getLottoNumber().get(i).toString().equals("[]")) {
+							pleaseCount++;
+						}
+					}
+
+					if (pleaseCount < 5 && s == spinnerNum - 1) {
+						spinner.setModel(new SpinnerNumberModel(1, 1, 5 - pleaseCount, 1));
+						JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) spinner.getEditor();
+						editor.getTextField().setEditable(false);
+					} else if (pleaseCount == 5 && s == spinnerNum - 1) {
+						spinner.setModel(new SpinnerNumberModel(0, 0, 0, 0));
+						JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) spinner.getEditor();
+						editor.getTextField().setEditable(false);
+						spinnerNum = 1;
 					}
 				}
 			}
@@ -723,6 +733,17 @@ public class Lotto extends JFrame {
 						btnGameClear.setEnabled(false);
 						btnResult.setEnabled(false);
 					}
+					
+					if (setCount < 5) {
+						spinner.setModel(new SpinnerNumberModel(1, 1, 5 - setCount, 1));
+						JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) spinner.getEditor();
+						editor.getTextField().setEditable(false);
+					} else if (setCount == 5) {
+						spinner.setModel(new SpinnerNumberModel(0, 0, 0, 0));
+						JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) spinner.getEditor();
+						editor.getTextField().setEditable(false);
+						spinnerNum = 1;
+					}
 				}
 			});
 		}
@@ -766,6 +787,17 @@ public class Lotto extends JFrame {
 					if (setCount == 0) {
 						btnGameClear.setEnabled(false);
 						btnResult.setEnabled(false);
+					}
+					
+					if (setCount < 5) {
+						spinner.setModel(new SpinnerNumberModel(1, 1, 5 - setCount, 1));
+						JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) spinner.getEditor();
+						editor.getTextField().setEditable(false);
+					} else if (setCount == 5) {
+						spinner.setModel(new SpinnerNumberModel(0, 0, 0, 0));
+						JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) spinner.getEditor();
+						editor.getTextField().setEditable(false);
+						spinnerNum = 1;
 					}
 				}
 			});
