@@ -32,9 +32,6 @@ public class NonModal extends JDialog {
 		super(owner, false);
 		setTitle("프리미엄 전용");
 
-//		LocalDateTime d = LocalDateTime.now();
-//		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd, HH:mm");
-
 		// 누적 회차에 나온 수 중 많이 나온 순 리스트 저장 후, 가장 많이 나왔던 순서대로 오름차순 정렬후
 		// 추천번호에 입력.
 		////////////////////
@@ -46,18 +43,6 @@ public class NonModal extends JDialog {
 				recNum.add(Lotto.lottoFive.get(i).get(j));
 			}
 		}
-//		System.out.println(recNum);
-
-//		recNumber.addAll(recNum);
-//		int[] recommendArray = new int[recNum.size()];
-//		for (int i = 0; i < recNumber.size(); i++) {
-//			int number = recNumber.get(i);
-//			recommendArray[i] = number;
-//		}
-//		for (int i = 0; i < recommendArray.length; i++) {
-//			Set<Integer> num = new HashSet<>();
-//			num.add(recommendArray[i]);
-//		}
 
 		//////////////////////////////
 		Map<Integer, Integer> map = new HashMap<>();
@@ -84,7 +69,6 @@ public class NonModal extends JDialog {
 			}
 		}
 
-//		System.out.println(map);
 
 		for (int i = 0; i < recNumber.size(); i++) {
 			for (int j = i + 1; j < recNumber.size(); j++) {
@@ -97,35 +81,12 @@ public class NonModal extends JDialog {
 			}
 		}
 
-//		System.out.println(recNumber);
 
 		List<Integer> todayNumber = new ArrayList<>();
 		for (int i = 0; i < 6; i++) {
 			todayNumber.add(recNumber.get(i));
 		}
 		Collections.sort(todayNumber);
-//		System.out.println(todayNumber);
-
-//		for (int i = 0; i <= 45; i++) {
-//			if (!map.containsKey(i)) {
-//				map.put(i, 1);
-//			} else {
-//				map.put(i, map.get(i) + 1);
-//			}
-//		}
-//		
-		////////////
-
-//		Random random = new Random();
-//		List<Integer> todayNumber = new LinkedList<>();
-//		while (todayNumber.size() < 6) {
-//			int r = (random.nextInt(45)) + 1;
-//			if (!todayNumber.contains(r)) {
-//				todayNumber.add(r);
-//			}
-//		}
-//		Collections.sort(todayNumber);
-////		System.out.println(todayNumber);
 
 		TitledBorder tbNonModal = new TitledBorder(new LineBorder(Color.black), "추천 번호");
 		tbNonModal.setTitleColor(new Color(245, 136, 110));
@@ -135,7 +96,6 @@ public class NonModal extends JDialog {
 		JPanel numPnl = new JPanel();
 		JLabel lblNum[] = new JLabel[todayNumber.size()];
 		
-//		lblNum.setFont(new Font("굴림", Font.BOLD, 20));
 
 		pnl.setBorder(tbNonModal);
 		pnl.setLayout(new BoxLayout(pnl, BoxLayout.Y_AXIS));
@@ -193,24 +153,9 @@ public class NonModal extends JDialog {
 
 		getContentPane().add(pnl);
 		pack();
-//		setSize(230,120);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-//		setLocation(500, 500);
 		Dimension frameSize = this.getSize();
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setLocation((screenSize.width - frameSize.width) / 2, (screenSize.height - frameSize.height) / 5);
 	}
 }
-
-//List<Integer> todayNumber = new LinkedList<>();
-//Random random = new Random();
-//while (todayNumber.size() < 6) {
-//	int r = (random.nextInt(45)) + 1;
-//	if (!todayNumber.contains(r)) {
-//		todayNumber.add(r);
-//	}
-//}
-//Collections.sort(todayNumber);
-////System.out.println(todayNumber);
-//JOptionPane.showMessageDialog(Lotto.this, String.valueOf(todayNumber), "오늘의 추천번호",
-//		JOptionPane.QUESTION_MESSAGE);
