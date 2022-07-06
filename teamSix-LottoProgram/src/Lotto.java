@@ -50,16 +50,12 @@ public class Lotto extends JFrame {
 //	List<List> savedLottoNum = new ArrayList<>();
 	static List<List<Integer>> lottoFive = new ArrayList<List<Integer>>();
 
+	// 회차 카운트/////
 	static int gameCount = 1022;
 	int gameMoney = 0;
 	int bonusNumber;
-	// 체크박스 45개
-//	JCheckBox checkBox = new JCheckBox();
-
-	// 체크박스 체크 개수 카운트.
-//	int checkCount = 0;
-	// 회차 카운트//////
-
+	
+	//결과창 로또 타입 리스트
 	static JLabel[] lblResult2 = new JLabel[5];
 
 	// 스피너 관련
@@ -102,21 +98,6 @@ public class Lotto extends JFrame {
 		lottoFive.add(list3);
 		lottoFive.add(list4);
 		lottoFive.add(list5);
-//		lottoFive.add("1021회차 : [12, 15, 17, 24, 29, 45] + 16");
-//		lottoFive.add("1020회차 : [12, 27, 29, 38, 41, 45] + 6");
-//		lottoFive.add("1019회차 : [1, 4, 13, 17, 34, 39] + 6");
-//		lottoFive.add("1018회차 : [3, 19, 21, 25, 37, 45] + 35");
-//		lottoFive.add("1017회차 : [12, 18, 22, 23, 30, 34] + 32");
-//		List<String> lottoOne = new ArrayList<>(Arrays.asList("1021회차 : 12, 15, 17, 24, 29, 45, + 16"));
-//		List<String> lottoTwo = new ArrayList<>(Arrays.asList("1020회차 : 12, 27, 29, 38, 41, 45, + 6"));
-//		List<String> lottoThree = new ArrayList<>(Arrays.asList("1019회차 : 1, 4, 13, 17, 34, 39, + 6"));
-//		List<String> lottoFour = new ArrayList<>(Arrays.asList("1018회차 : 3, 19, 21, 25, 37, 45, + 35"));
-//		List<String> lottoFive = new ArrayList<>(Arrays.asList("1017회차 : 12, 18, 22, 23, 30, 34, + 32"));
-//		savedLottoNum.add(lottoOne);
-//		savedLottoNum.add(lottoTwo);
-//		savedLottoNum.add(lottoThree);
-//		savedLottoNum.add(lottoFour);
-//		savedLottoNum.add(lottoFive);
 
 		TitledBorder tbBtn = new TitledBorder(new LineBorder(Color.black), "메뉴");
 		tbBtn.setTitleColor(new Color(245, 136, 110));
@@ -146,13 +127,6 @@ public class Lotto extends JFrame {
 		for (int i = 0; i < pnlResultBox.length; i++) {
 			pnlResultbtn[i] = new JPanel();
 		}
-
-		// 선택번호 확인 패널 ; 위의 반복문으로 해결
-//		JPanel pnlResultA = new JPanel();
-//		JPanel pnlResultB = new JPanel();
-//		JPanel pnlResultC = new JPanel();
-//		JPanel pnlResultD = new JPanel();
-//		JPanel pnlResultE = new JPanel();
 
 		// 뤠디오 버튼 .. 수동, 자동, 반자동 기능 구현필요
 		rdbManual = new JRadioButton("수동");
@@ -216,14 +190,6 @@ public class Lotto extends JFrame {
 			btnResultCopy[i] = new JButton("번호 복사");
 		}
 
-		// 반복문으로 수정
-		// 선택 번호 확인 패널 레이블
-//		JLabel lblResultA = new JLabel("A 미지정");
-//		JLabel lblResultB = new JLabel("B 미지정");
-//		JLabel lblResultC = new JLabel("C 미지정");
-//		JLabel lblResultD = new JLabel("D 미지정");
-//		JLabel lblResultE = new JLabel("E 미지정");
-
 		// 레이아웃; 박스레이아웃 ( 체크선택(왼쪽패널 안에 들어감)패널, 결과(오른쪽패널 안에 들어감)패널 )
 		BoxLayout boxLeft = new BoxLayout(pnlLeft, BoxLayout.Y_AXIS);
 		pnlLeft.setLayout(boxLeft);
@@ -235,6 +201,7 @@ public class Lotto extends JFrame {
 //	*************************************************************************
 //	************************ 번호 선택 (체크박스잇는 패널) ****************************
 		// 구현해야 할 것 : 수동 자동 반자동 선택 전에 체크 눌렀을경우 경고 메세지 뜨게
+		
 		for (int i = 1; i <= 45; i++) {
 			URL url = Lotto.class.getClassLoader().getResource("images/un" + String.format("%02d", i) + ".png");
 			URL url2 = Lotto.class.getClassLoader().getResource("images/" + String.format("%02d", i) + ".png");
@@ -272,18 +239,12 @@ public class Lotto extends JFrame {
 						btnConfirm.setEnabled(true);
 						if (checkedList.size() <= 6) {
 							checkedList.add(selectNum);
-//							checkCount = checkedList.size();
-
-							// 체크된것 배열에 들어가는지 콘솔로 확인
-//							System.out.println(checkBox.getText());
-//							System.out.println(checkedList);
 
 						}
 					} else if (state == ItemEvent.DESELECTED) {
 						for (int i = 0; i < checkedList.size(); i++) {
 							if (selectNum == checkedList.get(i)) {
 								checkedList.remove(i);
-//								checkCount = checkedList.size();
 							}
 						}
 					}
@@ -366,12 +327,6 @@ public class Lotto extends JFrame {
 		// 반자동 버튼 시작시 비활성화
 		rdbSemiAuto.setEnabled(false);
 
-		// 이름 참고
-//		// 로또 번호 (6개 번호) 담을 리스트 작성 
-//		List<Integer> checkedList = new ArrayList<>();
-//		List<JCheckBox> listOfChkBox = new ArrayList<>();
-//		JCheckBox checkBox = new JCheckBox();
-
 		// 라디오 버튼 액션 리스너 (수동)
 		rdbManual.addItemListener(new ItemListener() {
 
@@ -439,8 +394,6 @@ public class Lotto extends JFrame {
 						JCheckBox chkBox = listOfChkBox.get(autoNum);
 						chkBox.setSelected(true);
 						// 고른 수만 활성화!
-						// 체크리스트 확인용
-//						System.out.println(checkedList);
 					} else {
 						break;
 					}
@@ -455,17 +408,6 @@ public class Lotto extends JFrame {
 				lottoType = "반자동";
 			}
 		});
-
-		// '자동'라디오 버튼을 마우스로 클릭하면
-		// '초기화'버튼을 기능 하게 해줌
-//		rdbAuto.addMouseListener(new MouseAdapter() {
-//			@Override
-//			public void mousePressed(MouseEvent e) {
-//				Toolkit.getDefaultToolkit().beep();
-//				btnReset.doClick(0);
-//				rdbAuto.addActionListener(auto);
-//			}
-//		});
 
 		// 구매금액.
 		JPanel pnlLast = new JPanel();
@@ -494,7 +436,6 @@ public class Lotto extends JFrame {
 			public void stateChanged(ChangeEvent e) {
 				System.out.println("spinner value : " + spinner.getValue());
 				spinnerNum = Integer.valueOf((spinner.getValue().toString()));
-
 			}
 		});
 
@@ -607,10 +548,6 @@ public class Lotto extends JFrame {
 							btnResultInst[i].setEnabled(true);
 						}
 					}
-					// 라디오 버튼이 그룹화되어서 사용 불가.
-//						rdbAuto.set
-//						rdbManual.setSelected(false);
-//						rdbSemiAuto.setSelected(false);
 				}
 			}
 		});
@@ -652,9 +589,6 @@ public class Lotto extends JFrame {
 		// 직전 5주 액션 리스너
 		btnRecent.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-//						String lottoNumber = "직전 5회차 번호 + 보너스 번호\n" + lottoFive.get(0) + "\n" + lottoFive.get(1) + "\n"
-//								+ lottoFive.get(2) + "\n" + lottoFive.get(3) + "\n" + lottoFive.get(4);
-//						JOptionPane.showMessageDialog(Lotto.this, lottoNumber, "직전 5회차 당첨번호", JOptionPane.PLAIN_MESSAGE);
 				FiveListDialog five = new FiveListDialog(Lotto.this, lottoFive, gameCount);
 				five.setVisible(true);
 			}
@@ -726,20 +660,6 @@ public class Lotto extends JFrame {
 
 // ***********************************************************************
 // ************************** 선택번호 확인 ***********************************
-		// 수정 , 삭제 , 복사 버튼 구현.
-
-//		JButton[] btnResultInst = new JButton[5];
-//		for (int i = 0; i < lblResult.length; i++) {
-//			btnResultInst[i] = new JButton("수정");
-//		}
-//		JButton[] btnResultDel = new JButton[5];
-//		for (int i = 0; i < lblResult.length; i++) {
-//			btnResultDel[i] = new JButton("삭제");
-//		}
-//		JButton[] btnResultCopy = new JButton[5];
-//		for (int i = 0; i < lblResult.length; i++) {
-//			btnResultCopy[i] = new JButton("번호 복사");
-//		}
 
 		// 수정 버튼 , 삭제 버튼 , 번호복사 버튼 비활성화후 배열 들어오면 활성화
 		for (int i = 0; i < btnResultInst.length; i++) {
@@ -868,14 +788,6 @@ public class Lotto extends JFrame {
 						chkBox.setSelected(true);
 					}
 					rdbManual.setSelected(true);
-
-//					for (int i = 0; i < btnResultInst.length; i++) {
-//						if (user.getLottoNumber().get(i).size() > 2) {
-//							btnResultInst[i].setEnabled(true);
-//							btnResultDel[i].setEnabled(true);
-//							btnResultCopy[i].setEnabled(true);
-//						}
-//					}
 				}
 			});
 		}
@@ -893,18 +805,6 @@ public class Lotto extends JFrame {
 			pnlResultBtn[i].add(btnResultCopy[i]);
 			pnlResultBox[i].add(pnlResultBtn[i], BorderLayout.SOUTH);
 		}
-
-		// 선택번호 확인패널의 선택결과 확인 레이블. ; 위의 반복문으로 생성함
-//		pnlResult.add(pnlResultA);
-//		pnlResult.add(pnlResultB);
-//		pnlResult.add(pnlResultC);
-//		pnlResult.add(pnlResultD);
-//		pnlResult.add(pnlResultE);
-//		pnlResultA.add(lblResultA);
-//		pnlResultB.add(lblResultB);
-//		pnlResultC.add(lblResultC);
-//		pnlResultD.add(lblResultD);
-//		pnlResultE.add(lblResultE);
 
 // *********************************************************************
 // ************************* 메인패널 추가 **********************************
@@ -959,22 +859,6 @@ public class Lotto extends JFrame {
 					btnResult.setEnabled(false);
 				}
 			}
-//				for (int j = 0; j < lblResultNum.length; j++) {
-//					for (int i = 0; i < user.getLottoNumber().get(j).size(); i++) {
-//						iconlbl[j][i].setIcon(null);
-//					}
-//					lblResult[j].setText((j + 1) + ". 미지정");
-//					gameMoney = 0;
-//					lblgameMoney.setText(String.valueOf(gameMoney));
-//					btnResultInst[j].setEnabled(false);
-//					btnResultDel[j].setEnabled(false);
-//					btnResultCopy[j].setEnabled(false);
-//				}
-//				for (int i = 0; i < user.getLottoNumber().size(); i++) {
-//					chBoxAll.remove(i);
-//					user.getLottoNumber().remove(i);
-//				}
-//			}
 		});
 
 		// 결과 확인 버튼
@@ -1009,13 +893,6 @@ public class Lotto extends JFrame {
 							}
 						}
 					}
-					// 이러면 6번째 수가 콘테인일수있음
-					// while (winNumber.size() < 6) {
-					// int r = (random.nextInt(45)) + 1;
-					// if (!winNumber.contains(r)) {
-					// winNumber.add(r);
-					// }
-					// }
 					Collections.sort(winNumber);
 					// 보너스 번호 뽑는 구간
 					// while 이 없어서 a가 윈넘버에 들어있으면 오류남 (수정완료)
@@ -1070,10 +947,4 @@ public class Lotto extends JFrame {
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		setLocationRelativeTo(null);
 	}
-
-//	public String showDialog() {
-//		setVisible(true);
-//
-//		return tf.getText();
-//	}
 }
