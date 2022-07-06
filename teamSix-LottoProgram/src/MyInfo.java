@@ -102,11 +102,20 @@ public class MyInfo extends JDialog {
 		pnl.add(panel);
 		panel.setLayout(new GridLayout(6, 0, 0, 10));
 
-		JLabel lblPhone = new JLabel("전화번호 : " + user.getPhoneNum());
+		String phone = "";
+		for (int i = 0; i < user.getPhoneNum().length(); i++) {
+			phone += user.getPhoneNum().charAt(i);
+			if (i == 2 || i == 6) {
+				phone += '-';
+			} 
+		}
+		JLabel lblPhone = new JLabel("전화번호 : " + phone);
 		JLabel lblPrime = new JLabel("일반회원");
 		JLabel lblMoney = new JLabel("보유금 : " + user.getHaveMoney() + " 원");
 
 		JPanel pnlMoney = new JPanel();
+		
+		//입금 버튼
 		JButton btnMoney = new JButton("입금");
 		btnMoney.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -116,13 +125,15 @@ public class MyInfo extends JDialog {
 				if (result != 0) {
 					user.setHaveMoney(user.getHaveMoney() + result);
 					lblMoney.setText("보유금 : " + user.getHaveMoney() + " 원");
+					Lotto.lblMoney.setText("" + user.getHaveMoney());
 					JOptionPane.showMessageDialog(MyInfo.this, "입금 완료되었습니다.");
 				}
 			}
 		});
+		
 		pnlMoney.add(btnMoney);
 
-		// 환전 버튼
+		// 출금 버튼
 		JButton btnChange = new JButton("출금");
 		btnChange.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -136,6 +147,7 @@ public class MyInfo extends JDialog {
 				} else {
 					user.setHaveMoney(user.getHaveMoney() - result);
 					lblMoney.setText("보유금 : " + user.getHaveMoney() + " 원");
+					Lotto.lblMoney.setText("" + user.getHaveMoney());
 					JOptionPane.showMessageDialog(MyInfo.this, "출금 완료되었습니다.");
 				}
 			}

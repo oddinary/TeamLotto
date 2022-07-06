@@ -60,6 +60,7 @@ public class Lotto extends JFrame {
 
 	// 로또타입필드
 	String lottoType;
+	static JLabel lblMoney;
 
 	// 당첨번호 필드
 
@@ -434,7 +435,7 @@ public class Lotto extends JFrame {
 		// 보유금액 확인 구간
 		JPanel pnlHasMoney = new JPanel();
 		JLabel lblHasMoney = new JLabel("보유금액");
-		JLabel lblMoney = new JLabel(String.valueOf(user.getHaveMoney()));
+		lblMoney = new JLabel(String.valueOf(user.getHaveMoney()));
 		lblMoney.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblMoney.setHorizontalTextPosition(SwingConstants.LEFT);
 		JLabel lblWon2 = new JLabel("원");
@@ -608,11 +609,12 @@ public class Lotto extends JFrame {
 			private MyInfo dialog;
 
 			public void actionPerformed(ActionEvent e) {
+				int money = user.getHaveMoney();
 
 				dialog = new MyInfo(Lotto.this, user);
+				lblMoney.setText(String.valueOf(money));
 				dialog.setVisible(true);
 
-				int money = user.getHaveMoney();
 				boolean premier = user.isPremier();
 
 				if (premier) {
@@ -620,7 +622,6 @@ public class Lotto extends JFrame {
 				} else {
 					btnRecommend.setEnabled(false);
 				}
-				lblMoney.setText(String.valueOf(money));
 
 			}
 		});
