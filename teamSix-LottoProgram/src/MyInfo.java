@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 
 class NumInput extends JDialog {
 	private JTextField tf;
+	int num;
 
 	public NumInput(JDialog owner) {
 		super(owner, true);
@@ -49,7 +50,31 @@ class NumInput extends JDialog {
 		btn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				dispose();
+				boolean blank = false;
+				for (int i = 0; i < tf.getText().length(); i++) {
+					if (tf.getText().charAt(i) == ' ') {
+						blank = true;
+					}
+				}
+
+				if (blank || tf.getText().equals("")) {
+					JOptionPane.showMessageDialog(NumInput.this, "공백은 입력하실 수 없습니다.");
+				} else {
+					try {
+						if (Integer.valueOf(tf.getText()) > 0) {
+							if (Integer.valueOf(tf.getText()) % 1000 == 0) {
+								num = Integer.valueOf(tf.getText());
+								dispose();
+							} else {
+								JOptionPane.showMessageDialog(NumInput.this, "천원단위로만 입금가능합니다.");
+							}
+						} else {
+							JOptionPane.showMessageDialog(NumInput.this, "정확한 금액을 입력해주시기 바랍니다.");
+						}
+					} catch (Exception e1) {
+						JOptionPane.showMessageDialog(NumInput.this, "정수로만 입력해주시기 바랍니다.");
+					}
+				}
 			}
 		});
 		
@@ -71,32 +96,9 @@ class NumInput extends JDialog {
 
 	public int showDialog() {
 		setVisible(true);
-		int num = 0;
-		boolean blank = false;
-		for (int i = 0; i < tf.getText().length(); i++) {
-			if (tf.getText().charAt(i) == ' ') {
-				blank = true;
-			}
-		}
-
-		if (blank || tf.getText().equals("")) {
-
-		} else {
-			try {
-				if (Integer.valueOf(tf.getText()) > 0) {
-					if (Integer.valueOf(tf.getText()) % 1000 == 0) {
-						num = Integer.valueOf(tf.getText());
-					} else {
-						JOptionPane.showMessageDialog(NumInput.this, "천원단위로만 입금가능합니다.");
-					}
-				} else {
-					JOptionPane.showMessageDialog(NumInput.this, "정확한 금액을 입력해주시기 바랍니다.");
-				}
-			} catch (Exception e) {
-				JOptionPane.showMessageDialog(NumInput.this, "정수로만 입력해주시기 바랍니다.");
-			}
-		}
-		return num;
+		int result = num;
+		
+		return result;
 	}
 }
 
