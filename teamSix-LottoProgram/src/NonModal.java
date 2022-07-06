@@ -1,11 +1,11 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
@@ -131,8 +132,10 @@ public class NonModal extends JDialog {
 
 		JPanel pnl = new JPanel();
 		JLabel lblToday = new JLabel("로또 " + Lotto.gameCount + "회차 기준 추천번호");
-		JLabel lblNum = new JLabel("" + todayNumber);
-		lblNum.setFont(new Font("굴림", Font.BOLD, 20));
+		JPanel numPnl = new JPanel();
+		JLabel lblNum[] = new JLabel[todayNumber.size()];
+		
+//		lblNum.setFont(new Font("굴림", Font.BOLD, 20));
 
 		pnl.setBorder(tbNonModal);
 		pnl.setLayout(new BoxLayout(pnl, BoxLayout.Y_AXIS));
@@ -141,7 +144,16 @@ public class NonModal extends JDialog {
 		pnl.add(panel);
 		panel.setLayout(new BorderLayout(0, 0));
 		panel.add(lblToday, BorderLayout.NORTH);
-		panel.add(lblNum);
+		
+		for (int i = 0; i < todayNumber.size(); i++) {
+			lblNum[i] = new JLabel();
+			URL url = NonModal.class.getClassLoader().getResource("images/middle" + String.format("%02d", todayNumber.get(i)) + ".png");
+			ImageIcon icon = new ImageIcon(url);
+			lblNum[i].setIcon(icon);
+			numPnl.add(lblNum[i]);
+		}
+		
+		panel.add(numPnl);
 
 		JPanel panelbtn = new JPanel();
 		pnl.add(panelbtn);
