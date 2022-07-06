@@ -738,10 +738,6 @@ public class Lotto extends JFrame {
 						spinner.setModel(new SpinnerNumberModel(1, 1, 5 - setCount, 1));
 						JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) spinner.getEditor();
 						editor.getTextField().setEditable(false);
-					} else if (setCount == 5) {
-						spinner.setModel(new SpinnerNumberModel(0, 0, 0, 0));
-						JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) spinner.getEditor();
-						editor.getTextField().setEditable(false);
 						spinnerNum = 1;
 					}
 				}
@@ -791,10 +787,6 @@ public class Lotto extends JFrame {
 					
 					if (setCount < 5) {
 						spinner.setModel(new SpinnerNumberModel(1, 1, 5 - setCount, 1));
-						JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) spinner.getEditor();
-						editor.getTextField().setEditable(false);
-					} else if (setCount == 5) {
-						spinner.setModel(new SpinnerNumberModel(0, 0, 0, 0));
 						JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) spinner.getEditor();
 						editor.getTextField().setEditable(false);
 						spinnerNum = 1;
