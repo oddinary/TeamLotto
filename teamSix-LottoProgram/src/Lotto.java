@@ -889,6 +889,10 @@ public class Lotto extends JFrame {
 					lblResult2[index].setText((index + 1) + ". " + lottoType);
 					btnGameClear.setEnabled(false);
 					btnResult.setEnabled(false);
+					
+					spinner.setModel(new SpinnerNumberModel(1, 1, 5, 1));
+					JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) spinner.getEditor();
+					editor.getTextField().setEditable(false);
 				}
 			}
 		});
