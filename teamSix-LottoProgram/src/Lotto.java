@@ -897,8 +897,7 @@ public class Lotto extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				user.setHaveMoney(user.getHaveMoney() - gameMoney);
-				lblMoney.setText(String.valueOf(user.getHaveMoney()));
+				
 				int count = 0;
 				for (int i = 0; i < user.getLottoNumber().size(); i++) {
 					if (user.getLottoNumber().get(i).toString().equals("[]")) {
@@ -938,6 +937,8 @@ public class Lotto extends JFrame {
 						}
 					}
 					dialog = new LottoEndPage(Lotto.this, user, winNumber, bonusNumber, gameCount, userInfo);
+					user.setHaveMoney(user.getHaveMoney() - gameMoney);
+					lblMoney.setText(String.valueOf(user.getHaveMoney()));
 					dialog.setVisible(true);
 					winNumber.add(bonusNumber);
 					lottoFive.add(0, winNumber);
