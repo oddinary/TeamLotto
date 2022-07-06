@@ -68,12 +68,16 @@ class NumInput extends JDialog {
 		} else {
 			try {
 				if (Integer.valueOf(tf.getText()) > 0) {
-					num = Integer.valueOf(tf.getText());
+					if (Integer.valueOf(tf.getText()) % 1000 == 0) {
+						num = Integer.valueOf(tf.getText());
+					} else {
+						JOptionPane.showMessageDialog(NumInput.this, "천원단위로만 입금가능합니다.");
+					}
 				} else {
-					JOptionPane.showMessageDialog(NumInput.this, "음수안됨");
+					JOptionPane.showMessageDialog(NumInput.this, "정확한 금액을 입력해주시기 바랍니다.");
 				}
 			} catch (Exception e) {
-				JOptionPane.showMessageDialog(NumInput.this, "정수로만 입력하시기 바랍니다.");
+				JOptionPane.showMessageDialog(NumInput.this, "정수로만 입력해주시기 바랍니다.");
 			}
 		}
 		return num;
