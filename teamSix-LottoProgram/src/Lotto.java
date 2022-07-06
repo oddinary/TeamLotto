@@ -320,6 +320,7 @@ public class Lotto extends JFrame {
 						checkBox.setSelected(false);
 						checkBox.setEnabled(false);
 					}
+					rdbdummy.setSelected(true);
 				} else if (rdbManual.isSelected()) {
 					for (JCheckBox checkBox : listOfChkBox) {
 						checkBox.setSelected(false);
@@ -377,8 +378,8 @@ public class Lotto extends JFrame {
 		ActionListener auto = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-//				if (e.getStateChange() == ItemEvent.SELECTED) {
 				rdbSemiAuto.setEnabled(false); // 반자동 버튼 off
+				rdbAuto.setSelected(true);//자동버튼 꺼진걸 다시 켜주게 해줌
 				while (true) {
 					if (checkedList.size() < 6) {
 						int autoNum = (int) (Math.random() * 45);
