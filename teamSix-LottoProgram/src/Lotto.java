@@ -18,6 +18,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.Semaphore;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -62,12 +63,12 @@ public class Lotto extends JFrame {
 	static JLabel[] lblResult2 = new JLabel[5];
 
 	// 스피너 관련
-		int spinnerNum = 1;
+	static int spinnerNum = 1;
 
-		List<Integer> copyList = new ArrayList<Integer>();
-		private boolean si;
-		private boolean si2;
-		private boolean si3;
+	List<Integer> copyList = new ArrayList<Integer>();
+	private boolean si;
+	private boolean si2;
+	private boolean si3;
 
 	// 로또타입필드
 	String lottoType;
@@ -173,6 +174,9 @@ public class Lotto extends JFrame {
 		// 오른쪽 선택번호확인 패널의 기능 버튼
 		JButton btnReset = new JButton("초기화");
 		JButton btnConfirm = new JButton("확인 ");
+		
+		btnReset.setEnabled(false);
+		btnConfirm.setEnabled(false);
 
 		lottoType = "미지정";
 
@@ -264,6 +268,8 @@ public class Lotto extends JFrame {
 					int state = e.getStateChange();
 					int selectNum = index;
 					if (state == ItemEvent.SELECTED) {
+						btnReset.setEnabled(true);
+						btnConfirm.setEnabled(true);
 						if (checkedList.size() <= 6) {
 							checkedList.add(selectNum);
 //							checkCount = checkedList.size();
@@ -315,20 +321,36 @@ public class Lotto extends JFrame {
 						checkedList.remove(i);
 					}
 				}
-				if (rdbAuto.isSelected() || rdbSemiAuto.isSelected()) {
+				if (rdbAuto.isSelected()) {
 					for (JCheckBox checkBox : listOfChkBox) {
 						checkBox.setSelected(false);
 						checkBox.setEnabled(false);
+						rdbSemiAuto.setEnabled(false);
+						btnReset.setEnabled(false);
+						btnConfirm.setEnabled(false);
 					}
 					rdbdummy.setSelected(true);
+				} else if (rdbSemiAuto.isSelected()) {
+					for (JCheckBox checkBox : listOfChkBox) {
+						checkBox.setSelected(false);
+						checkBox.setEnabled(false);
+						rdbSemiAuto.setEnabled(false);
+					}
+					rdbdummy.setSelected(true);
+					btnReset.setEnabled(false);
+					btnConfirm.setEnabled(false);
 				} else if (rdbManual.isSelected()) {
 					for (JCheckBox checkBox : listOfChkBox) {
 						checkBox.setSelected(false);
 						checkBox.setEnabled(true);
+						btnReset.setEnabled(false);
+						btnConfirm.setEnabled(false);
+						rdbSemiAuto.setEnabled(false);
 					}
 				}
 			}
 		};
+		
 		// 초기화버튼 '리셋'기능
 		btnReset.addActionListener(reset);
 
@@ -379,7 +401,7 @@ public class Lotto extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				rdbSemiAuto.setEnabled(false); // 반자동 버튼 off
-				rdbAuto.setSelected(true);//자동버튼 꺼진걸 다시 켜주게 해줌
+				rdbAuto.setSelected(true);// 자동버튼 꺼진걸 다시 켜주게 해줌
 				while (true) {
 					if (checkedList.size() < 6) {
 						int autoNum = (int) (Math.random() * 45);
@@ -397,6 +419,8 @@ public class Lotto extends JFrame {
 						listOfChkBox.get(i).setEnabled(false);
 					}
 				}
+				btnReset.setEnabled(true);
+				btnConfirm.setEnabled(true);
 				lottoType = "자동";
 			}
 		};
@@ -426,6 +450,8 @@ public class Lotto extends JFrame {
 						listOfChkBox.get(i).setEnabled(true);
 					}
 				}
+				btnReset.setEnabled(true);
+				btnConfirm.setEnabled(true);
 				lottoType = "반자동";
 			}
 		});
@@ -550,7 +576,16 @@ public class Lotto extends JFrame {
 						lblResult[count].setText((count + 1) + ". " + lottoType);
 						lblResult2[count].setText((count + 1) + ". " + lottoType);
 						lblgameMoney.setText(String.valueOf(gameMoney));
-
+						btnReset.setEnabled(false);
+						btnConfirm.setEnabled(false);
+						rdbSemiAuto.setEnabled(false);
+//						if (setCount < 5) {
+//							System.out.println(setCount);
+//							System.out.println(spinnerNum);
+//							spinner.setModel(new SpinnerNumberModel(1, 1, 5 - setCount, 1));
+//						} else {
+//							spinnerNum = 0;
+//						}
 						for (JCheckBox checkBox : listOfChkBox) {
 							checkBox.setSelected(false);
 							checkBox.setEnabled(false);
