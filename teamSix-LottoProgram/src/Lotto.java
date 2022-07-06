@@ -61,15 +61,17 @@ public class Lotto extends JFrame {
 
 	static JLabel[] lblResult2 = new JLabel[5];
 
-	// 스피너 번호
-	int spinnerNum = 1;
+	// 스피너 관련
+		int spinnerNum = 1;
+
+		List<Integer> copyList = new ArrayList<Integer>();
+		private boolean si;
+		private boolean si2;
+		private boolean si3;
 
 	// 로또타입필드
 	String lottoType;
 	static JLabel lblMoney;
-
-	private boolean si;
-	private boolean si2;
 
 	static JRadioButton rdbManual;
 	// 당첨번호 필드
@@ -485,13 +487,27 @@ public class Lotto extends JFrame {
 					if (s == 0) {
 						if (rdbAuto.isSelected()) {
 							si = true;
+							si2 = false;
+							si3 = false;
 						} else if (rdbManual.isSelected()) {
+							copyList = checkedList;
+							si = false;
 							si2 = true;
+							si3 = false;
+						} else if (rdbSemiAuto.isSelected()) {
+							copyList = checkedList;
+							si = false;
+							si2 = false;
+							si3 = true;
 						}
 					}
 					if (si && s > 0) {
 						Toolkit.getDefaultToolkit().beep();
 						rdbAuto.doClick();
+					} else if (si2 && s > 0) {
+						checkedList = copyList;
+					} else if (si3 && s > 0) {
+						checkedList = copyList;
 					}
 
 					rdbdummy.setSelected(true);
