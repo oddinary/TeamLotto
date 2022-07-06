@@ -51,6 +51,7 @@ public class Login extends JFrame {
 		userInfo.get("admin").setName("관리자");
 		userInfo.get("admin").setPw("qwqw1234");
 		userInfo.get("admin").setPhoneNum("11111111111");
+		userInfo.get("admin").setHaveMoney(100000);
 		setTitle("로그인 화면");
 		
 
