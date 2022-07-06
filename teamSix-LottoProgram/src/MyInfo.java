@@ -170,6 +170,7 @@ public class MyInfo extends JDialog {
 					if (!user.isPremier()) {
 						user.setPremier(true);
 						user.setHaveMoney(user.getHaveMoney() - 10000);
+						Lotto.lblMoney.setText("" + user.getHaveMoney());
 						lblMoney.setText("보유금 : " + user.getHaveMoney() + " 원");
 						JOptionPane.showMessageDialog(MyInfo.this, "결제 완료되었습니다.");
 						lblPrime.setText("프리미엄회원");
