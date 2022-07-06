@@ -746,7 +746,7 @@ public class Lotto extends JFrame {
 					lottoType = "미지정";
 					lblResult[index].setText((index + 1) + ". " + lottoType);
 					lblResult2[index].setText((index + 1) + ". " + lottoType);
-					
+
 					int setCount = 0;
 					for (int i = 0; i < user.getLottoNumber().size(); i++) {
 						if (!user.getLottoNumber().get(i).toString().equals("[]")) {
@@ -898,7 +898,6 @@ public class Lotto extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int count = 0;
-
 				for (int i = 0; i < user.getLottoNumber().size(); i++) {
 					if (user.getLottoNumber().get(i).toString().equals("[]")) {
 						count++;
@@ -906,7 +905,7 @@ public class Lotto extends JFrame {
 				}
 				if (count >= 5) {
 					JOptionPane.showMessageDialog(Lotto.this, "하나는 해야지?");
-				} else {
+				} else if (user.getHaveMoney() >= gameMoney) {
 					// 당첨번호 뽑는 구간.
 					List<Integer> winNumber = new LinkedList<>();
 					Random random = new Random();
@@ -936,9 +935,6 @@ public class Lotto extends JFrame {
 							break;
 						}
 					}
-					// if ((user.getHaveMoney() - gameMoney) < 0) {
-					// JOptionPane.showMessageDialog(Lotto.this, "보유금액이 구매금액보다 적습니다.");
-					// } else {
 					user.setHaveMoney(user.getHaveMoney() - gameMoney);
 					dialog = new LottoEndPage(Lotto.this, user, winNumber, bonusNumber, gameCount, userInfo);
 					dialog.setVisible(true);
@@ -951,6 +947,8 @@ public class Lotto extends JFrame {
 					user.setHaveMoney(user.getHaveMoney() + dialog.getWinMoney());
 					lblMoney.setText(String.valueOf(user.getHaveMoney()));
 					// }
+				} else {
+					JOptionPane.showMessageDialog(Lotto.this, "보유금액이 부족합니다 충전 후 이용해 주세요.");
 				}
 			}
 		});
