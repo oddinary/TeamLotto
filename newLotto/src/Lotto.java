@@ -1,13 +1,19 @@
 
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.HeadlessException;
-import java.awt.Image;
-import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +21,7 @@ import java.util.Random;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
-import javax.swing.ButtonModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
@@ -23,31 +29,9 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JSpinner;
-import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.net.URL;
-import java.awt.event.ActionEvent;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import javax.swing.GroupLayout;
-import javax.swing.ImageIcon;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.Box;
-import java.awt.BorderLayout;
-import java.awt.CardLayout;
-
-import javax.swing.SwingConstants;
 
 public class Lotto extends JFrame {
 	// 체크리스트를 모두 담는 리스트.(체크박스에서 6개 체크된 리스트가 여기에 담김)
@@ -64,17 +48,25 @@ public class Lotto extends JFrame {
 	static int gameCount = 1022;
 	static int gameMoney = 0;
 	int bonusNumber;
-	static int buyGameCount = 0;
+	static int buyGameCount = gameMoney / 1000;
 	// 체크박스 45개
 //	JCheckBox checkBox = new JCheckBox();
 
 	// 체크박스 체크 개수 카운트.
 //	int checkCount = 0;
 	// 회차 카운트//////
-	static JLabel[] lblResult2 = new JLabel[5];
+
 	// 로또타입필드
-	String lottoType = "미지정";
-	int pageCount = 0;
+	String lottoType;
+	static int pageCount;
+	static int maxPageCount;
+	private JButton btnBuy;
+	private List<CardPanel> cp;
+	private JRadioButton rdbManual;
+	private JRadioButton rdbAuto;
+	private JRadioButton rdbSemiAuto;
+	private JLabel lblNewLabel;
+	private JLabel lblWon;
 
 	// 당첨번호 필드
 
@@ -121,8 +113,6 @@ public class Lotto extends JFrame {
 		JPanel pnlLeftBtn = new JPanel();
 		JPanel pnlRight = new JPanel();
 
-//		JButton
-
 		// 체크박스 생성 패널
 		JPanel pnlNum = new JPanel(new GridLayout(0, 5));
 		JPanel pnlAuto = new JPanel();
@@ -131,12 +121,11 @@ public class Lotto extends JFrame {
 		CardLayout layout = new CardLayout();
 		JPanel cardPnl = new JPanel(layout);
 
-		List<CardPanel> cp = new ArrayList<CardPanel>();
+		cp = new ArrayList<CardPanel>();
 
-		// 뤠디오 버튼 .. 수동, 자동, 반자동 기능 구현필요
-		JRadioButton rdbManual = new JRadioButton("수동");
-		JRadioButton rdbAuto = new JRadioButton("자동");
-		JRadioButton rdbSemiAuto = new JRadioButton("반자동");
+		rdbManual = new JRadioButton("수동");
+		rdbAuto = new JRadioButton("자동");
+		rdbSemiAuto = new JRadioButton("반자동");
 		JRadioButton rdbdummy = new JRadioButton();
 		// 라디오 버튼 그룹
 		ButtonGroup group = new ButtonGroup();
@@ -155,19 +144,16 @@ public class Lotto extends JFrame {
 		JButton btnConfirm = new JButton("확인 ");
 
 		lottoType = "미지정";
-		JLabel[] lblResult = new JLabel[5];
-		for (int i = 0; i < lblResult.length; i++) {
-			lblResult[i] = new JLabel((i + 1) + ". " + lottoType);
-			lblResult2[i] = new JLabel((i + 1) + ". " + lottoType);
-		}
+
+//		JLabel[] lblResult = new JLabel[5];
+//		for (int i = 0; i < lblResult.length; i++) {
+//			lblResult[i] = new JLabel((i + 1) + ". " + lottoType);
+//			lblResult2[i] = new JLabel((i + 1) + ". " + lottoType);
+//		}
 
 		// 레이아웃; 박스레이아웃 ( 체크선택(왼쪽패널 안에 들어감)패널, 결과(오른쪽패널 안에 들어감)패널 )
 		BoxLayout boxLeft = new BoxLayout(pnlLeft, BoxLayout.Y_AXIS);
 		pnlLeft.setLayout(boxLeft);
-//		BoxLayout boxResult = new BoxLayout(pnlResult, BoxLayout.Y_AXIS);
-//		pnlResult.setLayout(boxResult);
-//		BoxLayout boxResult2 = new BoxLayout(plusPnl, BoxLayout.Y_AXIS);
-//		plusPnl.setLayout(boxResult2);
 
 		BoxLayout boxRight = new BoxLayout(pnlRight, BoxLayout.Y_AXIS);
 		pnlRight.setLayout(boxRight);
@@ -287,6 +273,12 @@ public class Lotto extends JFrame {
 		// 반자동 버튼 시작시 비활성화
 		rdbSemiAuto.setEnabled(false);
 
+		// 이름 참고
+//		// 로또 번호 (6개 번호) 담을 리스트 작성 
+//		List<Integer> checkedList = new ArrayList<>();
+//		List<JCheckBox> listOfChkBox = new ArrayList<>();
+//		JCheckBox checkBox = new JCheckBox();
+
 		// 라디오 버튼 액션 리스너 (수동)
 		rdbManual.addItemListener(new ItemListener() {
 
@@ -296,7 +288,7 @@ public class Lotto extends JFrame {
 					for (JCheckBox checkBox : listOfChkBox) {
 						checkBox.setEnabled(true);
 					}
-					if (listOfChkBox.size() < 6) {
+					if (1 < listOfChkBox.size() && listOfChkBox.size() < 6) {
 						rdbSemiAuto.setEnabled(true);
 					}
 				} else {
@@ -304,7 +296,7 @@ public class Lotto extends JFrame {
 						// 체크박스들 끄게 함
 						checkBox.setEnabled(false);
 					}
-					rdbSemiAuto.setEnabled(false);
+//					rdbSemiAuto.setEnabled(false);
 				}
 				Collections.sort(checkedList);
 				lottoType = "수동";
@@ -377,24 +369,21 @@ public class Lotto extends JFrame {
 		JLabel lblMoney = new JLabel(String.valueOf(user.getHaveMoney()));
 		lblMoney.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblMoney.setHorizontalTextPosition(SwingConstants.LEFT);
-		JLabel lblWon = new JLabel(String.valueOf(gameMoney) + "원");
+		lblWon = new JLabel(String.valueOf(gameMoney) + "원");
 		JLabel lblWon2 = new JLabel("원");
 
 		JLabel lblgameMoney = new JLabel("구매금액 : ");
-		JLabel lblNewLabel = new JLabel("구매 횟수 " + buyGameCount);
+		lblNewLabel = new JLabel("구매 횟수 " + buyGameCount);
 
 		cp.add(new CardPanel(lottoType, listOfChkBox, chBoxAll, rdbManual, lblNewLabel, lblWon));
 		cardPnl.add(cp.get(0));
 
-		// JSpinner 사용; 로또 개수 1 ~ 5개 한번에 같은번호 만들 수 있게 도와줄 스피너
-		// 텍스트 입력 불가처리 화살표만 사용 가능
-		JSpinner spinner = new JSpinner();
-		spinner.setModel(new SpinnerNumberModel(1, 1, 5, 1));
-		JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) spinner.getEditor();
-		editor.getTextField().setEnabled(true);
-		editor.getTextField().setEditable(false);
+		btnBuy = new JButton("추가 구매");
+		btnBuy.setEnabled(false);
 
-		// 선택번호 확인 버튼.....
+		JButton btnGameClear = new JButton("전체초기화");
+		btnGameClear.setEnabled(false);
+		///////////////// 선택번호 확인 버튼.....
 		btnConfirm.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -409,7 +398,7 @@ public class Lotto extends JFrame {
 							count++;
 						}
 					}
-
+					int setCount = 0;
 					if (count < 5) {
 						for (int i = 0; i < chBoxAll.size(); i++) {
 							if (!chBoxAll.get(i).toString().equals("[]")) {
@@ -420,9 +409,13 @@ public class Lotto extends JFrame {
 									ImageIcon icon = new ImageIcon(url);
 									cp.get(pageCount).getIconlbls()[i][j].setIcon(icon);
 								}
-
-//										lblResultNum[i].setText(user.getLottoNumber().get(i).toString());
+								setCount++;
 							}
+						}
+						if (setCount == 5) {
+							btnBuy.setEnabled(true);
+						} else if (setCount > 0) {
+							btnGameClear.setEnabled(true);
 						}
 						gameMoney += 1000;
 						buyGameCount++;
@@ -434,6 +427,9 @@ public class Lotto extends JFrame {
 
 					checkedList = new ArrayList<Integer>();
 					cp.get(pageCount).getLblResults()[count].setText((count + 1) + ". " + lottoType);
+
+//					lblResult[count].setText((count + 1) + ". " + lottoType);
+//					lblResult2[count].setText((count + 1) + ". " + lottoType);
 
 					// 금액 천원 추가
 					lblWon.setText(String.valueOf(gameMoney) + "원");
@@ -464,7 +460,8 @@ public class Lotto extends JFrame {
 
 		// 번호 선택패널 => 초기화, 확인 버튼을 가진 pnlButton 삽입
 		pnlLeft.add(pnlButton);
-
+		// 개수 스피너;
+//		pnlButton.add(spinner);
 		// 초기화, 확인 기능필요한 버튼 두개
 		pnlButton.add(btnReset);
 		pnlButton.add(btnConfirm);
@@ -498,6 +495,9 @@ public class Lotto extends JFrame {
 		// 직전 5주 액션 리스너
 		btnRecent.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+//						String lottoNumber = "직전 5회차 번호 + 보너스 번호\n" + lottoFive.get(0) + "\n" + lottoFive.get(1) + "\n"
+//								+ lottoFive.get(2) + "\n" + lottoFive.get(3) + "\n" + lottoFive.get(4);
+//						JOptionPane.showMessageDialog(Lotto.this, lottoNumber, "직전 5회차 당첨번호", JOptionPane.PLAIN_MESSAGE);
 				FiveListDialog five = new FiveListDialog(Lotto.this, lottoFive, gameCount);
 				five.setVisible(true);
 			}
@@ -579,33 +579,77 @@ public class Lotto extends JFrame {
 		JPanel panel_3 = new JPanel();
 		pnlLast.add(panel_3, BorderLayout.SOUTH);
 
-		ActionListener listener = new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (e.getActionCommand().equals("다음")) {
-					layout.next(cardPnl);
-				} else {
-					layout.previous(cardPnl);
-				}
-			}
-		};
-
-		JButton btnPrev = new JButton("이전");
+		JButton btnPrev = new JButton("페이지 없음");
+		btnPrev.setEnabled(false);
+		JButton btnNext = new JButton("페이지 없음");
+		btnNext.setEnabled(false);
+//		ActionListener listener = new ActionListener() {
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				if (e.getActionCommand().equals("다음")) {
+//					layout.next(cardPnl);
+//					gameCount++;
+//				} else {
+//					layout.previous(cardPnl);
+//					gameCount--;
+//					if (gameCount == 0) {
+//						btnPrev.setEnabled(false);
+//					}
+//				}
+//			}
+//		};
 		btnPrev.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				layout.previous(cardPnl);
+				pageCount--;
+				
+				if (pageCount == 0) {
+					btnPrev.setEnabled(false);
+					btnNext.setEnabled(true);
+					btnPrev.setText("페이지 없음");
+					btnNext.setText((pageCount + 2) + "페이지");
+				} else if (pageCount < maxPageCount) {
+					btnNext.setEnabled(true);
+					btnPrev.setText((pageCount)+ "페이지");
+					btnNext.setText((pageCount + 2) + "페이지");
+				}
 			}
 		});
-		panel_3.add(btnPrev);
 
-		JButton btnNext = new JButton("다음");
 		btnNext.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				layout.next(cardPnl);
+				pageCount++;
+				
+				if (pageCount == maxPageCount) {
+					btnPrev.setEnabled(true);
+					btnNext.setEnabled(false);
+					btnPrev.setText((pageCount) + "페이지");
+					btnNext.setText("페이지 없음");
+				} else if (pageCount < maxPageCount) {
+					btnPrev.setEnabled(true);
+					btnPrev.setText(pageCount + "페이지");
+					btnNext.setText((pageCount + 2) + "페이지");
+				}
 			}
 		});
+
+		panel_3.add(btnPrev);
 		panel_3.add(btnNext);
 
-		btnNext.addActionListener(listener);
-		btnPrev.addActionListener(listener);
+//		btnNext.addActionListener(listener);
+//		btnPrev.addActionListener(listener);
+
+// *********************************************************************
+// ************************* 수정, 삭제, 번호복사 **********************************
+		// '수정' 버튼
+		resultInst();
+
+		// '삭제'버튼
+		resultDel();
+
+		// '전체복사'버튼
+		resultCopy();
 
 // *********************************************************************
 // ************************* 메인패널 추가 **********************************
@@ -630,7 +674,6 @@ public class Lotto extends JFrame {
 		pnlRight.add(panel);
 
 		// 초기화
-		JButton btnGameClear = new JButton("전체초기화");
 		panel.add(btnGameClear);
 		btnGameClear.addActionListener(new ActionListener() {
 			@Override
@@ -651,16 +694,19 @@ public class Lotto extends JFrame {
 							cp.get(pageCount).getBtnResultCopies()[j].setEnabled(false);
 						}
 					}
-					gameMoney = 0;
-					lblWon.setText(String.valueOf(gameMoney) + "원");
 					lottoType = "미지정";
-					lblResult[index].setText((index + 1) + ". " + lottoType);
+					cp.get(pageCount).getLblResults()[index].setText((index + 1) + ". " + lottoType);
 				}
+				gameMoney = 0;
+				lblWon.setText(String.valueOf(gameMoney));
+				buyGameCount = 0;
+				lblNewLabel.setText("구매 횟수 " + buyGameCount);
+				btnBuy.setEnabled(false);
+				btnGameClear.setEnabled(false);
 			}
 		});
 
-		JButton btnBuy = new JButton("추가 구매");
-
+		// 추가구매 리스너
 		btnBuy.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				for (int i = 0; i < cp.get(pageCount).getBtnResultDels().length; i++) {
@@ -674,19 +720,25 @@ public class Lotto extends JFrame {
 					chBoxAll.set(index, new ArrayList<Integer>());
 
 					// 배열이 사라지면 버튼들 비활성화
-					for (int j = 0; j < cp.get(pageCount).getBtnResultInsts().length; j++) {
-						if (chBoxAll.get(j).size() < 2) {
-							cp.get(pageCount).getBtnResultInsts()[j].setEnabled(false);
-							cp.get(pageCount).getBtnResultDels()[j].setEnabled(false);
-							cp.get(pageCount).getBtnResultCopies()[j].setEnabled(false);
-						}
-					}
+//					for (int j = 0; j < cp.get(pageCount).getBtnResultInsts().length; j++) {
+//						if (chBoxAll.get(j).size() < 2) {
+//							cp.get(pageCount).getBtnResultInsts()[j].setEnabled(false);
+//							cp.get(pageCount).getBtnResultDels()[j].setEnabled(false);
+//							cp.get(pageCount).getBtnResultCopies()[j].setEnabled(false);
+//						}
+//					}
 				}
 				cp.add(new CardPanel(lottoType, listOfChkBox, chBoxAll, rdbManual, lblNewLabel, lblWon));
+				btnPrev.setEnabled(true);
 				pageCount++;
+				maxPageCount++;
+				btnPrev.setText(pageCount + "페이지");
 				cardPnl.add(cp.get(pageCount));
 				layout.next(cardPnl);
-
+				btnBuy.setEnabled(false);
+				resultInst();
+				resultDel();
+				resultCopy();
 			}
 		});
 
@@ -733,6 +785,11 @@ public class Lotto extends JFrame {
 							break;
 						}
 					}
+
+//					JLabel[] lblResult2 = new JLabel[user.getLottoNumber().size()];
+//					for (int i = 0; i < lblResult2.length; i++) {
+//						lblResult2[i] = cp.get(pageCount).getLblResults()[i];
+//					}
 					user.setHaveMoney(user.getHaveMoney() - gameMoney);
 					dialog = new LottoEndPage(Lotto.this, user, winNumber, bonusNumber, gameCount, userInfo);
 					dialog.setVisible(true);
@@ -749,7 +806,6 @@ public class Lotto extends JFrame {
 					for (int i = 0; i < copy; i++) {
 						user.getLottoNumber().remove(0);
 					}
-					// }
 				}
 			}
 		});
@@ -780,12 +836,110 @@ public class Lotto extends JFrame {
 		setLocationRelativeTo(null);
 	}
 
-	public JPanel makePanel() {
-		JPanel pnl = new JPanel();
+	public void resultInst() {
+		for (int i = 0; i < cp.get(pageCount).getBtnResultInsts().length; i++) {
+			// i가 안먹혀서 새로만듬;;
+			int index = i;
+			cp.get(pageCount).getBtnResultInsts()[i].addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					for (JCheckBox checkBox : listOfChkBox) {
+						checkBox.setSelected(false);
+					}
+					for (int j = 0; j < chBoxAll.get(index).size(); j++) {
+						List<Integer> list = chBoxAll.get(index);
+						JCheckBox chkBox = listOfChkBox.get(list.get(j) - 1);
+						chkBox.setSelected(true);
+						// 번호삭제
+						cp.get(pageCount).getIconlbls()[index][j].setIcon(null);
+					}
 
-		BoxLayout boxResult = new BoxLayout(pnl, BoxLayout.Y_AXIS);
-		pnl.setLayout(boxResult);
+					// 배열초기화
+					chBoxAll.set(index, new ArrayList<Integer>());
 
-		return pnl;
+					// 라디오 버튼 전체 해제(더미버튼작동)
+					rdbManual.setSelected(true);
+
+					// 배열이 사라지면 버튼들 비활성화
+					for (int i = 0; i < cp.get(pageCount).getBtnResultInsts().length; i++) {
+						if (chBoxAll.get(i).size() < 2) {
+							cp.get(pageCount).getBtnResultInsts()[i].setEnabled(false);
+							cp.get(pageCount).getBtnResultDels()[i].setEnabled(false);
+							cp.get(pageCount).getBtnResultCopies()[i].setEnabled(false);
+						}
+						if (!cp.get(pageCount).getBtnResultInsts()[i].isSelected()) {
+							cp.get(pageCount).getBtnResultInsts()[i].setEnabled(false);
+						}
+					}
+					buyGameCount--;
+					lblNewLabel.setText("구매 횟수 " + buyGameCount);
+					gameMoney -= 1000;
+					lblWon.setText(String.valueOf(gameMoney) + "원");
+					////////////////////////
+					String lottoType = "미지급";
+					cp.get(pageCount).getLblResults()[index].setText((index + 1) + ". " + lottoType);
+					btnBuy.setEnabled(false);
+				}
+			});
+		}
+	}
+
+	public void resultDel() {
+		for (int i = 0; i < cp.get(pageCount).getBtnResultDels().length; i++) {
+			// i가 안먹혀서 새로만듬;;
+			int index = i;
+
+			cp.get(pageCount).getBtnResultDels()[index].addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// 번호 삭제
+					for (int j = 0; j < chBoxAll.get(index).size(); j++) {
+						cp.get(pageCount).getIconlbls()[index][j].setIcon(null);
+					}
+
+					// 배열초기화
+					chBoxAll.set(index, new ArrayList<Integer>());
+
+					// 배열이 사라지면 버튼들 비활성화
+					for (int i = 0; i < cp.get(pageCount).getBtnResultDels().length; i++) {
+						if (chBoxAll.get(i).size() < 2) {
+							cp.get(pageCount).getBtnResultInsts()[i].setEnabled(false);
+							cp.get(pageCount).getBtnResultDels()[i].setEnabled(false);
+							cp.get(pageCount).getBtnResultCopies()[i].setEnabled(false);
+						}
+					}
+					buyGameCount--;
+					lblNewLabel.setText("구매 횟수 " + buyGameCount);
+					gameMoney -= 1000;
+					lblWon.setText(String.valueOf(gameMoney) + "원");
+					////////////
+					String lottoType = "미지급";
+					cp.get(pageCount).getLblResults()[index].setText((index + 1) + ". " + lottoType);
+					btnBuy.setEnabled(false);
+				}
+			});
+		}
+	}
+
+	public void resultCopy() {
+		for (int i = 0; i < cp.get(pageCount).getBtnResultCopies().length; i++) {
+			// i가 안먹혀서 새로만듬;;
+			int index = i;
+
+			cp.get(pageCount).getBtnResultCopies()[index].addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					for (JCheckBox checkBox : listOfChkBox) {
+						checkBox.setSelected(false);
+					}
+					for (int j = 0; j < chBoxAll.get(index).size(); j++) {
+						List<Integer> list = chBoxAll.get(index);
+						JCheckBox chkBox = listOfChkBox.get(list.get(j) - 1);
+						chkBox.setSelected(true);
+					}
+					rdbManual.setSelected(true);
+				}
+			});
+		}
 	}
 }

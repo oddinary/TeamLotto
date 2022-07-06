@@ -150,107 +150,109 @@ public class CardPanel extends JPanel {
 
 		// '수정'버튼
 		
-		for (int i = 0; i < btnResultInsts.length; i++) {
-			// i가 안먹혀서 새로만듬;;
-			int index = i;
+//		for (int i = 0; i < btnResultInsts.length; i++) {
+//			// i가 안먹혀서 새로만듬;;
+//			int index = i;
+//
+//			btnResultInsts[index].addActionListener(new ActionListener() {
+//				@Override
+//				public void actionPerformed(ActionEvent e) {
+//					for (JCheckBox checkBox : listOfChkBox) {
+//						checkBox.setSelected(false);
+//					}
+//					for (int j = 0; j < chBoxAll.get(index).size(); j++) {
+//						List<Integer> list = chBoxAll.get(index);
+//						JCheckBox chkBox = listOfChkBox.get(list.get(j) - 1);
+//						chkBox.setSelected(true);
+//						// 번호삭제
+//						iconlbls[index][j].setIcon(null);
+//					}
+//
+//					// 배열초기화
+//					chBoxAll.set(index, new ArrayList<Integer>());
+//
+//					// 라디오 버튼 전체 해제(더미버튼작동)
+//					rdbManual.setSelected(true);
+//
+//					// 배열이 사라지면 버튼들 비활성화
+//					for (int i = 0; i < btnResultInsts.length; i++) {
+//						if (chBoxAll.get(i).size() < 2) {
+//							btnResultInsts[i].setEnabled(false);
+//							btnResultDels[i].setEnabled(false);
+//							btnResultCopies[i].setEnabled(false);
+//						}
+//						if (!btnResultInsts[i].isSelected()) {
+//							btnResultInsts[i].setEnabled(false);
+//						}
+//					}
+//					Lotto.buyGameCount--;
+//					lblNewLabel.setText("구매 횟수 " + Lotto.buyGameCount);
+//					Lotto.gameMoney -= 1000;
+//					lblWon.setText(String.valueOf(Lotto.gameMoney) + "원");
+//					////////////////////////
+//					String lottoType = "미지급";
+//					lblResults[index].setText((index + 1) + ". " + lottoType);
+//					btnBuy.setEnabled(false);
+//				}
+//			});
+//		}
 
-			btnResultInsts[index].addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					for (JCheckBox checkBox : listOfChkBox) {
-						checkBox.setSelected(false);
-					}
-					for (int j = 0; j < chBoxAll.get(index).size(); j++) {
-						List<Integer> list = chBoxAll.get(index);
-						JCheckBox chkBox = listOfChkBox.get(list.get(j) - 1);
-						chkBox.setSelected(true);
-						// 번호삭제
-						iconlbls[index][j].setIcon(null);
-					}
-
-					// 배열초기화
-					chBoxAll.set(index, new ArrayList<Integer>());
-
-					// 라디오 버튼 전체 해제(더미버튼작동)
-					rdbManual.setSelected(true);
-
-					// 배열이 사라지면 버튼들 비활성화
-					for (int i = 0; i < btnResultInsts.length; i++) {
-						if (chBoxAll.get(i).size() < 2) {
-							btnResultInsts[i].setEnabled(false);
-							btnResultDels[i].setEnabled(false);
-							btnResultCopies[i].setEnabled(false);
-						}
-						if (!btnResultInsts[i].isSelected()) {
-							btnResultInsts[i].setEnabled(false);
-						}
-					}
-					Lotto.buyGameCount--;
-					lblNewLabel.setText("구매 횟수 " + Lotto.buyGameCount);
-					Lotto.gameMoney -= 1000;
-					lblWon.setText(String.valueOf(Lotto.gameMoney) + "원");
-					////////////////////////
-					String lottoType = "미지급";
-					lblResults[index].setText((index + 1) + ". " + lottoType);
-				}
-			});
-		}
-
-		// '삭제'버튼
-		for (int i = 0; i < btnResultDels.length; i++) {
-			// i가 안먹혀서 새로만듬;;
-			int index = i;
-
-			btnResultDels[index].addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					// 번호 삭제
-					for (int j = 0; j < chBoxAll.get(index).size(); j++) {
-						iconlbls[index][j].setIcon(null);
-					}
-
-					// 배열초기화
-					chBoxAll.set(index, new ArrayList<Integer>());
-
-					// 배열이 사라지면 버튼들 비활성화
-					for (int i = 0; i < btnResultInsts.length; i++) {
-						if (chBoxAll.get(i).size() < 2) {
-							btnResultInsts[i].setEnabled(false);
-							btnResultDels[i].setEnabled(false);
-							btnResultCopies[i].setEnabled(false);
-						}
-					}
-					Lotto.buyGameCount--;
-					lblNewLabel.setText("구매 횟수 " + Lotto.buyGameCount);
-					Lotto.gameMoney -= 1000;
-					lblWon.setText(String.valueOf(Lotto.gameMoney) + "원");
-					////////////
-					String lottoType = "미지급";
-					lblResults[index].setText((index + 1) + ". " + lottoType);
-				}
-			});
-		}
-
-		// '전체복사'버튼
-		for (int i = 0; i < btnResultCopies.length; i++) {
-			// i가 안먹혀서 새로만듬;;
-			int index = i;
-
-			btnResultCopies[index].addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					for (JCheckBox checkBox : listOfChkBox) {
-						checkBox.setSelected(false);
-					}
-					for (int j = 0; j < chBoxAll.get(index).size(); j++) {
-						List<Integer> list = chBoxAll.get(index);
-						JCheckBox chkBox = listOfChkBox.get(list.get(j) - 1);
-						chkBox.setSelected(true);
-					}
-					rdbManual.setSelected(true);
-				}
-			});
-		}
+//		// '삭제'버튼
+//		for (int i = 0; i < btnResultDels.length; i++) {
+//			// i가 안먹혀서 새로만듬;;
+//			int index = i;
+//
+//			btnResultDels[index].addActionListener(new ActionListener() {
+//				@Override
+//				public void actionPerformed(ActionEvent e) {
+//					// 번호 삭제
+//					for (int j = 0; j < chBoxAll.get(index).size(); j++) {
+//						iconlbls[index][j].setIcon(null);
+//					}
+//
+//					// 배열초기화
+//					chBoxAll.set(index, new ArrayList<Integer>());
+//
+//					// 배열이 사라지면 버튼들 비활성화
+//					for (int i = 0; i < btnResultInsts.length; i++) {
+//						if (chBoxAll.get(i).size() < 2) {
+//							btnResultInsts[i].setEnabled(false);
+//							btnResultDels[i].setEnabled(false);
+//							btnResultCopies[i].setEnabled(false);
+//						}
+//					}
+//					Lotto.buyGameCount--;
+//					lblNewLabel.setText("구매 횟수 " + Lotto.buyGameCount);
+//					Lotto.gameMoney -= 1000;
+//					lblWon.setText(String.valueOf(Lotto.gameMoney) + "원");
+//					////////////
+//					String lottoType = "미지급";
+//					lblResults[index].setText((index + 1) + ". " + lottoType);
+//					btnBuy.setEnabled(false);
+//				}
+//			});
+//		}
+//
+//		// '전체복사'버튼
+//		for (int i = 0; i < btnResultCopies.length; i++) {
+//			// i가 안먹혀서 새로만듬;;
+//			int index = i;
+//
+//			btnResultCopies[index].addActionListener(new ActionListener() {
+//				@Override
+//				public void actionPerformed(ActionEvent e) {
+//					for (JCheckBox checkBox : listOfChkBox) {
+//						checkBox.setSelected(false);
+//					}
+//					for (int j = 0; j < chBoxAll.get(index).size(); j++) {
+//						List<Integer> list = chBoxAll.get(index);
+//						JCheckBox chkBox = listOfChkBox.get(list.get(j) - 1);
+//						chkBox.setSelected(true);
+//					}
+//					rdbManual.setSelected(true);
+//				}
+//			});
+//		}
 	}
 
 	public JLabel[][] getIconlbls() {
