@@ -40,7 +40,7 @@ public class Lotto extends JFrame {
 	// 로또 번호 (6개 번호) 담을 리스트 작성
 	List<Integer> checkedList = new ArrayList<>();
 
-	List<JCheckBox> listOfChkBox = new ArrayList<>();
+	static List<JCheckBox> listOfChkBox = new ArrayList<>();
 
 	// 직전 5주 번호 담는 리스트 // 06/30
 //	List<List> savedLottoNum = new ArrayList<>();
@@ -61,7 +61,7 @@ public class Lotto extends JFrame {
 	// 로또타입필드
 	String lottoType;
 	static JLabel lblMoney;
-
+	static JRadioButton rdbManual;
 	// 당첨번호 필드
 
 	public Lotto(Map<String, User> userInfo, String id) {
@@ -142,7 +142,7 @@ public class Lotto extends JFrame {
 //		JPanel pnlResultE = new JPanel();
 
 		// 뤠디오 버튼 .. 수동, 자동, 반자동 기능 구현필요
-		JRadioButton rdbManual = new JRadioButton("수동");
+		rdbManual = new JRadioButton("수동");
 		JRadioButton rdbAuto = new JRadioButton("자동");
 		JRadioButton rdbSemiAuto = new JRadioButton("반자동");
 		JRadioButton rdbdummy = new JRadioButton();
