@@ -44,8 +44,8 @@ public class Lotto extends JFrame {
 	// 로또 번호 (6개 번호) 담을 리스트 작성
 	List<Integer> checkedList = new ArrayList<>();
 
-	static List<JCheckBox> listOfChkBox = new ArrayList<>();
-
+	List<JCheckBox> listOfChkBox = new ArrayList<>();
+	
 	// 직전 5주 번호 담는 리스트 // 06/30
 //	List<List> savedLottoNum = new ArrayList<>();
 	static List<List<Integer>> lottoFive = new ArrayList<List<Integer>>();
@@ -363,6 +363,7 @@ public class Lotto extends JFrame {
 						JCheckBox chkBox = listOfChkBox.get(autoNum);
 						chkBox.setSelected(true);
 						// 랜덤으로 선택된 수만 활성화
+//						continue;
 					} else {
 						break;
 					}
@@ -393,6 +394,7 @@ public class Lotto extends JFrame {
 						int autoNum = (int) (Math.random() * 45);
 						JCheckBox chkBox = listOfChkBox.get(autoNum);
 						chkBox.setSelected(true);
+//						continue;
 						// 고른 수만 활성화!
 					} else {
 						break;
@@ -664,7 +666,23 @@ public class Lotto extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				NonModal recommendNum = new NonModal(Lotto.this);
 				recommendNum.setVisible(true);
-
+				
+				recommendNum.getBtnCopy().addActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						for (JCheckBox checkBox : listOfChkBox) {
+							checkBox.setSelected(false);
+						}
+						for (int i = 0; i < recommendNum.getTodayNumber().size(); i++) {
+							List<Integer> list = recommendNum.getTodayNumber();
+							JCheckBox chkBox = listOfChkBox.get(list.get(i) - 1);
+							chkBox.setSelected(true);
+						}
+						Lotto.rdbManual.setSelected(true);
+						
+					}
+				});
 			}
 		});
 
@@ -739,7 +757,7 @@ public class Lotto extends JFrame {
 						JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) spinner.getEditor();
 						editor.getTextField().setEditable(false);
 						spinnerNum = 1;
-					}
+					} 
 				}
 			});
 		}
