@@ -907,6 +907,7 @@ public class Lotto extends JFrame {
 				}
 			}
 		});
+		btnGameClear.addActionListener(reset);
 
 		// 결과 확인 버튼
 
