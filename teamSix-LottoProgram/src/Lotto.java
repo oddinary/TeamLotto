@@ -961,9 +961,7 @@ public class Lotto extends JFrame {
 						JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, yesNo, yesNo[0]);
 				if (result == JOptionPane.YES_OPTION) {
 					dispose();
-					Lotto.this.dispose();
 					new Login(userInfo).setVisible(true);
-					Lotto.this.dispose();
 				} else if (result == JOptionPane.NO_OPTION) {
 					System.exit(0);
 				}
